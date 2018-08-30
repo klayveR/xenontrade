@@ -10,7 +10,8 @@ function createWindow () {
   win = new BrowserWindow({
     width: 300,
     height: 0,
-    frame: false});
+    frame: false,
+    hasShadow: false});
 
   // and load the index.html of the app.
   win.loadFile("index.html");

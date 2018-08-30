@@ -1,3 +1,4 @@
+const ExecHelpers = require("./helpers.exec.js");
 const Helpers = require("./helpers.js");
 
 class Entry {
@@ -57,14 +58,14 @@ class Entry {
     $("#expandButton[data-id='" + this.id + "'] > i").toggleClass("grey");
     $("[data-expand='" + this.id + "']").toggleClass("hidden");
     this.gui.updateWindowHeight();
-    Helpers.focusPathOfExile();
+    ExecHelpers.focusPathOfExile();
   }
 
   _switchEntry() {
     $("#switchButton[data-id='" + this.id + "] > i").toggleClass("grey");
     $("[data-switch='" + this.id + "']").toggleClass("hidden");
     this.gui.updateWindowHeight();
-    Helpers.focusPathOfExile();
+    ExecHelpers.focusPathOfExile();
   }
 
   visualizeTrend(id) {
@@ -109,7 +110,7 @@ class Entry {
       this.gui.updateWindowHeight();
 
       if(focusPathOfExile) {
-        Helpers.focusPathOfExile();
+        ExecHelpers.focusPathOfExile();
       }
     }
   }

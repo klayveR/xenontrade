@@ -10,7 +10,7 @@ class XenonTrade {
   constructor() {
     this.updating = false;
     this.loading = false;
-    this.config = {league: "Standard"}
+    this.config = {league: "Standard"};
 
     this.gui = new GUI(this, 300);
     this.ninjaAPI = new NinjaAPI({
@@ -34,11 +34,12 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating && !this.loading) {
       this.updating = true;
-      var updateEntry = this.gui.addTextEntry("Updating...", this.config.league);
+      var updateEntry = this.gui.addTextEntry("Updating...", this.config.league + " league");
 
       this.ninjaAPI.update()
       .then((result) => {
-        var entry = this.gui.addTextEntry("Update successful!", this.config.league, "fa-check-circle green");
+        updateEntry.close();
+        var entry = this.gui.addTextEntry("Update successful!", this.config.league + " league", "fa-check-circle green");
         entry.enableAutoClose(5);
 
         return this.ninjaAPI.save();
@@ -47,12 +48,12 @@ class XenonTrade {
         console.log("Saved poe.ninja data:", success);
       })
       .catch((error) => {
+        updateEntry.close();
         this.gui.addTextEntry("Update failed!", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
-        updateEntry.close();
         this.updating = false;
-      })
+      });
     }
   }
 

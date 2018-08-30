@@ -80,6 +80,8 @@ class GUI {
   }
 
   initializeButtons() {
+    var self = this;
+
     $("#minimizeButton").click(function(e) {
       e.preventDefault();
       self.window.minimize();
