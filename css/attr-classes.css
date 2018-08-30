@@ -1,0 +1,44 @@
+.unselectable {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+  cursor: default;
+}
+
+.draggable {
+  -webkit-app-region: drag;
+}
+
+.small {
+  font-size: 9px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.grey {
+  color: #636f84;
+}
+
+.green {
+  color: #9ae055;
+}
+
+.yellow {
+  color: #e0cf55;
+}
+
+.red {
+  color: #d14f4f;
+}
+
+.hidden {
+  display: none;
+}
+
+.disabledLink {
+  cursor: not-allowed;
+  text-decoration: none;
+}

@@ -1,0 +1,60 @@
+{
+  "name": "xenontrade",
+  "version": "0.1.0",
+  "description": "A Path of Exile trading app developed with linux in mind",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "electron-rebuild",
+    "start": "electron ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "poe",
+    "path of exile",
+    "trade",
+    "tool",
+    "linux"
+  ],
+  "homepage": "https://github.com/klayveR/xenontrade#readme",
+  "bugs": {
+    "url": "https://github.com/klayveR/xenontrade/issues"
+  },
+  "author": {
+    "name": "Tobias Hoffmann",
+    "email": "tobiashoffmann7@gmail.com",
+    "url": "http://klayver.de"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/klayveR/xenontrade.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "clipboardy": "^1.2.3",
+    "electron": "^2.0.8",
+    "electron-rebuild": "^1.8.2",
+    "iohook": "^0.2.0",
+    "jquery": "^3.3.1",
+    "poe-ninja-api-manager": "^0.5.0",
+    "promise-fs": "^1.3.0"
+  },
+  "cmake-js": {
+    "runtime": "electron",
+    "runtimeVersion": "2.0.8"
+  },
+  "iohook": {
+    "targets": [
+      "node-59",
+      "electron-57"
+    ],
+    "platforms": [
+      "win32",
+      "darwin",
+      "linux"
+    ],
+    "arches": [
+      "x64",
+      "ia32"
+    ]
+  }
+}
