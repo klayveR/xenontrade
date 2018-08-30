@@ -1,5 +1,5 @@
-const electron = require('electron');
-const remote = require('electron').remote;
+const electron = require("electron");
+const remote = require("electron").remote;
 let { ipcRenderer } = electron;
 
 const Templates = require("./templates.js");
@@ -17,7 +17,7 @@ class GUI {
     this.templatesLoaded = false;
     this.width = width || 300;
     this.window = remote.getCurrentWindow();
-    this.entryContainer = $('.entries');
+    this.entryContainer = $(".entries");
     this.entryCount = 0;
 
     this.initialize();
@@ -29,13 +29,13 @@ class GUI {
     this.updateWindowHeight();
   }
 
-  addTextEntry(title, text, icon = 'fa-info-circle grey') {
-    var template = this.templates.get('text.html');
+  addTextEntry(title, text, icon = "fa-info-circle grey") {
+    var template = this.templates.get("text.html");
 
     var replacements = [
-      { find: 'title', replace: title } ,
-      { find: 'text', replace: text } ,
-      { find: 'icon', replace: icon }
+      { find: "title", replace: title } ,
+      { find: "text", replace: text } ,
+      { find: "icon", replace: icon }
     ];
 
     return this.addEntry(template, replacements);
@@ -103,14 +103,14 @@ class GUI {
       this.app.loadNinja();
     })
     .catch((error) => {
-      console.error('Couldn\'t load templates:', error);
+      console.error("Couldn't load templates:", error);
       this.templatesLoaded = false;
-    })
+    });
   }
 
   updateWindowHeight() {
-    var height = $('.main').height();
-    ipcRenderer.send('resize', this.width, height);
+    var height = $(".main").height();
+    ipcRenderer.send("resize", this.width, height);
   }
 }
 

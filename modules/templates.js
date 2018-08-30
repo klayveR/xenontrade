@@ -1,4 +1,4 @@
-const fs = require('promise-fs');
+const fs = require("promise-fs");
 
 class Templates {
   /**
@@ -7,7 +7,7 @@ class Templates {
   * @constructor
   */
   constructor(path) {
-    this.path = path || './resource/templates';
+    this.path = path || "./resource/templates";
     this.templates = {};
   }
 
@@ -43,8 +43,8 @@ class Templates {
 
     return new Promise(function(resolve, reject) {
       if(files.length > 0) {
-        files.forEach(file => {
-          fs.readFile(self.path + '/' + file, 'utf8')
+        files.forEach((file) => {
+          fs.readFile(self.path + "/" + file, "utf8")
           .then((result) => {
             self.templates[file] = result;
           })
