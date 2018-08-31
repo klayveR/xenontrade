@@ -6,11 +6,7 @@ const Templates = require("./templates.js");
 const Entry = require("./entry.js");
 
 class GUI {
-  /**
-  * Creates a new GUI object
-  *
-  * @constructor
-  */
+  // TODO: jsdocs
   constructor(app, width) {
     this.app = app;
     this.templates = new Templates();

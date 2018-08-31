@@ -8,6 +8,11 @@ const ClipboardItem = require("./modules/clipboardItem.js");
 const GUI = require("./modules/gui.js");
 
 class XenonTrade {
+  /**
+  * Creates a new XenonTrade object
+  *
+  * @constructor
+  */
   constructor() {
     this.updating = false;
     this.loading = false;
@@ -22,22 +27,32 @@ class XenonTrade {
     this.initialize();
   }
 
+  /**
+  * Initializes essential parts of the app
+  */
   initialize() {
     this.registerHotkeys();
-  }
-
-  registerHotkeys() {
-    var self = this;
-
-    const clipboardShortcut = ioHook.registerShortcut([29, 46], (keys) => {
-      setTimeout(function() {
-        self.onClipboard();
-      }, 100)
-    });
-
     ioHook.start();
   }
 
+  /**
+  * Registers global hotkeys
+  */
+  registerHotkeys() {
+    var self = this;
+
+    // Register CTRL + C hotkey
+    const clipboardShortcut = ioHook.registerShortcut([29, 46], (keys) => {
+      // Waiting 100ms before calling the processing method, because the clipboard needs some time to be updated
+      setTimeout(function() {
+        self.onClipboard();
+      }, 100);
+    });
+  }
+
+  /**
+  * Checks if the copied content is item data from Path of Exile, parses it and adds an entry in the GUI
+  */
   onClipboard() {
     var clipboard = clipboardy.readSync();
     var cbItem = new ClipboardItem(clipboard);
@@ -48,6 +63,9 @@ class XenonTrade {
     }
   }
 
+  /**
+  * Updates and saves poe.ninja data
+  */
   updateNinja() {
     if(!this.updating && !this.loading) {
       this.updating = true;
@@ -74,6 +92,9 @@ class XenonTrade {
     }
   }
 
+  /**
+  * Loads previously saved poe.ninja data from file
+  */
   loadNinja() {
     if(!this.updating && !this.loading) {
       this.loading = true;
@@ -92,6 +113,9 @@ class XenonTrade {
     }
   }
 
+  /**
+  * If loadNinja() failed to load data, update data
+  */
   handleNinjaLoadError(error) {
     this.loading = false;
 

@@ -5,12 +5,19 @@ class Templates {
   * Creates a new Templates object
   *
   * @constructor
+  * @param {string} path Path to the folder that contains the templates
   */
   constructor(path) {
     this.path = path || "./resource/templates";
     this.templates = {};
   }
 
+  /**
+  * Returns a template by file name
+  *
+  * @param {string} template File name of the template
+  * @return {string}
+  */
   get(template) {
     if(this.templates.hasOwnProperty(template)) {
       return this.templates[template];
@@ -19,6 +26,11 @@ class Templates {
     return "";
   }
 
+  /**
+  * Loads templates in path
+  *
+  * // TODO: Add return promise
+  */
   loadTemplates() {
     var self = this;
 
@@ -37,6 +49,14 @@ class Templates {
     });
   }
 
+  /**
+  * Loads template file contents and adds them to the templates variable
+  *
+  * @param {Array} files Array containing template file names
+  * @returns {Promise}
+  * @fulfil {Array} - An object containing the templates
+  * @reject {Error} - The `error.message` contains information about why the promise was rejected
+  */
   _processTemplateFiles(files) {
     var self = this;
     var filesProcessed = 0;
@@ -49,7 +69,7 @@ class Templates {
             self.templates[file] = result;
           })
           .catch((error) => {
-            return resolve(error);
+            return reject(error);
           })
           .then(() => {
             filesProcessed++;

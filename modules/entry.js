@@ -6,6 +6,8 @@ class Entry {
   * Creates a new Entry object
   *
   * @constructor
+  * @param {GUI} gui A GUI object to which the entries should be added to
+  * @param {number} id ID of the entry
   */
   constructor(gui, id) {
     this.gui = gui;
@@ -15,15 +17,26 @@ class Entry {
     this.added = false;
   }
 
+  /**
+  * Sets the template that should be used for this entry
+  *
+  * @param {string} template `.html` format template
+  */
   setTemplate(template) {
     this.template = template;
   }
 
+  /**
+  * Sets the template that should be used for this entry
+  */
   setReplacements(replacements) {
     this.replacements = replacements;
     this.replacements.push({find: "entry-id", replace: this.id});
   }
 
+  /**
+  * Enables the close button on this entry
+  */
   enableClose(id) {
     var self = this;
 
@@ -34,6 +47,9 @@ class Entry {
     });
   }
 
+  /**
+  * Enables the expand button on this entry
+  */
   enableExpand(id) {
     var self = this;
 
@@ -44,6 +60,9 @@ class Entry {
     });
   }
 
+  /**
+  * Enables the switch button on this entry
+  */
   enableSwitch() {
     var self = this;
 
@@ -54,6 +73,9 @@ class Entry {
     });
   }
 
+  /**
+  * Expands this entry and focuses Path of Exile
+  */
   _expandEntry() {
     $("#expandButton[data-id='" + this.id + "'] > i").toggleClass("grey");
     $("[data-expand='" + this.id + "']").toggleClass("hidden");
@@ -61,6 +83,9 @@ class Entry {
     ExecHelpers.focusPathOfExile();
   }
 
+  /**
+  * Switches this entry and focuses Path of Exile
+  */
   _switchEntry() {
     $("#switchButton[data-id='" + this.id + "] > i").toggleClass("grey");
     $("[data-switch='" + this.id + "']").toggleClass("hidden");
@@ -68,11 +93,17 @@ class Entry {
     ExecHelpers.focusPathOfExile();
   }
 
+  /**
+  * Visualizes every trend on this entry
+  */
   visualizeTrend(id) {
     $(".trend[data-id='" + this.id + "']").peity("line");
     this.gui.updateWindowHeight();
   }
 
+  /**
+  * Enables auto close for this entry
+  */
   enableAutoClose(seconds) {
     var self = this;
 
@@ -92,6 +123,9 @@ class Entry {
     }
   }
 
+  /**
+  * Replaces replacements in entry and adds it to the GUI
+  */
   add() {
     if(!this.added) {
       this.added = true;
@@ -104,6 +138,9 @@ class Entry {
     }
   }
 
+  /**
+  * Closes and removes this entry
+  */
   close(focusPathOfExile) {
     if(this.added) {
       $(".entry[data-id='" + this.id + "']").remove();
@@ -115,6 +152,11 @@ class Entry {
     }
   }
 
+  /**
+  * Replaces replacements in template and returns it
+  *
+  * @return {Object}
+  */
   _getReplacedTemplate(template, replacements, delimiter) {
     for(var i = 0; i < replacements.length; i++) {
       if(replacements[i].hasOwnProperty("replace") && replacements[i].hasOwnProperty("find")) {

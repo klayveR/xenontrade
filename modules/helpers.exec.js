@@ -2,6 +2,7 @@ const { exec } = require("child_process");
 const os = require("os");
 
 class ExecHelpers {
+  // TODO: jsdocs
   static focusPathOfExile() {
     var command = "";
 
