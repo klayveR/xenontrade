@@ -68,12 +68,22 @@ class XenonTrade {
   getItemFromParsedData(data) {
     if(data.type !== "Rare") {
       this.ninjaAPI.getItem(data.name, {links: data.links, variant: data.variant, relic: data.relic})
-      .then((item) => {
-        console.log("Ninja Item:", item[0]);
+      .then((itemArray) => {
+        return this.onNinjaItemReceive(data, itemArray[0]);
       })
       .catch((error) => {
-        console.error(error);
+        return console.error(error);
       });
+    }
+  }
+
+  onNinjaItemReceive(parsedData, item) {
+    var entry;
+
+    if(parsedData.type === "Currency" || parsedData.type === "Fragment") {
+      entry = this.gui.addCurrencyEntry(item, parsedData.stackSize);
+    } else {
+      entry = this.gui.addItemEntry(item);
     }
   }
 
@@ -94,14 +104,14 @@ class XenonTrade {
         return this.ninjaAPI.save();
       })
       .then((success) => {
-        console.log("Saved poe.ninja data:", success);
+        return console.log("Saved poe.ninja data:", success);
       })
       .catch((error) => {
         updateEntry.close();
         this.gui.addTextEntry("Update failed!", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
-        this.updating = false;
+        return this.updating = false;
       });
     }
   }
@@ -115,14 +125,14 @@ class XenonTrade {
 
       this.ninjaAPI.load()
       .then((success) => {
-        console.log("Loaded poe.ninja data:", success);
+        return console.log("Loaded poe.ninja data:", success);
       })
       .catch((error) => {
         console.error("Failed to load poe.ninja data", error.code);
-        this.handleNinjaLoadError(error);
+        return this.handleNinjaLoadError(error);
       })
       .then(() => {
-        this.loading = false;
+        return this.loading = false;
       })
     }
   }

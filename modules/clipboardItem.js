@@ -34,8 +34,6 @@ class ClipboardItem {
   * @returns {Object}
   */
   parseData() {
-    var lines = this.getClipboardLines();
-
     this.data.rarity = this.getRarity();
     this.data.type = this.getItemType();
     this.data.name = this.getName();
@@ -43,6 +41,7 @@ class ClipboardItem {
     this.data.links = this.getLinks();
     this.data.relic = this.isRelic();
     this.data.variant = this.getVariant();
+    this.data.stackSize = this.getStackSize();
 
     return this.data;
   }
@@ -181,8 +180,8 @@ class ClipboardItem {
       }
 
       // Remove suffixes
-      for(var i = 0; i < mapAffixes.suffix.length; i++) {
-        name = name.replace(" " + mapAffixes.suffix[i], "");
+      for(var j = 0; j < mapAffixes.suffix.length; i++) {
+        name = name.replace(" " + mapAffixes.suffix[j], "");
       }
 
       return name;
@@ -211,6 +210,22 @@ class ClipboardItem {
       }
 
       return type;
+    }
+
+    /**
+    * Returns the stack size of a currency item
+    *
+    * @returns {number}
+    */
+    getStackSize() {
+      var stackSize = 1;
+      var stackSizeMatch = this.clipboard.match(new RegExp('Stack Size: ([0-9,]*)\/[0-9,]*'));
+
+      if(stackSizeMatch) {
+        stackSize = stackSizeMatch[1].replace(",", "");
+      }
+
+      return stackSize;
     }
 
     /**
@@ -243,7 +258,6 @@ class ClipboardItem {
     * @returns {number}
     */
     getLinks() {
-      var lines = this.getClipboardLines();
       var socketString = this._getSocketString();
 
       // If the item has sockets...

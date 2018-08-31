@@ -39,9 +39,9 @@ class Entry {
   */
   enableClose(id) {
     var self = this;
+    var button = $(".entry[data-id='" + this.id + "']").find('#closeButton');
 
-    $("#closeButton[data-id='" + this.id + "']").show();
-    $("#closeButton[data-id='" + this.id + "']").click(function(e) {
+    button.show().click(function(e) {
       e.preventDefault();
       self.close(true);
     });
@@ -50,13 +50,26 @@ class Entry {
   /**
   * Enables the expand button on this entry
   */
-  enableExpand(id) {
+  enableExpand() {
     var self = this;
+    var button = $(".entry[data-id='" + this.id + "']").find('#expandButton');
 
-    $("#expandButton[data-id='" + this.id + "']").show();
-    $("#expandButton[data-id='" + this.id + "']").click(function(e) {
+    button.show().click(function(e) {
       e.preventDefault();
-      self._expandEntry(id);
+      self._expandEntry();
+    });
+  }
+
+  /**
+  * Enables the trend button on this entry
+  */
+  enableTrend() {
+    var self = this;
+    var button = $(".entry[data-id='" + this.id + "']").find('#trendButton');
+
+    button.show().click(function(e) {
+      e.preventDefault();
+      self._showTrend();
     });
   }
 
@@ -65,9 +78,9 @@ class Entry {
   */
   enableSwitch() {
     var self = this;
+    var button = $(".entry[data-id='" + this.id + "']").find('#switchButton');
 
-    $("#switchButton[data-id='" + this.id + "']").show();
-    $("#switchButton[data-id='" + this.id + "']").click(function(e) {
+    button.show().click(function(e) {
       e.preventDefault();
       self._switchEntry();
     });
@@ -77,8 +90,22 @@ class Entry {
   * Expands this entry and focuses Path of Exile
   */
   _expandEntry() {
-    $("#expandButton[data-id='" + this.id + "'] > i").toggleClass("grey");
+    var icon = $(".entry[data-id='" + this.id + "']").find('#expandButton').find('i');
+    icon.toggleClass("grey");
+
     $("[data-expand='" + this.id + "']").toggleClass("hidden");
+    this.gui.updateWindowHeight();
+    this._onButtonClick();
+  }
+
+  /**
+  * Expands this entry and focuses Path of Exile
+  */
+  _showTrend() {
+    var icon = $(".entry[data-id='" + this.id + "']").find('#trendButton').find('i');
+    icon.toggleClass("grey");
+
+    $("[data-trend='" + this.id + "']").toggleClass("hidden");
     this.gui.updateWindowHeight();
     this._onButtonClick();
   }
@@ -87,7 +114,9 @@ class Entry {
   * Switches this entry and focuses Path of Exile
   */
   _switchEntry() {
-    $("#switchButton[data-id='" + this.id + "] > i").toggleClass("grey");
+    var icon = $(".entry[data-id='" + this.id + "']").find('#switchButton').find('i');
+    icon.toggleClass("grey");
+
     $("[data-switch='" + this.id + "']").toggleClass("hidden");
     this.gui.updateWindowHeight();
     this._onButtonClick();
@@ -104,7 +133,10 @@ class Entry {
   * Visualizes every trend on this entry
   */
   visualizeTrend(id) {
-    $(".trend[data-id='" + this.id + "']").peity("line");
+    //$(".trend[data-id='" + this.id + "']").peity("line");
+    var trend = $(".entry[data-id='" + this.id + "']").find('.trend');
+
+    trend.peity("line");
     this.gui.updateWindowHeight();
   }
 
@@ -113,14 +145,15 @@ class Entry {
   */
   enableAutoClose(seconds) {
     var self = this;
+    var timeoutContainer = $(".entry[data-id='" + this.id + "']").find('#timeout');
 
     if(this.added && seconds > 0) {
-      $("#timeout[data-id='" + this.id + "']").html(seconds);
+      timeoutContainer.html(seconds);
 
       var autoClose = setInterval(function() {
         seconds--;
         if(seconds < 99) {
-          $("#timeout[data-id='" + self.id + "']").html(seconds);
+          timeoutContainer.html(seconds);
         }
         if (seconds === 0) {
           clearInterval(autoClose);
