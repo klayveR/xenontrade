@@ -16,7 +16,7 @@ class Templates {
       return this.templates[template];
     }
 
-    return '';
+    return "";
   }
 
   loadTemplates() {

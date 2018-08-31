@@ -62,3 +62,6 @@ typings/
 
 # xenontrade
 resource/ninjaData.json
+resource/missingItemVariants.json
+resource/gemVariantsUnformatted.json
+listVariants.js

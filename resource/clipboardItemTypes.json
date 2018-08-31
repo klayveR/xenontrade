@@ -1,0 +1,44 @@
+{
+  "Gem": [
+    {
+      "regex": "",
+      "type": "SkillGem"
+    }
+  ],
+  "Currency": [
+    {
+      "regex": "Essence of ",
+      "type": "Essence"
+    },
+    {
+      "regex": "",
+      "type": "Currency"
+    }
+  ],
+  "Normal": [
+    {
+      "regex": "Can be used in the Templar Laboratory or a personal Map Device.",
+      "type": "Fragment"
+    },
+    {
+      "regex": "Travel to this Map by using it in the Templar Laboratory or a personal Map Device. Maps can only be used once.",
+      "type": "Map"
+    },
+    {
+      "regex": "Right-click to add this prophecy to your character.",
+      "type": "Prophecy"
+    }
+  ],
+  "Magic": [
+    {
+      "regex": "Travel to this Map by using it in the Templar Laboratory or a personal Map Device. Maps can only be used once.",
+      "type": "Map"
+    }
+  ],
+  "Rare": [
+    {
+      "regex": "Travel to this Map by using it in the Templar Laboratory or a personal Map Device. Maps can only be used once.",
+      "type": "Map"
+    }
+  ]
+}

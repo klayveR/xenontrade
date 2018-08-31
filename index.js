@@ -4,6 +4,7 @@ const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 
 const NinjaAPI = require("poe-ninja-api-manager");
+const ClipboardItem = require("./modules/clipboardItem.js");
 const GUI = require("./modules/gui.js");
 
 class XenonTrade {
@@ -26,9 +27,25 @@ class XenonTrade {
   }
 
   registerHotkeys() {
+    var self = this;
+
     const clipboardShortcut = ioHook.registerShortcut([29, 46], (keys) => {
-      this.onClipboard();
+      setTimeout(function() {
+        self.onClipboard();
+      }, 100)
     });
+
+    ioHook.start();
+  }
+
+  onClipboard() {
+    var clipboard = clipboardy.readSync();
+    var cbItem = new ClipboardItem(clipboard);
+
+    if(cbItem.isPathOfExileData()) {
+      var itemData = cbItem.parseData();
+      // TODO: add item entry in gui
+    }
   }
 
   updateNinja() {

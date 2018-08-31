@@ -4,14 +4,23 @@ const {ipcMain} = require("electron");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+let debug = true;
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({
-    width: 300,
-    height: 0,
-    frame: false,
-    hasShadow: false});
+  if(debug) {
+    win = new BrowserWindow({
+      width: 800,
+      height: 600,
+      frame: false,
+      hasShadow: false});
+  } else {
+    win = new BrowserWindow({
+      width: 300,
+      height: 0,
+      frame: false,
+      hasShadow: false});
+  }
 
   // and load the index.html of the app.
   win.loadFile("index.html");
@@ -23,7 +32,7 @@ function createWindow () {
   win.setFullScreenable(false);
 
   // Open the DevTools.
-  // win.webContents.openDevTools()
+  if(debug) { win.webContents.openDevTools(); }
 
   // Emitted when the window is closed.
   win.on("closed", () => {
@@ -57,5 +66,5 @@ app.on("activate", () => {
 });
 
 ipcMain.on("resize", function (e, w, h) {
-  win.setSize(w, h);
+  if(!debug) { win.setSize(w, h); }
 });
