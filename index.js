@@ -58,8 +58,22 @@ class XenonTrade {
     var cbItem = new ClipboardItem(clipboard);
 
     if(cbItem.isPathOfExileData()) {
-      var itemData = cbItem.parseData();
-      // TODO: add item entry in gui
+      var parsedData = cbItem.parseData();
+      console.log("Clipboard parsed data:", parsedData);
+
+      this.getItemFromParsedData(parsedData);
+    }
+  }
+
+  getItemFromParsedData(data) {
+    if(data.type !== "Rare") {
+      this.ninjaAPI.getItem(data.name, {links: data.links, variant: data.variant, relic: data.relic})
+      .then((item) => {
+        console.log("Ninja Item:", item[0]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
   }
 

@@ -80,7 +80,7 @@ class Entry {
     $("#expandButton[data-id='" + this.id + "'] > i").toggleClass("grey");
     $("[data-expand='" + this.id + "']").toggleClass("hidden");
     this.gui.updateWindowHeight();
-    ExecHelpers.focusPathOfExile();
+    this._onButtonClick();
   }
 
   /**
@@ -90,6 +90,13 @@ class Entry {
     $("#switchButton[data-id='" + this.id + "] > i").toggleClass("grey");
     $("[data-switch='" + this.id + "']").toggleClass("hidden");
     this.gui.updateWindowHeight();
+    this._onButtonClick();
+  }
+
+  /**
+  * Focuses Path of Exile on a button click
+  */
+  _onButtonClick() {
     ExecHelpers.focusPathOfExile();
   }
 

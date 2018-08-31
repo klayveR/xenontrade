@@ -17,7 +17,11 @@
   ],
   "Normal": [
     {
-      "regex": "Can be used in the Templar Laboratory or a personal Map Device.",
+      "regex": "Can be used in the Templar Laboratory or a personal Map Device",
+      "type": "Fragment"
+    },
+    {
+      "regex": "Templar Laboratory or a personal Map Device. Can only be used once.",
       "type": "Fragment"
     },
     {
@@ -39,6 +43,12 @@
     {
       "regex": "Travel to this Map by using it in the Templar Laboratory or a personal Map Device. Maps can only be used once.",
       "type": "Map"
+    }
+  ],
+  "Unique": [
+    {
+      "regex": "Travel to this Map by using it in the Templar Laboratory or a personal Map Device. Maps can only be used once.",
+      "type": "UniqueMap"
     }
   ]
 }

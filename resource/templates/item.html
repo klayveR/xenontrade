@@ -1,0 +1,38 @@
+<div class="entry" data-id="%entry-id%">
+  <table>
+    <tbody>
+      <tr>
+        <td class="shrink top">
+        <p><a href="#" id="switchButton" data-id="%entry-id%" class="hidden"><i class="fas fa-exchange-alt grey"></i></a></p>
+        <p><a href="#" id="expandButton" data-id="%entry-id%" class="hidden"><i class="fas fa-chart-line grey"></i></a></p>
+        </td>
+        <td class="expand">
+          <span class="item-name grey uppercase small">%item-name%</span>
+          <table>
+            <tbody>
+              <tr>
+                <td><img alt="%item%" class="icon" src="%item-icon%"></td>
+                <td class="arrow"><i class="fas fa-long-arrow-alt-right %conf-color%"></i></td>
+                <td>
+                  <span data-switch="%entry-id%">%item-value-chaos%</span>
+                  <span data-switch="%entry-id%" class="hidden">%item-value-exalted%</span>
+                </td>
+                <td>
+                  <img alt="%chaos-name%" class="icon right" data-switch="%entry-id%" src="%chaos-icon%">
+                  <img alt="%exalted-name%" class="icon right hidden" data-switch="%entry-id%" src="%exalted-icon%">
+                </td>
+              </tr>
+              <tr data-expand="%entry-id%" class="hidden">
+                <td colspan="4"><span class="trend" data-id="%entry-id%">%trend%</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td class="shrink top">
+          <p><a href="#" id="closeButton" data-id="%entry-id%"><i class="fas fa-times-circle grey"></i></a></p>
+          <p><span id="timeout" data-id="%entry-id%" class="small grey"></span></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

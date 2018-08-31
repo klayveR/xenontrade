@@ -1,6 +1,7 @@
 const itemVariants = require("../resource/itemVariants");
 const gemVariants = require("../resource/gemVariants");
 const clipboardItemTypes = require("../resource/clipboardItemTypes");
+const mapAffixes = require("../resource/mapAffixes");
 
 class ClipboardItem {
   /**
@@ -68,9 +69,21 @@ class ClipboardItem {
     } else
     if(this.data.type === "Unique") {
       variant = this._getUniqueVariant();
+    } else
+    if(this.data.type === "UniqueMap" || this.data.type === "Map") {
+      variant = this._getMapVariant();
     }
 
     return variant;
+  }
+
+  /**
+  * Returns the variant of a map
+  *
+  * @returns {string}
+  */
+  _getMapVariant() {
+    return "Atlas2";
   }
 
   /**
@@ -107,8 +120,8 @@ class ClipboardItem {
 
     for(var i = 0; i < gemVariants.length; i++) {
       if(
-        (name = gemVariants[i].name || gemVariants[i].name === null)
-        (corrupted === gemVariants[i].corrupted || gemVariants[i].corrupted === null)
+        (name === gemVariants[i].name || gemVariants[i].name === null)
+        && (corrupted === gemVariants[i].corrupted || gemVariants[i].corrupted === null)
         && data.level >= gemVariants[i].levelFrom
         && data.level <= gemVariants[i].levelTo
         && data.quality >= gemVariants[i].qualityFrom
@@ -138,13 +151,41 @@ class ClipboardItem {
     * @returns {string}
     */
     getName() {
+      var type = this.getItemType();
+      var rarity = this.getRarity();
       var index = 1;
-      if(this.getRarity() === "Rare") {
+
+      if(rarity === "Rare") {
         index = 2;
       }
 
       var lines = this.getClipboardLines();
-      return lines[index].replace("<<set:MS>><<set:M>><<set:S>>", "");
+      var name = lines[index].replace("<<set:MS>><<set:M>><<set:S>>", "");
+
+      if(type === "Map") {
+        name = this._removeMapAffixes(name);
+      }
+
+      return name;
+    }
+
+    /**
+    * Removes map affixes from normal and magic maps
+    *
+    * @returns {string}
+    */
+    _removeMapAffixes(name) {
+      // Remove prefixes and Superior
+      for(var i = 0; i < mapAffixes.prefix.length; i++) {
+        name = name.replace(mapAffixes.prefix[i] + " ", "");
+      }
+
+      // Remove suffixes
+      for(var i = 0; i < mapAffixes.suffix.length; i++) {
+        name = name.replace(" " + mapAffixes.suffix[i], "");
+      }
+
+      return name;
     }
 
     /**
@@ -178,16 +219,18 @@ class ClipboardItem {
     * @returns {Object}
     */
     getGemData() {
-      var regex = /Level: ([0-9]*)(?: \(Max\))?\nMana Multiplier: (?:[0-9]*)%(?:\nQuality: \+([0-9]*)%)?/;
-      var match = this.clipboard.match(regex);
+      var levelRegex = /Level: ([0-9]*)(?: \(Max\))?/;
+      var qualityRegex = /Quality: \+([0-9]*)%/;
+      var levelMatch = this.clipboard.match(levelRegex);
+      var qualityMatch = this.clipboard.match(qualityRegex);
       var data = {level: 1, quality: 0};
 
-      if(match) {
-        data.level = match[1];
+      if(levelMatch) {
+        data.level = levelMatch[1];
+      }
 
-        if(typeof match[2] !== "undefined") {
-          data.quality = match[2];
-        }
+      if(qualityMatch) {
+        data.quality = qualityMatch[1];
       }
 
       return data;
