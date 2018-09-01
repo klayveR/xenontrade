@@ -89,7 +89,7 @@ class Entries {
     var confidence = this._getConfidenceColor(item.count);
 
     // Append variant to item name if it is a variant
-    if(item.variant != "null") {
+    if(item.variant !== null) {
       name = item.name + " (" + item.variant + ")";
     }
 

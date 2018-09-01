@@ -60,7 +60,6 @@ class XenonTrade {
 
       if(parser.isPathOfExileData()) {
         var parsedData = parser.parseData();
-        console.log(parsedData);
         this.getItemFromParsedData(parsedData);
       }
     }
