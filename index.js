@@ -83,9 +83,9 @@ class XenonTrade {
     var entry;
 
     if(parsedData.type === "Currency" || parsedData.type === "Fragment") {
-      entry = this.gui.addCurrencyEntry(item, parsedData.stackSize);
+      entry = this.gui.entries.addCurrency(item, parsedData.stackSize);
     } else {
-      entry = this.gui.addItemEntry(item);
+      entry = this.gui.entries.addItem(item);
     }
   }
 
@@ -95,12 +95,12 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating && !this.loading) {
       this.updating = true;
-      var updateEntry = this.gui.addTextEntry("Updating", this.config.league + " league", "fa-info-circle grey", {closeable: false});
+      var updateEntry = this.gui.entries.addText("Updating", this.config.league + " league", "fa-info-circle grey", {closeable: false});
 
       this.ninjaAPI.update()
       .then((result) => {
         updateEntry.close();
-        var entry = this.gui.addTextEntry("Update successful", this.config.league + " league", "fa-check-circle green");
+        var entry = this.gui.entries.addText("Update successful", this.config.league + " league", "fa-check-circle green");
         entry.enableAutoClose(10);
 
         return this.ninjaAPI.save();
@@ -111,7 +111,7 @@ class XenonTrade {
       })
       .catch((error) => {
         updateEntry.close();
-        this.gui.addTextEntry("Update failed!", error.message, "fa-exclamation-triangle yellow");
+        this.gui.entries.addText("Update failed!", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
         return this.updating = false;
@@ -128,7 +128,7 @@ class XenonTrade {
 
       this.ninjaAPI.load()
       .then((success) => {
-        var entry = this.gui.addTextEntry("Welcome back", "Successfully loaded poe.ninja data.", "fa-check-circle green");
+        var entry = this.gui.entries.addText("Welcome back", "Successfully loaded poe.ninja data.", "fa-check-circle green");
         entry.enableAutoClose(10);
       })
       .catch((error) => {
@@ -148,7 +148,7 @@ class XenonTrade {
 
     // Only show error entry if the file exists and the data couldn't be loaded
     if(error.code !== "ENOENT") {
-      this.gui.addTextEntry("Failed to load data!", error.message, "fa-exclamation-triangle yellow");
+      this.gui.entries.addText("Failed to load data!", error.message, "fa-exclamation-triangle yellow");
     }
 
     this.updateNinja();

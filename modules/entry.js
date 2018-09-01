@@ -5,11 +5,11 @@ class Entry {
   * Creates a new Entry object
   *
   * @constructor
-  * @param {GUI} gui A GUI object to which the entries should be added to
+  * @param {XenonTrade} app A XenonTrade object to which the entries should be added to
   * @param {number} id ID of the entry
   */
-  constructor(gui, id) {
-    this.gui = gui;
+  constructor(app, id) {
+    this.app = app;
     this.id = id;
     this.template = "";
     this.replacements = [];
@@ -66,7 +66,7 @@ class Entry {
     icon.toggleClass("grey");
 
     $("[data-" + toggle +  "='" + this.id + "']").toggleClass("hidden");
-    this.gui.updateWindowHeight();
+    this.app.gui.updateWindowHeight();
     this._onButtonClick();
   }
 
@@ -84,7 +84,7 @@ class Entry {
     var trend = $(".entry[data-id='" + this.id + "']").find('.trend');
 
     trend.peity("line");
-    this.gui.updateWindowHeight();
+    this.app.gui.updateWindowHeight();
   }
 
   /**
@@ -117,7 +117,7 @@ class Entry {
     var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
     $(".main div:last-child").after(template);
-    this.gui.updateWindowHeight();
+    this.app.gui.updateWindowHeight();
   }
 
   /**
@@ -125,7 +125,7 @@ class Entry {
   */
   close(focusPathOfExile) {
     $(".entry[data-id='" + this.id + "']").remove();
-    this.gui.updateWindowHeight();
+    this.app.gui.updateWindowHeight();
 
     if(focusPathOfExile) {
       Helpers.focusPathOfExile();
