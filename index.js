@@ -4,7 +4,7 @@ const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 
 const NinjaAPI = require("poe-ninja-api-manager");
-const ClipboardItem = require("./modules/clipboardItem.js");
+const Parser = require("./modules/parser.js");
 const GUI = require("./modules/gui.js");
 
 class XenonTrade {
@@ -56,10 +56,10 @@ class XenonTrade {
   onClipboard() {
     if(!this.updating && !this.loading) {
       var clipboard = clipboardy.readSync();
-      var cbItem = new ClipboardItem(clipboard);
-      
-      if(cbItem.isPathOfExileData()) {
-        var parsedData = cbItem.parseData();
+      var parser = new Parser(clipboard);
+
+      if(parser.isPathOfExileData()) {
+        var parsedData = parser.parseData();
         console.log("Clipboard parsed data:", parsedData);
 
         this.getItemFromParsedData(parsedData);

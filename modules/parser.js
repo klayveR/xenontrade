@@ -3,9 +3,9 @@ const gemVariants = require("../resource/gemVariants");
 const clipboardItemTypes = require("../resource/clipboardItemTypes");
 const mapAffixes = require("../resource/mapAffixes");
 
-class ClipboardItem {
+class Parser {
   /**
-  * Creates a new Item object
+  * Creates a new Parser object
   *
   * @constructor
   * @param {string} clipboard Content of the clipboard
@@ -347,4 +347,4 @@ class ClipboardItem {
     }
   }
 
-  module.exports = ClipboardItem;
+  module.exports = Parser;

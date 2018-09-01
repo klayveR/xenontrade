@@ -1,4 +1,3 @@
-const ExecHelpers = require("./helpers.exec.js");
 const Helpers = require("./helpers.js");
 
 class Entry {
@@ -75,7 +74,7 @@ class Entry {
   * Focuses Path of Exile on a button click
   */
   _onButtonClick() {
-    ExecHelpers.focusPathOfExile();
+    Helpers.focusPathOfExile();
   }
 
   /**
@@ -129,7 +128,7 @@ class Entry {
     this.gui.updateWindowHeight();
 
     if(focusPathOfExile) {
-      ExecHelpers.focusPathOfExile();
+      Helpers.focusPathOfExile();
     }
   }
 

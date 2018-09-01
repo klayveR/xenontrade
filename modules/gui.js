@@ -176,7 +176,7 @@ class GUI {
     var closeable = true;
     var expandable = false;
     var switchable = false;
-    var hasTrend = false;
+    var trend = false;
 
     if(options.hasOwnProperty("timeout")) { timeout = options.timeout; }
     if(options.hasOwnProperty("closeable")) { closeable = options.closeable; }
@@ -205,7 +205,7 @@ class GUI {
       entry.enableToggle("switch");
     }
 
-    if(hasTrend) {
+    if(trend) {
       entry.enableToggle("trend");
       entry.visualizeTrend();
     }
