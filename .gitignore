@@ -35,6 +35,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+out/
 
 # TypeScript v1 declaration files
 typings/
@@ -61,7 +62,7 @@ typings/
 .next
 
 # xenontrade
-resource/ninjaData.json
-resource/missingItemVariants.json
-resource/gemVariantsUnformatted.json
+ninjaData.json
+missingItemVariants.json
+gemVariantsUnformatted.json
 listVariants.js

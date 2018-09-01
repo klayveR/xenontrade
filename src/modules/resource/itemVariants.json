@@ -1,0 +1,81 @@
+{
+  "Tombfist": {
+    "regex": "Has ([1-2]) Abyssal Socket",
+    "matches": {
+      "1": "1 Jewel",
+      "2": "2 Jewels"
+    }
+  },
+  "Shroud of the Lightless": {
+    "regex": "Has ([1-2]) Abyssal Socket",
+    "matches": {
+      "1": "1 Jewel",
+      "2": "2 Jewels"
+    }
+  },
+  "Bubonic Trail": {
+    "regex": "Has ([1-2]) Abyssal Socket",
+    "matches": {
+      "1": "1 Jewel",
+      "2": "2 Jewels"
+    }
+  },
+  "Lightpoacher": {
+    "regex": "Has ([1-2]) Abyssal Socket",
+    "matches": {
+      "1": "1 Jewel",
+      "2": "2 Jewels"
+    }
+  },
+  "The Beachhead": {
+    "regex": "Map Tier: ([0-9]*)",
+    "matches": {
+      "10": "T10",
+      "15": "T15"
+    }
+  },
+  "Vessel of Vinktar": {
+    "regex": "(Lightning Damage to Attacks|Lightning Damage to Spells|Damage Penetrates 10% Lightning Resistance|20% of Physical Damage Converted to Lightning) during Flask effect",
+    "matches": {
+      "Lightning Damage to Attacks": "Added Attacks",
+      "Lightning Damage to Spells": "Added Spells",
+      "Damage Penetrates 10% Lightning Resistance": "Penetration",
+      "20% of Physical Damage Converted to Lightning": "Conversion"
+    }
+  },
+  "Yriel's Fostering": {
+    "regex": "([a-zA-Z]*) on Hit",
+    "matches": {
+      "Maim": "Maim",
+      "Poison": "Poison",
+      "Bleeding": "Bleeding"
+    }
+  },
+  "Volkuur's Guidance": {
+    "regex": "Your ([a-zA-Z]*) Damage can Poison",
+    "matches": {
+      "Cold": "Cold",
+      "Fire": "Fire",
+      "Lightning": "Lightning"
+    }
+  },
+  "Impresence": {
+    "regex": "100% reduced ([a-zA-Z]*) Mana Reservation",
+    "matches": {
+      "Frostbite": "Cold",
+      "Flammability": "Fire",
+      "Conductivity": "Lightning",
+      "Vulnerability": "Physical",
+      "Despair": "Chaos"
+    }
+  },
+  "Doryani's Invitation": {
+    "regex": "0\\.2% of ([a-zA-Z]*) Damage Leeched as Life",
+    "matches": {
+      "Cold": "Cold",
+      "Fire": "Fire",
+      "Lightning": "Lightning",
+      "Physical": "Physical"
+    }
+  }
+}
