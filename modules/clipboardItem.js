@@ -180,7 +180,7 @@ class ClipboardItem {
       }
 
       // Remove suffixes
-      for(var j = 0; j < mapAffixes.suffix.length; i++) {
+      for(var j = 0; j < mapAffixes.suffix.length; j++) {
         name = name.replace(" " + mapAffixes.suffix[j], "");
       }
 
@@ -219,7 +219,8 @@ class ClipboardItem {
     */
     getStackSize() {
       var stackSize = 1;
-      var stackSizeMatch = this.clipboard.match(new RegExp('Stack Size: ([0-9,]*)\/[0-9,]*'));
+      var regex = /Stack Size: ([0-9,]*)\/[0-9,]*/;
+      var stackSizeMatch = this.clipboard.match(regex);
 
       if(stackSizeMatch) {
         stackSize = stackSizeMatch[1].replace(",", "");

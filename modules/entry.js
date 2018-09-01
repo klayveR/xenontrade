@@ -14,7 +14,6 @@ class Entry {
     this.id = id;
     this.template = "";
     this.replacements = [];
-    this.added = false;
   }
 
   /**
@@ -37,7 +36,7 @@ class Entry {
   /**
   * Enables the close button on this entry
   */
-  enableClose(id) {
+  enableClose() {
     var self = this;
     var button = $(".entry[data-id='" + this.id + "']").find('#closeButton');
 
@@ -48,76 +47,26 @@ class Entry {
   }
 
   /**
-  * Enables the expand button on this entry
+  * Enables a toggle
   */
-  enableExpand() {
+  enableToggle(toggle) {
     var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find('#expandButton');
+    var button = $(".entry[data-id='" + this.id + "']").find("#" + toggle + "Button");
 
     button.show().click(function(e) {
       e.preventDefault();
-      self._expandEntry();
+      self._toggle(toggle);
     });
   }
 
   /**
-  * Enables the trend button on this entry
+  * Toggles a toggle on this entry
   */
-  enableTrend() {
-    var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find('#trendButton');
-
-    button.show().click(function(e) {
-      e.preventDefault();
-      self._showTrend();
-    });
-  }
-
-  /**
-  * Enables the switch button on this entry
-  */
-  enableSwitch() {
-    var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find('#switchButton');
-
-    button.show().click(function(e) {
-      e.preventDefault();
-      self._switchEntry();
-    });
-  }
-
-  /**
-  * Expands this entry and focuses Path of Exile
-  */
-  _expandEntry() {
-    var icon = $(".entry[data-id='" + this.id + "']").find('#expandButton').find('i');
+  _toggle(toggle) {
+    var icon = $(".entry[data-id='" + this.id + "']").find("#" + toggle + "Button").find("i");
     icon.toggleClass("grey");
 
-    $("[data-expand='" + this.id + "']").toggleClass("hidden");
-    this.gui.updateWindowHeight();
-    this._onButtonClick();
-  }
-
-  /**
-  * Expands this entry and focuses Path of Exile
-  */
-  _showTrend() {
-    var icon = $(".entry[data-id='" + this.id + "']").find('#trendButton').find('i');
-    icon.toggleClass("grey");
-
-    $("[data-trend='" + this.id + "']").toggleClass("hidden");
-    this.gui.updateWindowHeight();
-    this._onButtonClick();
-  }
-
-  /**
-  * Switches this entry and focuses Path of Exile
-  */
-  _switchEntry() {
-    var icon = $(".entry[data-id='" + this.id + "']").find('#switchButton').find('i');
-    icon.toggleClass("grey");
-
-    $("[data-switch='" + this.id + "']").toggleClass("hidden");
+    $("[data-" + toggle +  "='" + this.id + "']").toggleClass("hidden");
     this.gui.updateWindowHeight();
     this._onButtonClick();
   }
@@ -132,8 +81,7 @@ class Entry {
   /**
   * Visualizes every trend on this entry
   */
-  visualizeTrend(id) {
-    //$(".trend[data-id='" + this.id + "']").peity("line");
+  visualizeTrend() {
     var trend = $(".entry[data-id='" + this.id + "']").find('.trend');
 
     trend.peity("line");
@@ -147,7 +95,7 @@ class Entry {
     var self = this;
     var timeoutContainer = $(".entry[data-id='" + this.id + "']").find('#timeout');
 
-    if(this.added && seconds > 0) {
+    if(seconds > 0) {
       timeoutContainer.html(seconds);
 
       var autoClose = setInterval(function() {
@@ -167,28 +115,21 @@ class Entry {
   * Replaces replacements in entry and adds it to the GUI
   */
   add() {
-    if(!this.added) {
-      this.added = true;
-      var template = this._getReplacedTemplate(this.template, this.replacements, "%");
+    var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
-      $(".main div:last-child").after(template);
-      this.gui.updateWindowHeight();
-    } else {
-      console.error("Tried adding entry " + this.id + ", but it has already been added");
-    }
+    $(".main div:last-child").after(template);
+    this.gui.updateWindowHeight();
   }
 
   /**
   * Closes and removes this entry
   */
   close(focusPathOfExile) {
-    if(this.added) {
-      $(".entry[data-id='" + this.id + "']").remove();
-      this.gui.updateWindowHeight();
+    $(".entry[data-id='" + this.id + "']").remove();
+    this.gui.updateWindowHeight();
 
-      if(focusPathOfExile) {
-        ExecHelpers.focusPathOfExile();
-      }
+    if(focusPathOfExile) {
+      ExecHelpers.focusPathOfExile();
     }
   }
 

@@ -16,7 +16,7 @@ class XenonTrade {
   constructor() {
     this.updating = false;
     this.loading = false;
-    this.config = {league: "Standard"};
+    this.config = {league: "Delve"};
 
     this.gui = new GUI(this, 300);
     this.ninjaAPI = new NinjaAPI({

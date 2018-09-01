@@ -128,7 +128,7 @@ class GUI {
   _formatTrendData(sparkline) {
     var trend = [0];
 
-    if(sparkline != null && sparkline.hasOwnProperty("data")) {
+    if(sparkline !== null && sparkline.hasOwnProperty("data")) {
       if(sparkline.data.length > 0) {
         trend = sparkline.data;
         trend = trend.filter(function(e){ return e === 0 || e });
@@ -191,15 +191,15 @@ class GUI {
     }
 
     if(isExpandable) {
-      entry.enableExpand();
+      entry.enableToggle("expand");
     }
 
     if(isSwitchable) {
-      entry.enableSwitch();
+      entry.enableToggle("switch");
     }
 
     if(hasTrend) {
-      entry.enableTrend();
+      entry.enableToggle("trend");
       entry.visualizeTrend();
     }
 
@@ -228,13 +228,13 @@ class GUI {
 
   loadTemplates() {
     this.templates.loadTemplates()
-    .then((templates) => {
+    .then(() => {
       this.templatesLoaded = true;
-      this.app.loadNinja();
+      return this.app.loadNinja();
     })
     .catch((error) => {
-      console.error("Couldn't load templates:", error);
-      this.templatesLoaded = false;
+      this.addTextEntry("Couldn't load templates", error.message, "fa-exclamation-triangle yellow");
+      return this.templatesLoaded = false;
     });
   }
 
