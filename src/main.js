@@ -1,5 +1,7 @@
 const {app, BrowserWindow} = require("electron");
 const {ipcMain} = require("electron");
+const nativeImage = require('electron').nativeImage
+const path = require("path");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -8,18 +10,16 @@ let debug = true;
 
 function createWindow () {
   // Create the browser window.
+  win = new BrowserWindow({
+    width: 300,
+    height: 0,
+    frame: false,
+    hasShadow: false,
+    icon: nativeImage.createFromPath(__dirname + "/assets/icons/256x256/256x256.png")
+  });
+
   if(debug) {
-    win = new BrowserWindow({
-      width: 800,
-      height: 600,
-      frame: false,
-      hasShadow: false});
-  } else {
-    win = new BrowserWindow({
-      width: 300,
-      height: 0,
-      frame: false,
-      hasShadow: false});
+    win.setSize(800, 600);
   }
 
   // and load the index.html of the app.
