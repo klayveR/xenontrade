@@ -204,6 +204,7 @@ class Parser {
 
           if(match) {
             type = clipboardItemTypes[rarity][i].type;
+            type = encodeURIComponent(type).replace("%0D", ""); // Replace encoded carriage return                       
             break;
           }
         }
