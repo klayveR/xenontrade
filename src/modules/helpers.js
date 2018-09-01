@@ -25,7 +25,7 @@ class Helpers {
       command = "nircmd.exe win activate title 'Path of Exile'";
     }
 
-    exec(command);
+    //exec(command);
   }
 
   static isPackageInstalled(pkg, callback) {

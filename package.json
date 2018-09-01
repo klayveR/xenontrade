@@ -65,13 +65,15 @@
         "win32": [
           "squirrel"
         ],
+        "darwin": [
+          "zip"
+        ],
         "linux": [
           "deb",
           "rpm"
         ]
       },
       "electronPackagerConfig": {
-        "dir": "src",
         "packageManager": "yarn"
       },
       "electronWinstallerConfig": {
@@ -80,12 +82,12 @@
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "klayveR",
-        "name": "xenontrade"
+        "owner": "",
+        "name": ""
       },
       "windowsStoreConfig": {
         "packageName": "",
-        "name": "xenontrade"
+        "name": "XenonTrade"
       }
     }
   },

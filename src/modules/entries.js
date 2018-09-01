@@ -172,7 +172,7 @@ class Entries {
   _formatTrendData(sparkline) {
     var trend = [0];
 
-    if(sparkline !== null && sparkline.hasOwnProperty("data")) {
+    if(sparkline != null && sparkline.hasOwnProperty("data")) {
       if(sparkline.data.length > 0) {
         trend = sparkline.data;
         trend = trend.filter(function(e) { return e === 0 || e; });

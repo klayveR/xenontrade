@@ -94,7 +94,7 @@ class XenonTrade {
   }
 
   onNinjaItemReceive(parsedData, item) {
-    this.gui.maximize();
+    // this.gui.maximize();
     var entry;
 
     if(parsedData.type === "Currency" || parsedData.type === "Fragment") {

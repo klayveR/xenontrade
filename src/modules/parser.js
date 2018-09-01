@@ -159,6 +159,7 @@ class Parser {
 
       var lines = this.getClipboardLines();
       var name = lines[index].replace("<<set:MS>><<set:M>><<set:S>>", "");
+      name = name.replace(/(?:\r\n|\r|\n)/g, ""); // Replace newlines, this happens on some OSs
 
       if(type === "Map") {
         name = this._removeMapAffixes(name);
