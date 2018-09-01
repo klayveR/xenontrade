@@ -54,14 +54,16 @@ class XenonTrade {
   * Checks if the copied content is item data from Path of Exile, parses it and adds an entry in the GUI
   */
   onClipboard() {
-    var clipboard = clipboardy.readSync();
-    var cbItem = new ClipboardItem(clipboard);
+    if(!this.updating && !this.loading) {
+      var clipboard = clipboardy.readSync();
+      var cbItem = new ClipboardItem(clipboard);
+      
+      if(cbItem.isPathOfExileData()) {
+        var parsedData = cbItem.parseData();
+        console.log("Clipboard parsed data:", parsedData);
 
-    if(cbItem.isPathOfExileData()) {
-      var parsedData = cbItem.parseData();
-      console.log("Clipboard parsed data:", parsedData);
-
-      this.getItemFromParsedData(parsedData);
+        this.getItemFromParsedData(parsedData);
+      }
     }
   }
 
@@ -93,18 +95,19 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating && !this.loading) {
       this.updating = true;
-      var updateEntry = this.gui.addTextEntry("Updating...", this.config.league + " league");
+      var updateEntry = this.gui.addTextEntry("Updating", this.config.league + " league", "fa-info-circle grey", {closeable: false});
 
       this.ninjaAPI.update()
       .then((result) => {
         updateEntry.close();
-        var entry = this.gui.addTextEntry("Update successful!", this.config.league + " league", "fa-check-circle green");
-        entry.enableAutoClose(5);
+        var entry = this.gui.addTextEntry("Update successful", this.config.league + " league", "fa-check-circle green");
+        entry.enableAutoClose(10);
 
         return this.ninjaAPI.save();
       })
       .then((success) => {
-        return console.log("Saved poe.ninja data:", success);
+        // Save successful
+        return success;
       })
       .catch((error) => {
         updateEntry.close();
@@ -125,10 +128,10 @@ class XenonTrade {
 
       this.ninjaAPI.load()
       .then((success) => {
-        return console.log("Loaded poe.ninja data:", success);
+        var entry = this.gui.addTextEntry("Welcome back", "Successfully loaded poe.ninja data.", "fa-check-circle green");
+        entry.enableAutoClose(10);
       })
       .catch((error) => {
-        console.error("Failed to load poe.ninja data", error.code);
         return this.handleNinjaLoadError(error);
       })
       .then(() => {

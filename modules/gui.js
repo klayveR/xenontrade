@@ -156,7 +156,8 @@ class GUI {
     return color;
   }
 
-  addTextEntry(title, text, icon = "fa-info-circle grey") {
+  addTextEntry(title, text, icon = "fa-info-circle grey", options) {
+    options = options || {};
     var template = this.templates.get("text.html");
 
     var replacements = [
@@ -165,17 +166,23 @@ class GUI {
       { find: "icon", replace: icon }
     ];
 
-    return this.addEntry(template, replacements);
+    return this.addEntry(template, replacements, options);
   }
 
   addEntry(template, replacements, options) {
     options = options || {};
 
-    var timeout = options.timeout || 0;
-    var isCloseable = options.closeable || true;
-    var isExpandable = options.expandable || false;
-    var isSwitchable = options.switchable || false;
-    var hasTrend = options.trend || false;
+    var timeout = 0;
+    var closeable = true;
+    var expandable = false;
+    var switchable = false;
+    var hasTrend = false;
+
+    if(options.hasOwnProperty("timeout")) { timeout = options.timeout; }
+    if(options.hasOwnProperty("closeable")) { closeable = options.closeable; }
+    if(options.hasOwnProperty("expandable")) { expandable = options.expandable; }
+    if(options.hasOwnProperty("switchable")) { switchable = options.switchable; }
+    if(options.hasOwnProperty("trend")) { trend = options.trend; }
 
     var entry = new Entry(this, this.entryCount);
     entry.setTemplate(template);
@@ -186,15 +193,15 @@ class GUI {
       entry.enableAutoClose(timeout);
     }
 
-    if(isCloseable) {
+    if(closeable) {
       entry.enableClose();
     }
 
-    if(isExpandable) {
+    if(expandable) {
       entry.enableToggle("expand");
     }
 
-    if(isSwitchable) {
+    if(switchable) {
       entry.enableToggle("switch");
     }
 
