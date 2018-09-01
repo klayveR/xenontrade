@@ -16,7 +16,7 @@ class XenonTrade {
   constructor() {
     this.updating = false;
     this.loading = false;
-    this.config = {league: "Delve"};
+    this.config = {league: "Standard"};
 
     this.gui = new GUI(this, 300);
     this.ninjaAPI = new NinjaAPI({
@@ -60,24 +60,26 @@ class XenonTrade {
 
       if(parser.isPathOfExileData()) {
         var parsedData = parser.parseData();
+        console.log(parsedData);
         this.getItemFromParsedData(parsedData);
       }
     }
   }
 
   getItemFromParsedData(data) {
-    if(data.type !== "Rare") {
+    if(data.type !== "Rare" && data.identified === true) {
       this.ninjaAPI.getItem(data.name, {links: data.links, variant: data.variant, relic: data.relic})
       .then((itemArray) => {
-        return this.onNinjaItemReceive(data, itemArray[0]);
+        this.onNinjaItemReceive(data, itemArray[0]);
       })
       .catch((error) => {
-        return console.error(error);
+        console.error(error);
       });
     }
   }
 
   onNinjaItemReceive(parsedData, item) {
+    this.gui.maximize();
     var entry;
 
     if(parsedData.type === "Currency" || parsedData.type === "Fragment") {

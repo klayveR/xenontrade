@@ -7,47 +7,6 @@ class Entries {
     this.entryCount = 0;
   }
 
-  add(template, replacements, options) {
-    var defaultOptions = {
-        timeout: 0,
-        closeable: true,
-        expandable: false,
-        switchable: false,
-        trend: false
-    };
-
-    options = _.extend(defaultOptions, options);
-
-    var entry = new Entry(this.app, this.entryCount);
-    entry.setTemplate(template);
-    entry.setReplacements(replacements);
-    entry.add();
-
-    if(options.timeout > 0) {
-      entry.enableAutoClose(timeout);
-    }
-
-    if(options.closeable) {
-      entry.enableClose();
-    }
-
-    if(options.expandable) {
-      entry.enableToggle("expand");
-    }
-
-    if(options.switchable) {
-      entry.enableToggle("switch");
-    }
-
-    if(options.trend) {
-      entry.enableToggle("trend");
-      entry.visualizeTrend();
-    }
-
-    this.entryCount++;
-    return entry;
-  }
-
   addText(title, text, icon = "fa-info-circle grey", options) {
     var template = this.app.gui.templates.get("text.html");
 
@@ -57,7 +16,7 @@ class Entries {
       { find: "icon", replace: icon }
     ];
 
-    return this.add(template, replacements, options);
+    return this._add(template, replacements, options);
   }
 
   addCurrency(currency, stackSize) {
@@ -114,27 +73,29 @@ class Entries {
       { find: "receive-trend", replace: receive.trend }
     ];
 
-    return this.add(template, replacements, {switchable: true, expandable: true, trend: hasTrend});
+    return this._add(template, replacements, {switchable: true, expandable: true, trend: hasTrend});
   }
 
   addItem(item) {
-    var template = this.app.gui.templates.get("item.html");
     var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
     var exaltedDetails = this.app.ninjaAPI.getCurrencyDetails("Exalted Orb");
+    var template = this.app.gui.templates.get("item.html");
     var switchable = false;
     var expandable = false;
     var trend = this._formatTrendData(item.sparkline);
+    var name = item.name;
+
     var hasTrend = false;
     var confidence = this._getConfidenceColor(item.count);
 
     // Append variant to item name if it is a variant
-    if(item.variant !== null) {
-      item.name = item.name + " (" + item.variant + ")";
+    if(item.variant != "null") {
+      name = item.name + " (" + item.variant + ")";
     }
 
     // Prepend links to item name if links > 0
     if(item.links > 0) {
-      item.name = item.links + "-link " + item.name;
+      name = item.links + "-link " + item.name;
     }
 
     // Enable switch button if exalted value is > 1
@@ -148,17 +109,58 @@ class Entries {
     }
 
     var replacements = [
-      { find: "item-name", replace: item.name },
+      { find: "item-name", replace: name },
       { find: "item-icon", replace: item.icon },
       { find: "item-value-chaos", replace: item.chaosValue },
       { find: "item-value-exalted", replace: item.exaltedValue },
       { find: "chaos-icon", replace: chaosDetails.icon },
       { find: "exalted-icon", replace: exaltedDetails.icon },
       { find: "conf-color", replace: confidence },
-      { find: "trend", replace: trend.toString() }
+      { find: "trend", replace: trend }
     ];
 
-    return this.add(template, replacements, {switchable, expandable, trend: hasTrend});
+    return this._add(template, replacements, {switchable, expandable, trend: true});
+  }
+
+  _add(template, replacements, options) {
+    var defaultOptions = {
+        timeout: 0,
+        closeable: true,
+        expandable: false,
+        switchable: false,
+        trend: false
+    };
+
+    options = _.extend(defaultOptions, options);
+
+    var entry = new Entry(this.app, this.entryCount);
+    entry.setTemplate(template);
+    entry.setReplacements(replacements);
+    entry.add();
+
+    if(options.timeout > 0) {
+      entry.enableAutoClose(timeout);
+    }
+
+    if(options.closeable) {
+      entry.enableClose();
+    }
+
+    if(options.expandable) {
+      entry.enableToggle("expand");
+    }
+
+    if(options.switchable) {
+      entry.enableToggle("switch");
+    }
+
+    if(options.trend) {
+      entry.enableToggle("trend");
+      entry.visualizeTrend();
+    }
+
+    this.entryCount++;
+    return entry;
   }
 
   /**

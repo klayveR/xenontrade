@@ -53,8 +53,8 @@ table {
 }
 
 .entry img.icon {
-  width: 18px;
   height: 18px;
+  width: auto;
   vertical-align: middle;
 }
 

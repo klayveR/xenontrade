@@ -4,6 +4,7 @@ let { ipcRenderer } = electron;
 
 const Templates = require("./templates.js");
 const Entries = require("./entries.js");
+const Helpers = require("./helpers.js");
 
 class GUI {
   // TODO: jsdocs
@@ -56,6 +57,11 @@ class GUI {
   updateWindowHeight() {
     var height = $(".main").height();
     ipcRenderer.send("resize", this.width, height);
+  }
+
+  maximize() {
+    this.window.maximize();
+    Helpers.focusPathOfExile();
   }
 }
 
