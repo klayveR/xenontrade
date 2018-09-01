@@ -118,8 +118,7 @@ class Parser {
     var corrupted = this.isCorrupted();
 
     for(var i = 0; i < gemVariants.length; i++) {
-      if(
-        (name === gemVariants[i].name || gemVariants[i].name === null)
+      if((name === gemVariants[i].name || gemVariants[i].name === null)
         && (corrupted === gemVariants[i].corrupted || gemVariants[i].corrupted === null)
         && data.level >= gemVariants[i].levelFrom
         && data.level <= gemVariants[i].levelTo
@@ -242,11 +241,11 @@ class Parser {
       var data = {level: 1, quality: 0};
 
       if(levelMatch) {
-        data.level = levelMatch[1];
+        data.level = parseInt(levelMatch[1]);
       }
 
       if(qualityMatch) {
-        data.quality = qualityMatch[1];
+        data.quality = parseInt(qualityMatch[1]);
       }
 
       return data;

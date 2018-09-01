@@ -8,7 +8,7 @@ class Entries {
   }
 
   addText(title, text, icon = "fa-info-circle grey", options) {
-    var template = this.app.gui.templates.get("text.html");
+    var template = this.app.templates.get("text.html");
 
     var replacements = [
       { find: "title", replace: title },
@@ -20,7 +20,7 @@ class Entries {
   }
 
   addCurrency(currency, stackSize) {
-    var template = this.app.gui.templates.get("currency.html");
+    var template = this.app.templates.get("currency.html");
     var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
     var currencyDetails = this.app.ninjaAPI.getCurrencyDetails(currency.currencyTypeName);
     var hasTrend = false;
@@ -79,7 +79,7 @@ class Entries {
   addItem(item) {
     var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
     var exaltedDetails = this.app.ninjaAPI.getCurrencyDetails("Exalted Orb");
-    var template = this.app.gui.templates.get("item.html");
+    var template = this.app.templates.get("item.html");
     var switchable = false;
     var expandable = false;
     var trend = this._formatTrendData(item.sparkline);

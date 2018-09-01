@@ -4,6 +4,7 @@ const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 
 const NinjaAPI = require("poe-ninja-api-manager");
+const Templates = require("./modules/templates.js");
 const Parser = require("./modules/parser.js");
 const GUI = require("./modules/gui.js");
 
@@ -19,6 +20,7 @@ class XenonTrade {
     this.config = {league: "Standard"};
 
     this.gui = new GUI(this, 300);
+    this.templates = new Templates();
     this.ninjaAPI = new NinjaAPI({
       path: "./resource/",
       league: this.config.league
@@ -32,7 +34,21 @@ class XenonTrade {
   */
   initialize() {
     this.registerHotkeys();
+    this.loadTemplates();
     ioHook.start();
+  }
+
+  /**
+  * Loads entry template files
+  */
+  loadTemplates() {
+    this.templates.loadTemplates()
+    .then(() => {
+      return this.loadNinja();
+    })
+    .catch((error) => {
+      return this.addTextEntry("Couldn't load templates", error.message, "fa-exclamation-triangle yellow");
+    });
   }
 
   /**
