@@ -37,7 +37,7 @@ class Entry {
   */
   enableClose() {
     var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find('#closeButton');
+    var button = $(".entry[data-id='" + this.id + "']").find("#closeButton");
 
     button.show().click(function(e) {
       e.preventDefault();
@@ -81,7 +81,7 @@ class Entry {
   * Visualizes every trend on this entry
   */
   visualizeTrend() {
-    var trend = $(".entry[data-id='" + this.id + "']").find('.trend');
+    var trend = $(".entry[data-id='" + this.id + "']").find(".trend");
 
     trend.peity("line");
     this.app.gui.updateWindowHeight();
@@ -92,7 +92,7 @@ class Entry {
   */
   enableAutoClose(seconds) {
     var self = this;
-    var timeoutContainer = $(".entry[data-id='" + this.id + "']").find('#timeout');
+    var timeoutContainer = $(".entry[data-id='" + this.id + "']").find("#timeout");
 
     if(seconds > 0) {
       timeoutContainer.html(seconds);

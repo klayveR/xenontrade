@@ -88,8 +88,8 @@ class Entries {
     var hasTrend = false;
     var confidence = this._getConfidenceColor(item.count);
 
-    // Append variant to item name if it is a variant
-    if(item.variant !== null) {
+    // Append variant to item name if it is a variant, not on maps
+    if(item.variant !== null && item.variant !== "Atlas2") {
       name = item.name + " (" + item.variant + ")";
     }
 
@@ -139,7 +139,7 @@ class Entries {
     entry.add();
 
     if(options.timeout > 0) {
-      entry.enableAutoClose(timeout);
+      entry.enableAutoClose(options.timeout);
     }
 
     if(options.closeable) {
@@ -175,7 +175,7 @@ class Entries {
     if(sparkline !== null && sparkline.hasOwnProperty("data")) {
       if(sparkline.data.length > 0) {
         trend = sparkline.data;
-        trend = trend.filter(function(e) { return e === 0 || e });
+        trend = trend.filter(function(e) { return e === 0 || e; });
       }
     }
 

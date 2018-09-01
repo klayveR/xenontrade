@@ -69,7 +69,7 @@ class Parser {
     if(this.data.type === "Unique") {
       variant = this._getUniqueVariant();
     } else
-    if(this.data.type === "UniqueMap" || this.data.type === "Map") {
+    if(this.data.type === "Map") {
       variant = this._getMapVariant();
     }
 

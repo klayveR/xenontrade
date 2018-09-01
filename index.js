@@ -99,8 +99,7 @@ class XenonTrade {
       this.ninjaAPI.update()
       .then((result) => {
         updateEntry.close();
-        var entry = this.gui.entries.addText("Update successful", this.config.league + " league", "fa-check-circle green");
-        entry.enableAutoClose(10);
+        this.gui.entries.addText("Update successful", this.config.league + " league", "fa-check-circle green", {timeout: 5});
 
         return this.ninjaAPI.save();
       })
@@ -110,7 +109,7 @@ class XenonTrade {
       })
       .catch((error) => {
         updateEntry.close();
-        this.gui.entries.addText("Update failed", error.message, "fa-exclamation-triangle yellow");
+        return this.gui.entries.addText("Update failed", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
         return this.updating = false;
@@ -127,15 +126,14 @@ class XenonTrade {
 
       this.ninjaAPI.load()
       .then((success) => {
-        var entry = this.gui.entries.addText("Welcome back", "Successfully loaded poe.ninja data", "fa-check-circle green");
-        entry.enableAutoClose(10);
+        return this.gui.entries.addText("Welcome back", "Successfully loaded poe.ninja data", "fa-check-circle green", {timeout: 5});
       })
       .catch((error) => {
         return this.handleNinjaLoadError(error);
       })
       .then(() => {
         return this.loading = false;
-      })
+      });
     }
   }
 
