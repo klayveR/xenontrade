@@ -1,5 +1,5 @@
 const Entry = require("./entry.js");
-const _ = require('underscore');
+const _ = require("underscore");
 
 class Entries {
   constructor(app) {
@@ -71,21 +71,21 @@ class Entries {
       value: "N/A",
       calculated: "N/A",
       confidence: "red"
-    }
+    };
 
     var receive = {
       trend: this._formatTrendData(currency.receiveSparkLine),
       value: "N/A",
       calculated: "N/A",
       confidence: "red"
-    }
+    };
 
     // Set the receive value and calculate others
     if(currency.receive !== null) {
       receive.value = currency.receive.value;
-      receive.calculated = receive * stackSize;
+      receive.calculated = receive.value * stackSize;
       receive.confidence = this._getConfidenceColor(currency.receive.count);
-      pay.calculated = 1 / receive;
+      pay.calculated = 1 / receive.value;
     }
 
     // Set the pay value
@@ -95,7 +95,7 @@ class Entries {
     }
 
     // Show trend if either the pay or the receive trend have values !== 0
-    if(pay.trend.some(el => el !== 0) || receive.trend.some(el => el !== 0)) {
+    if(pay.trend.some((el) => el !== 0) || receive.trend.some((el) => el !== 0)) {
       hasTrend = true;
     }
 
@@ -143,7 +143,7 @@ class Entries {
     }
 
     // Enable expand button if any trend value is !== 0
-    if(trend.some(el => el !== 0)) {
+    if(trend.some((el) => el !== 0)) {
       hasTrend = true;
     }
 
@@ -173,7 +173,7 @@ class Entries {
     if(sparkline !== null && sparkline.hasOwnProperty("data")) {
       if(sparkline.data.length > 0) {
         trend = sparkline.data;
-        trend = trend.filter(function(e){ return e === 0 || e });
+        trend = trend.filter(function(e) { return e === 0 || e });
       }
     }
 
