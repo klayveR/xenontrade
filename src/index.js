@@ -22,7 +22,7 @@ class XenonTrade {
     this.gui = new GUI(this, 300);
     this.templates = new Templates();
     this.ninjaAPI = new NinjaAPI({
-      path: __dirname,
+      path: __dirname + "/",
       league: this.config.league
     });
 
