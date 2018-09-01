@@ -3,6 +3,7 @@ const Entry = require("./entry.js");
 class Entries {
   constructor(app) {
     this.app = app;
+    this.entryCount = 0;
   }
 
   add(template, replacements, options) {

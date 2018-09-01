@@ -95,7 +95,7 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating && !this.loading) {
       this.updating = true;
-      var updateEntry = this.gui.entries.addText("Updating", this.config.league + " league", "fa-info-circle grey", {closeable: false});
+      var updateEntry = this.gui.entries.addText("Updating...", this.config.league + " league", "fa-info-circle grey", {closeable: false});
 
       this.ninjaAPI.update()
       .then((result) => {
@@ -111,7 +111,7 @@ class XenonTrade {
       })
       .catch((error) => {
         updateEntry.close();
-        this.gui.entries.addText("Update failed!", error.message, "fa-exclamation-triangle yellow");
+        this.gui.entries.addText("Update failed", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
         return this.updating = false;
@@ -128,7 +128,7 @@ class XenonTrade {
 
       this.ninjaAPI.load()
       .then((success) => {
-        var entry = this.gui.entries.addText("Welcome back", "Successfully loaded poe.ninja data.", "fa-check-circle green");
+        var entry = this.gui.entries.addText("Welcome back", "Successfully loaded poe.ninja data", "fa-check-circle green");
         entry.enableAutoClose(10);
       })
       .catch((error) => {

@@ -9,12 +9,11 @@ class GUI {
   // TODO: jsdocs
   constructor(app, width) {
     this.app = app;
+    this.width = width;
+    this.window = remote.getCurrentWindow();
+
     this.templates = new Templates();
     this.entries = new Entries(app);
-    this.templatesLoaded = false;
-    this.width = width || 300;
-    this.window = remote.getCurrentWindow();
-    this.entryCount = 0;
 
     this.initialize();
   }
@@ -47,12 +46,10 @@ class GUI {
   loadTemplates() {
     this.templates.loadTemplates()
     .then(() => {
-      this.templatesLoaded = true;
       return this.app.loadNinja();
     })
     .catch((error) => {
-      this.addTextEntry("Couldn't load templates", error.message, "fa-exclamation-triangle yellow");
-      return this.templatesLoaded = false;
+      return this.addTextEntry("Couldn't load templates", error.message, "fa-exclamation-triangle yellow");
     });
   }
 
