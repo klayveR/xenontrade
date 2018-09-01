@@ -1,3 +1,6 @@
+const { exec } = require("child_process");
+const os = require("os");
+
 class Helpers {
   static isFloat(n){
     return Number(n) === n && n % 1 !== 0;
