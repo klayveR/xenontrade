@@ -60,8 +60,6 @@ class XenonTrade {
 
       if(parser.isPathOfExileData()) {
         var parsedData = parser.parseData();
-        console.log("Clipboard parsed data:", parsedData);
-
         this.getItemFromParsedData(parsedData);
       }
     }

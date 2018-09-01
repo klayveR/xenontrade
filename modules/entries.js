@@ -1,4 +1,5 @@
 const Entry = require("./entry.js");
+const _ = require('underscore');
 
 class Entries {
   constructor(app) {
@@ -7,42 +8,38 @@ class Entries {
   }
 
   add(template, replacements, options) {
-    options = options || {};
+    var defaultOptions = {
+        timeout: 0,
+        closeable: true,
+        expandable: false,
+        switchable: false,
+        trend: false
+    };
 
-    var timeout = 0;
-    var closeable = true;
-    var expandable = false;
-    var switchable = false;
-    var trend = false;
-
-    if(options.hasOwnProperty("timeout")) { timeout = options.timeout; }
-    if(options.hasOwnProperty("closeable")) { closeable = options.closeable; }
-    if(options.hasOwnProperty("expandable")) { expandable = options.expandable; }
-    if(options.hasOwnProperty("switchable")) { switchable = options.switchable; }
-    if(options.hasOwnProperty("trend")) { trend = options.trend; }
+    options = _.extend(defaultOptions, options);
 
     var entry = new Entry(this.app, this.entryCount);
     entry.setTemplate(template);
     entry.setReplacements(replacements);
     entry.add();
 
-    if(timeout > 0) {
+    if(options.timeout > 0) {
       entry.enableAutoClose(timeout);
     }
 
-    if(closeable) {
+    if(options.closeable) {
       entry.enableClose();
     }
 
-    if(expandable) {
+    if(options.expandable) {
       entry.enableToggle("expand");
     }
 
-    if(switchable) {
+    if(options.switchable) {
       entry.enableToggle("switch");
     }
 
-    if(trend) {
+    if(options.trend) {
       entry.enableToggle("trend");
       entry.visualizeTrend();
     }
@@ -52,7 +49,6 @@ class Entries {
   }
 
   addText(title, text, icon = "fa-info-circle grey", options) {
-    options = options || {};
     var template = this.app.gui.templates.get("text.html");
 
     var replacements = [
@@ -68,47 +64,54 @@ class Entries {
     var template = this.app.gui.templates.get("currency.html");
     var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
     var currencyDetails = this.app.ninjaAPI.getCurrencyDetails(currency.currencyTypeName);
-
-    var payTrend = this._formatTrendData(currency.paySparkLine);
-    var receiveTrend = this._formatTrendData(currency.receiveSparkLine);
     var hasTrend = false;
 
-    var pay = "N/A", receive = "N/A";
-    var calculatedReceive = "N/A", calculatedPay = "N/A";
-    var confidencePay = "red", confidenceReceive = "red";
+    var pay = {
+      trend: this._formatTrendData(currency.paySparkLine),
+      value: "N/A",
+      calculated: "N/A",
+      confidence: "red"
+    }
+
+    var receive = {
+      trend: this._formatTrendData(currency.receiveSparkLine),
+      value: "N/A",
+      calculated: "N/A",
+      confidence: "red"
+    }
 
     // Set the receive value and calculate others
     if(currency.receive !== null) {
-      receive = currency.receive.value;
-      calculatedReceive = receive * stackSize;
-      calculatedPay = 1 / receive;
-      confidenceReceive = this._getConfidenceColor(currency.receive.count);
+      receive.value = currency.receive.value;
+      receive.calculated = receive * stackSize;
+      receive.confidence = this._getConfidenceColor(currency.receive.count);
+      pay.calculated = 1 / receive;
     }
 
     // Set the pay value
     if(currency.pay !== null) {
-      pay = currency.pay.value;
-      confidencePay = this._getConfidenceColor(currency.pay.count);
+      pay.value = currency.pay.value;
+      pay.confidence = this._getConfidenceColor(currency.pay.count);
     }
 
     // Show trend if either the pay or the receive trend have values !== 0
-    if(payTrend.some(el => el !== 0) || receiveTrend.some(el => el !== 0)) {
+    if(pay.trend.some(el => el !== 0) || receive.trend.some(el => el !== 0)) {
       hasTrend = true;
     }
 
     var replacements = [
       { find: "currency-name", replace: currency.currencyTypeName },
       { find: "currency-icon", replace: currencyDetails.icon },
-      { find: "receive", replace: receive },
-      { find: "pay", replace: pay },
+      { find: "receive", replace: receive.value },
+      { find: "pay", replace: pay.value },
       { find: "stacksize", replace: stackSize },
-      { find: "calculated-receive", replace: calculatedReceive },
-      { find: "calculated-pay", replace: calculatedPay },
-      { find: "conf-receive-color", replace: confidenceReceive },
-      { find: "conf-pay-color", replace: confidencePay },
+      { find: "calculated-receive", replace: receive.calculated },
+      { find: "calculated-pay", replace: pay.calculated },
+      { find: "conf-receive-color", replace: receive.confidence },
+      { find: "conf-pay-color", replace: pay.confidence },
       { find: "chaos-icon", replace: chaosDetails.icon },
-      { find: "pay-trend", replace: payTrend },
-      { find: "receive-trend", replace: receiveTrend }
+      { find: "pay-trend", replace: pay.trend },
+      { find: "receive-trend", replace: receive.trend }
     ];
 
     return this.add(template, replacements, {switchable: true, expandable: true, trend: hasTrend});
