@@ -20,12 +20,10 @@ class Helpers {
     var command = "";
 
     if(os.platform() === "linux") {
-      command = "poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId";
+      exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
     } else if(os.platform() === "windows") {
       command = "nircmd.exe win activate title 'Path of Exile'";
     }
-
-    //exec(command);
   }
 
   static isPackageInstalled(pkg, callback) {
