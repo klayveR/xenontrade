@@ -63,5 +63,5 @@ app.on("activate", () => {
 });
 
 ipcMain.on("resize", function (e, w, h) {
-  if(!debug) { win.setSize(w, h); }
+  if(!debug) { win.setSize(Math.round(w), Math.round(h)); }
 });
