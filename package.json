@@ -7,7 +7,7 @@
     "start": "electron .",
     "buildLinux": "electron-packager . XenonTrade --platform linux --arch x64 --out dist/ --overwrite",
     "buildWin": "electron-packager . XenonTrade --platform win32 --arch x64 --out dist/ --overwrite",
-    "distDeb": "electron-installer-debian --src dist/XenonTrade-linux-x64/ --arch amd64 --config resources/dist_config/deb.json"
+    "distLinux": "electron-installer-debian --src dist/XenonTrade-linux-x64/ --arch amd64 --config resources/dist_config/linux.json && electron-installer-redhat --src dist/XenonTrade-linux-x64/ --arch x86_64 --config resources/dist_config/linux.json"
   },
   "keywords": [
     "poe",
