@@ -4,10 +4,12 @@
   "description": "Path of Exile trading app for price checking and whisper management",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
-    "buildLinux": "electron-packager . XenonTrade --platform linux --arch x64 --out dist/ --overwrite",
-    "buildWin": "electron-packager . XenonTrade --platform win32 --arch x64 --out dist/ --overwrite",
-    "distLinux": "electron-installer-debian --src dist/XenonTrade-linux-x64/ --arch amd64 --config resources/dist_config/linux.json && electron-installer-redhat --src dist/XenonTrade-linux-x64/ --arch x86_64 --config resources/dist_config/linux.json"
+    "postinstall": "electron-builder install-app-deps",
+    "start": "npm install && electron ./",
+    "pack": "build --dir",
+    "dist": "build",
+    "pack-win": "build --dir --win",
+    "dist-win": "build --win"
   },
   "keywords": [
     "poe",
@@ -32,7 +34,6 @@
   "license": "MIT",
   "dependencies": {
     "clipboardy": "^1.2.3",
-    "electron-squirrel-startup": "^1.0.0",
     "iohook": "^0.2.0",
     "jquery": "^3.3.1",
     "poe-ninja-api-manager": "^0.6.4",
@@ -59,18 +60,24 @@
   },
   "build": {
     "appId": "de.klayver.xenontrade",
-    "directories": {
-      "output": "out/"
-    },
     "linux": {
       "target": [
+        "AppImage",
         "deb"
       ],
-      "category": "Game"
+      "category": "Game",
+      "asar": false,
+      "icon": "build/icon.icns"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": "portable",
+      "asar": false
     }
   },
   "devDependencies": {
     "electron": "^2.0.8",
+    "electron-builder": "^20.28.3",
     "electron-installer-debian": "^0.8.1",
     "electron-winstaller": "^2.6.4"
   }

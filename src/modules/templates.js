@@ -1,4 +1,5 @@
 const fs = require("promise-fs");
+const path = require("path");
 
 class Templates {
   /**
@@ -7,8 +8,8 @@ class Templates {
   * @constructor
   * @param {string} path Path to the folder that contains the templates
   */
-  constructor(path) {
-    this.path = path || __dirname + "/resource/templates/";
+  constructor() {
+    this.path = path.join(__dirname, "/resource/templates/");
     this.templates = {};
   }
 
