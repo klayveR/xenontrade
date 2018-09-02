@@ -44,7 +44,7 @@ class XenonTrade {
   loadTemplates() {
     this.templates.loadTemplates()
     .then(() => {
-      return this.loadNinja();
+      return this.updateNinja();
     })
     .catch((error) => {
       return this.gui.entries.addText("Couldn't load templates", error.message, "fa-exclamation-triangle yellow");
@@ -116,12 +116,6 @@ class XenonTrade {
       .then((result) => {
         updateEntry.close();
         this.gui.entries.addText("Update successful", this.config.league + " league", "fa-check-circle green", {timeout: 5});
-
-        return this.ninjaAPI.save();
-      })
-      .then((success) => {
-        // Save successful
-        return success;
       })
       .catch((error) => {
         updateEntry.close();
@@ -131,40 +125,6 @@ class XenonTrade {
         return this.updating = false;
       });
     }
-  }
-
-  /**
-  * Loads previously saved poe.ninja data from file
-  */
-  loadNinja() {
-    if(!this.updating && !this.loading) {
-      this.loading = true;
-
-      this.ninjaAPI.load()
-      .then((success) => {
-        return this.gui.entries.addText("Welcome back", "Successfully loaded poe.ninja data", "fa-check-circle green", {timeout: 5});
-      })
-      .catch((error) => {
-        return this.handleNinjaLoadError(error);
-      })
-      .then(() => {
-        return this.loading = false;
-      });
-    }
-  }
-
-  /**
-  * If loadNinja() failed to load data, update data
-  */
-  handleNinjaLoadError(error) {
-    this.loading = false;
-
-    // Only show error entry if the file exists and the data couldn't be loaded
-    if(error.code !== "ENOENT") {
-      this.gui.entries.addText("Failed to load data!", error.message, "fa-exclamation-triangle yellow");
-    }
-
-    this.updateNinja();
   }
 }
 

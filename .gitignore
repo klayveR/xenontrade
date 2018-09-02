@@ -63,6 +63,5 @@ typings/
 
 # xenontrade
 ninjaData.json
-missingItemVariants.json
-gemVariantsUnformatted.json
-listVariants.js
+buildWin.js
+dist
