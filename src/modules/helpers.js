@@ -21,7 +21,7 @@ class Helpers {
 
     if(os.platform() === "linux") {
       exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
-    } else if(os.platform() === "windows") {
+    } else if(os.platform() === "win32") {
       command = "nircmd.exe win activate title 'Path of Exile'";
     }
   }
@@ -29,10 +29,14 @@ class Helpers {
   static isPackageInstalled(pkg, callback) {
     if(os.platform() === "linux") {
       exec("dpkg -s " + pkg, function(error, stdout, stderr) {
+        if(error) {
+          callback(error);
+        }
+
         if(stdout.includes("install ok")) {
-          callback(error, true);
+          callback(null, true);
         } else {
-          callback(error, false);
+          callback(null, false);
         }
       });
     }
@@ -42,11 +46,15 @@ class Helpers {
   static getFocusedWindowName(callback) {
     if(os.platform() === "linux") {
       exec("xdotool getwindowfocus getwindowname", function(error, stdout, stderr) {
+        if(error) {
+          callback(error);
+        }
+        
         var window = stdout;
 
         // Replace line breaks
         window = window.replace(/\r?\n|\r/g, "");
-        callback(error, window);
+        callback(null, window);
       });
     }
   }

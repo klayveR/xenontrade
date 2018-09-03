@@ -1,6 +1,6 @@
 const itemVariants = require("./resource/itemVariants");
 const gemVariants = require("./resource/gemVariants");
-const clipboardItemTypes = require("./resource/clipboardItemTypes");
+const parserTypes = require("./resource/parserTypes");
 const mapAffixes = require("./resource/mapAffixes");
 
 class Parser {
@@ -204,13 +204,13 @@ class Parser {
       var rarity = this.getRarity();
       var type = rarity;
 
-      if(clipboardItemTypes.hasOwnProperty(rarity)) {
-        for(var i = 0; i < clipboardItemTypes[rarity].length; i++) {
-          var regex = new RegExp(clipboardItemTypes[rarity][i].regex);
+      if(parserTypes.hasOwnProperty(rarity)) {
+        for(var i = 0; i < parserTypes[rarity].length; i++) {
+          var regex = new RegExp(parserTypes[rarity][i].regex);
           var match = this.clipboard.match(regex);
 
           if(match) {
-            type = clipboardItemTypes[rarity][i].type;
+            type = parserTypes[rarity][i].type;
             type = type.replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ''); // Replace newline garbage
             break;
           }

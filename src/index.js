@@ -2,9 +2,11 @@
 
 const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
+const os = require("os");
 
 const NinjaAPI = require("poe-ninja-api-manager");
 const Templates = require("./modules/templates.js");
+const Helpers = require("./modules/helpers.js");
 const Parser = require("./modules/parser.js");
 const GUI = require("./modules/gui.js");
 
@@ -39,16 +41,37 @@ class XenonTrade {
   }
 
   /**
-  * Loads entry template files
+  * Loads entry template files, on success updates poe.ninja and checks dependencies
   */
   loadTemplates() {
     this.templates.loadTemplates()
     .then(() => {
+      this.checkDependencies();
       return this.updateNinja();
     })
     .catch((error) => {
-      return this.gui.entries.addText("Couldn't load templates", error.message, "fa-exclamation-triangle yellow");
+      alert("Couldn't load templates", error.message);
+      return this.gui.window.close();
     });
+  }
+
+  /**
+  * Checks if required packages are installed
+  */
+  checkDependencies() {
+    var self = this;
+
+    if(os.platform() === "linux") {
+      Helpers.isPackageInstalled("xdotool", function(error, isInstalled) {
+        if(error) {
+          self.gui.entries.addText("Error checking dependencies", error.message, "fa-exclamation-circle red");
+        }
+
+        if(isInstalled) {
+          self.gui.entries.addText("Missing dependency", "This tool uses <i>xdotool</i> to focus Path of Exile. The price checking feature works without this, but it is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
+        }
+      })
+    }
   }
 
   /**

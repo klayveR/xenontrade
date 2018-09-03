@@ -30,7 +30,9 @@ class Templates {
   /**
   * Loads templates in path
   *
-  * // TODO: Add return promise
+  * @returns {Promise}
+  * @fulfil {Array} - An object containing the templates
+  * @reject {Error} - The `error.message` contains information about why the promise was rejected
   */
   loadTemplates() {
     var self = this;
