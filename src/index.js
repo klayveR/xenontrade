@@ -67,7 +67,7 @@ class XenonTrade {
           self.gui.entries.addText("Error checking dependencies", error.message, "fa-exclamation-circle red");
         }
 
-        if(isInstalled) {
+        if(!isInstalled) {
           self.gui.entries.addText("Missing dependency", "This tool uses <i>xdotool</i> to focus Path of Exile. The price checking feature works without this, but it is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
         }
       })
