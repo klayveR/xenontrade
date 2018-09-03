@@ -84,18 +84,19 @@ class Entries {
     var expandable = false;
     var trend = this._formatTrendData(item.sparkline);
     var name = item.name;
+    var info = "";
 
     var hasTrend = false;
     var confidence = this._getConfidenceColor(item.count);
 
     // Append variant to item name if it is a variant, not on maps
     if(item.variant !== null && item.variant !== "Atlas2") {
-      name = item.name + " (" + item.variant + ")";
+      info += item.variant + " ";
     }
 
     // Prepend links to item name if links > 0
     if(item.links > 0) {
-      name = item.links + "-link " + item.name;
+      info += item.links + "-link";
     }
 
     // Enable switch button if exalted value is > 1
@@ -110,6 +111,7 @@ class Entries {
 
     var replacements = [
       { find: "item-name", replace: name },
+      { find: "item-info", replace: info },
       { find: "item-icon", replace: item.icon },
       { find: "item-value-chaos", replace: item.chaosValue },
       { find: "item-value-exalted", replace: item.exaltedValue },

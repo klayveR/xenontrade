@@ -1,38 +1,43 @@
 <div class="entry" data-id="%entry-id%">
-  <table>
-    <tbody>
-      <tr>
-        <td class="shrink top">
-        <p><a href="#" id="switchButton" class="hidden"><i class="fas fa-exchange-alt grey"></i></a></p>
-        <p><a href="#" id="trendButton" class="hidden"><i class="fas fa-chart-line grey"></i></a></p>
-        </td>
-        <td class="expand top">
-          <span class="item-name grey uppercase small">%item-name%</span>
-          <table>
-            <tbody>
-              <tr>
-                <td><img alt="%item-name%" class="icon" src="%item-icon%"></td>
-                <td class="arrow"><i class="fas fa-long-arrow-alt-right %conf-color%"></i></td>
-                <td>
-                  <span data-switch="%entry-id%">%item-value-chaos%</span>
-                  <span data-switch="%entry-id%" class="hidden">%item-value-exalted%</span>
-                </td>
-                <td>
-                  <img data-switch="%entry-id%" alt="Chaos Orb" class="icon right" src="%chaos-icon%">
-                  <img data-switch="%entry-id%" alt="Exalted Orb" class="icon right hidden" src="%exalted-icon%">
-                </td>
-              </tr>
-              <tr data-trend="%entry-id%" class="hidden">
-                <td colspan="4"><span class="trend">%trend%</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-        <td class="shrink top">
-          <p><a href="#" id="closeButton"><i class="fas fa-times-circle grey"></i></a></p>
-          <p><span id="timeout" class="very-small grey"></span></p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="title">
+    <table>
+      <tbody>
+        <tr>
+          <td class="shrink">
+            <a href="#" id="switchButton" class="hidden"><i class="fas fa-exchange-alt grey"></i></a>
+            <a href="#" id="trendButton" class="hidden"><i class="fas fa-chart-line grey"></i></a>
+          </td>
+          <td class="expand">
+            <span class="uppercase small">%item-name%</span>
+            <span class="uppercase small grey">%item-info%</span>
+          </td>
+          <td class="shrink">
+            <span id="timeout" class="very-small grey"></span>
+            <a href="#" id="closeButton"><i class="fas fa-times-circle grey"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="content">
+    <table>
+      <tbody>
+        <tr>
+          <td><img alt="%item-name%" class="icon" src="%item-icon%"></td>
+          <td class="arrow"><i class="fas fa-long-arrow-alt-right %conf-color%"></i></td>
+          <td>
+            <span data-switch="%entry-id%">%item-value-chaos%</span>
+            <span data-switch="%entry-id%" class="hidden">%item-value-exalted%</span>
+          </td>
+          <td>
+            <img data-switch="%entry-id%" alt="Chaos Orb" class="icon right" src="%chaos-icon%">
+            <img data-switch="%entry-id%" alt="Exalted Orb" class="icon right hidden" src="%exalted-icon%">
+          </td>
+        </tr>
+        <tr data-trend="%entry-id%" class="hidden">
+          <td colspan="4"><span class="trend">%trend%</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

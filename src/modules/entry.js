@@ -116,7 +116,13 @@ class Entry {
   add() {
     var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
-    $(".main div:last-child").after(template);
+    // Check if the entries div is empty, remove whitespaces and newlines
+    if (!$.trim($(".entries").html())) {
+      $(".entries").html(template);
+    } else {
+      $(".entries > .entry:last").after(template);
+    }
+
     this.app.gui.updateWindowHeight();
   }
 

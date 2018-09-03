@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "start": "npm install && electron ./",
+    "electron": "electron ./",
     "pack": "build --dir",
     "dist": "build",
     "pack-win": "build --dir --win",
