@@ -110,16 +110,16 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating && !this.loading) {
       this.updating = true;
-      var updateEntry = this.gui.entries.addText("Updating...", this.config.league + " league", "fa-info-circle grey", {closeable: false});
+      var updateEntry = this.gui.entries.addText("Updating...", "", "fa-info-circle grey", {closeable: false});
 
       this.ninjaAPI.update()
       .then((result) => {
         updateEntry.close();
-        this.gui.entries.addText("Update successful", this.config.league + " league", "fa-check-circle green", {timeout: 5});
+        this.gui.entries.addText("Update successful!", "", "fa-check-circle green", {timeout: 5});
       })
       .catch((error) => {
         updateEntry.close();
-        return this.gui.entries.addText("Update failed", error.message, "fa-exclamation-triangle yellow");
+        return this.gui.entries.addText("Update failed!", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
         return this.updating = false;

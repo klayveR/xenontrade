@@ -5,22 +5,9 @@
   letter-spacing: 0.9px;
 }
 
-p {
-  margin: 0px;
-}
-
 html, body {
   background-color: #202630;
   margin: 0 auto;
-}
-
-i {
-    bottom: -4px;
-}
-
-{
-  width: 100%;
-  height: 100%;
 }
 
 .header {
@@ -60,6 +47,8 @@ table td.top {
 }
 
 .entries .entry .title {
+  border-top: 1px solid #303a4c;
+  border-bottom: 1px solid #303a4c;
   background-color: #272f3d;
   padding: 0px 5px 3px 5px;
 }
@@ -74,14 +63,14 @@ table td.top {
 }
 
 .entries .entry img.icon {
-  height: 18px;
+  height: 20px;
   width: auto;
   vertical-align: middle;
 }
 
 .entries .entry .content {
   background-color: #202630;
-  padding: 3px 5px 5px 5px;
+  padding: 3px 5px 3px 5px;
   width: 100%;
   height: 100%;
 }
@@ -94,6 +83,10 @@ table td.top {
     text-align: center;
 }
 
+.entries .entry .content svg {
+    margin: 5px 0px 0px 0px;
+}
+
 .entries .entry .content img.left {
   margin: 0px 5px 0px 0px;
 }
@@ -103,5 +96,5 @@ table td.top {
 }
 
 .entries .entry table td.arrow {
-    padding: 0px 10px 0px 10px;
+    padding: 3px 8px 0px 8px;
 }

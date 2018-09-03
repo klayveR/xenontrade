@@ -41,7 +41,7 @@ class GUI {
   }
 
   updateWindowHeight() {
-    var height = $(".main").height();
+    var height = $(".container").innerHeight();
     ipcRenderer.send("resize", this.width, height);
   }
 
