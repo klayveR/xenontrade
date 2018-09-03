@@ -2,11 +2,25 @@ const Entry = require("./entry.js");
 const _ = require("underscore");
 
 class Entries {
+  /**
+  * Creates a new Entries object
+  *
+  * @param {XenonTrade} app A XenonTrade object to which the entries should be added to
+  * @constructor
+  */
   constructor(app) {
     this.app = app;
     this.entryCount = 0;
   }
 
+  /**
+  * Adds a title entry without a text and returns it
+  *
+  * @param {string} title Entry title
+  * @param {string} icon Font awesome icon class
+  * @param {Object} options _add options
+  * @return {Entry}
+  */
   addTitle(title, icon = "fa-info-circle grey", options) {
     var template = this.app.templates.get("title.html");
 
@@ -18,6 +32,15 @@ class Entries {
     return this._add(template, replacements, options);
   }
 
+  /**
+  * Adds a text entry with a title and returns it
+  *
+  * @param {string} title Entry title
+  * @param {string} text Entry text
+  * @param {string} icon Font awesome icon class
+  * @param {Object} options _add options
+  * @return {Entry}
+  */
   addText(title, text, icon = "fa-info-circle grey", options) {
     var template = this.app.templates.get("text.html");
 
@@ -30,6 +53,13 @@ class Entries {
     return this._add(template, replacements, options);
   }
 
+  /**
+  * Adds a currency entry and returns it
+  *
+  * @param {Object} currency poe.ninja currency object
+  * @param {number} stackSize Stack size of the currency
+  * @return {Entry}
+  */
   addCurrency(currency, stackSize) {
     var template = this.app.templates.get("currency.html");
     var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
@@ -87,6 +117,12 @@ class Entries {
     return this._add(template, replacements, {switchable: true, expandable: true, trend: hasTrend});
   }
 
+  /**
+  * Adds an item entry and returns it
+  *
+  * @param {Object} item poe.ninja item object
+  * @return {Entry}
+  */
   addItem(item) {
     var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
     var exaltedDetails = this.app.ninjaAPI.getCurrencyDetails("Exalted Orb");
@@ -135,13 +171,26 @@ class Entries {
     return this._add(template, replacements, {switchable, expandable, trend: true});
   }
 
+  /**
+  * Adds an entry to the entries div container and returns this object
+  *
+  * @param {string} template Html template for the entry
+  * @param {Array} replacements Array containing objects with `find` and `replace` properties
+  * @param {Object} options Options object
+  * @param {number} [options.timeout=0] Time after which the entry should automatically close
+  * @param {boolean} [options.closeable=true] `true` if the entry should be closeable
+  * @param {boolean} [options.expandable=false] `true` if the entry should be expandable (data-expand in template)
+  * @param {boolean} [options.switchable=false] `true` if data in the entry is switchable (data-switch in template)
+  * @param {boolean} [options.trend=false] `true` if the entry has trend graphs which should be visualized
+  * @return {Entry}
+  */
   _add(template, replacements, options) {
     var defaultOptions = {
-        timeout: 0,
-        closeable: true,
-        expandable: false,
-        switchable: false,
-        trend: false
+      timeout: 0,
+      closeable: true,
+      expandable: false,
+      switchable: false,
+      trend: false
     };
 
     options = _.extend(defaultOptions, options);

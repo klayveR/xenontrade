@@ -6,7 +6,13 @@ const Entries = require("./entries.js");
 const Helpers = require("./helpers.js");
 
 class GUI {
-  // TODO: jsdocs
+  /**
+  * Creates a new GUI object
+  *
+  * @constructor
+  * @param {XenonTrade} app A XenonTrade object to which the entry should be added to
+  * @param {number} width Width of the GUI
+  */
   constructor(app, width) {
     this.app = app;
     this.width = width;
@@ -16,11 +22,17 @@ class GUI {
     this.initialize();
   }
 
+  /**
+  * Initializes essential parts of the GUI
+  */
   initialize() {
     this.initializeButtons();
     this.updateWindowHeight();
   }
 
+  /**
+  * Initializes the header buttons
+  */
   initializeButtons() {
     var self = this;
 
@@ -40,14 +52,19 @@ class GUI {
     });
   }
 
+  /**
+  * Updates the window height based on contents
+  */
   updateWindowHeight() {
     var height = $(".container").innerHeight();
     ipcRenderer.send("resize", this.width, height);
   }
 
+  /**
+  * Maximizes the window
+  */
   maximize() {
     this.window.maximize();
-    Helpers.focusPathOfExile();
   }
 }
 

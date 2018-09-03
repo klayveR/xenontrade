@@ -31,15 +31,15 @@ table {
 }
 
 table td.shrink {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 table td.expand {
-    width: 99%;
+  width: 99%;
 }
 
 table td.top {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 .entries .entry {
@@ -77,15 +77,15 @@ table td.top {
 }
 
 .entries .entry .content table {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .entries .entry .content table td {
-    text-align: center;
+  text-align: center;
 }
 
 .entries .entry .content svg {
-    margin: 5px 0px 0px 0px;
+  margin: 5px 0px 0px 0px;
 }
 
 .entries .entry .content img.left {
@@ -97,5 +97,5 @@ table td.top {
 }
 
 .entries .entry table td.arrow {
-    padding: 3px 8px 0px 8px;
+  padding: 3px 8px 0px 8px;
 }

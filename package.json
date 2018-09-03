@@ -79,8 +79,6 @@
   },
   "devDependencies": {
     "electron": "^2.0.8",
-    "electron-builder": "^20.28.3",
-    "electron-installer-debian": "^0.8.1",
-    "electron-winstaller": "^2.6.4"
+    "electron-builder": "^20.28.3"
   }
 }

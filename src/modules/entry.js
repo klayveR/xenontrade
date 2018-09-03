@@ -5,7 +5,7 @@ class Entry {
   * Creates a new Entry object
   *
   * @constructor
-  * @param {XenonTrade} app A XenonTrade object to which the entries should be added to
+  * @param {XenonTrade} app A XenonTrade object to which the entry should be added to
   * @param {number} id ID of the entry
   */
   constructor(app, id) {

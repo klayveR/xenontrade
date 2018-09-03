@@ -2,10 +2,22 @@ const { exec } = require("child_process");
 const os = require("os");
 
 class Helpers {
-  static isFloat(n){
-    return Number(n) === n && n % 1 !== 0;
+  /**
+  * Returns `true` if the number is a float
+  *
+  * @param {number} number Number that should be checked for float type
+  * @return {boolean}
+  */
+  static isFloat(number) {
+    return Number(number) === number && number % 1 !== 0;
   }
 
+  /**
+  * Returns `true` if the object is empty
+  *
+  * @param {Object} object The object to be checked for emptiness
+  * @return {boolean}
+  */
   static isEmpty(obj) {
     for(var key in obj) {
       if(obj.hasOwnProperty(key)) {
@@ -16,6 +28,9 @@ class Helpers {
     return true;
   }
 
+  /**
+  * Focuses the Path of Exile window based on the OS
+  */
   static focusPathOfExile() {
     var command = "";
 
@@ -26,6 +41,12 @@ class Helpers {
     }
   }
 
+  /**
+  * Checks whether a package is installed based on the OS
+  *
+  * @param {string} package Package to be checked for installation
+  * @param {callback} callback Callback that handles the response
+  */
   static isPackageInstalled(pkg, callback) {
     if(os.platform() === "linux") {
       exec("dpkg -s " + pkg, function(error, stdout, stderr) {
@@ -42,14 +63,19 @@ class Helpers {
     }
   }
 
-  // HERES SOMETHING INTERESTING: xprop -id $(xprop -root 32x "\t$0" _NET_ACTIVE_WINDOW | cut -f 2) WM_CLASS WM_NAME
+  /**
+  * Gets the name of the currently focused window
+  * HERES SOMETHING INTERESTING: xprop -id $(xprop -root 32x "\t$0" _NET_ACTIVE_WINDOW | cut -f 2) WM_CLASS WM_NAME
+  *
+  * @param {callback} callback Callback that handles the response
+  */
   static getFocusedWindowName(callback) {
     if(os.platform() === "linux") {
       exec("xdotool getwindowfocus getwindowname", function(error, stdout, stderr) {
         if(error) {
           callback(error);
         }
-        
+
         var window = stdout;
 
         // Replace line breaks
