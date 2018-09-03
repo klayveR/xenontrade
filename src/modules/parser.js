@@ -138,8 +138,15 @@ class Parser {
     * @returns {string}
     */
     getRarity() {
-      var lines = this.getClipboardLines();
-      return lines[0].replace("Rarity: ", "");
+      var rarity = "";
+      var regex = /Rarity: (.+)/;
+      var match = this.clipboard.match(regex);
+
+      if(match) {
+        rarity = match[1];
+      }
+
+      return rarity;
     }
 
     /**
@@ -159,7 +166,7 @@ class Parser {
 
       var lines = this.getClipboardLines();
       var name = lines[index].replace("<<set:MS>><<set:M>><<set:S>>", "");
-      name = name.replace(/(?:\r\n|\r|\n)/g, ""); // Replace newlines, this happens on some OSs
+      name = name.replace(/[^0-9a-zA-ZäÄöÖüÜß']/gi, ''); // Replace newline garbage
 
       if(type === "Map") {
         name = this._removeMapAffixes(name);
@@ -204,7 +211,7 @@ class Parser {
 
           if(match) {
             type = clipboardItemTypes[rarity][i].type;
-            type = encodeURIComponent(type).replace("%0D", ""); // Replace encoded carriage return                       
+            type = type.replace(/[^0-9a-zA-ZäÄöÖüÜß']/gi, ''); // Replace newline garbage
             break;
           }
         }
@@ -288,15 +295,26 @@ class Parser {
     * @returns {string}
     */
     _getSocketString() {
-      var lines = this.getClipboardLines();
+      var sockets = "";
+      /*var lines = this.getClipboardLines();
 
       for(var i = 0; i < lines.length; i++) {
         if(lines[i].startsWith("Sockets:")) {
-          return lines[i].replace("Sockets: ", "");
+          sockets = lines[i].replace("Sockets: ", "");
         }
       }
 
-      return "";
+      console.log("'" + sockets + "'");
+      */
+
+      var regex = /Sockets: (.+)/;
+      var match = this.clipboard.match(regex);
+
+      if(match) {
+        sockets = match[1];
+      }
+
+      return sockets;
     }
 
     /**
