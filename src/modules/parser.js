@@ -166,7 +166,7 @@ class Parser {
 
       var lines = this.getClipboardLines();
       var name = lines[index].replace("<<set:MS>><<set:M>><<set:S>>", "");
-      name = name.replace(/[^0-9a-zA-ZäÄöÖüÜß']/gi, ''); // Replace newline garbage
+      name = name.replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ''); // Replace newline garbage
 
       if(type === "Map") {
         name = this._removeMapAffixes(name);
@@ -211,7 +211,7 @@ class Parser {
 
           if(match) {
             type = clipboardItemTypes[rarity][i].type;
-            type = type.replace(/[^0-9a-zA-ZäÄöÖüÜß']/gi, ''); // Replace newline garbage
+            type = type.replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ''); // Replace newline garbage
             break;
           }
         }

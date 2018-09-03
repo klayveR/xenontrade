@@ -25,6 +25,13 @@ class Entry {
   }
 
   /**
+  * Returns the jQuery selector for this entry
+  */
+  getId() {
+    return this.id;
+  }
+
+  /**
   * Sets the template that should be used for this entry
   */
   setReplacements(replacements) {

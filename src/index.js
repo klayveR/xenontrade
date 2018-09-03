@@ -110,12 +110,12 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating && !this.loading) {
       this.updating = true;
-      var updateEntry = this.gui.entries.addText("Updating...", "", "fa-info-circle grey", {closeable: false});
+      var updateEntry = this.gui.entries.addTitle("Updating...", "fa-info-circle grey", {closeable: false});
 
       this.ninjaAPI.update()
       .then((result) => {
         updateEntry.close();
-        this.gui.entries.addText("Update successful!", "", "fa-check-circle green", {timeout: 5});
+        this.gui.entries.addTitle("Update successful!", "fa-check-circle green", {timeout: 5});
       })
       .catch((error) => {
         updateEntry.close();

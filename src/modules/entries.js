@@ -7,6 +7,17 @@ class Entries {
     this.entryCount = 0;
   }
 
+  addTitle(title, icon = "fa-info-circle grey", options) {
+    var template = this.app.templates.get("title.html");
+
+    var replacements = [
+      { find: "title", replace: title },
+      { find: "icon", replace: icon }
+    ];
+
+    return this._add(template, replacements, options);
+  }
+
   addText(title, text, icon = "fa-info-circle grey", options) {
     var template = this.app.templates.get("text.html");
 

@@ -51,6 +51,7 @@ table td.top {
   border-bottom: 1px solid #303a4c;
   background-color: #272f3d;
   padding: 0px 5px 3px 5px;
+  margin: 1px 0px 0px 0px;
 }
 
 .entries .entry .title span {
