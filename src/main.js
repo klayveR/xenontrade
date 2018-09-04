@@ -8,7 +8,7 @@ try {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
-let debug = false;
+let debug = true;
 
 function createWindow () {
   // Create the browser window.

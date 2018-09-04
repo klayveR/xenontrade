@@ -11,6 +11,14 @@
       "type": "Essence"
     },
     {
+      "regex": "Place in a Resonator to influence item crafting.",
+      "type": "Fossil"
+    },
+    {
+      "regex": "All sockets must be filled with Fossils before this item can be used.",
+      "type": "Resonator"
+    },
+    {
       "regex": "",
       "type": "Currency"
     }
