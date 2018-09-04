@@ -28,6 +28,45 @@
     <div class="entries">
       <div class="entry"></div>
     </div>
+    <div class="settings hidden">
+      <div class="title">
+        <i class="fas fa-flag grey"></i>
+        <span class="small">League</span>
+      </div>
+
+      <div class="content" style="margin-bottom: 15px">
+        <div class="text" style="margin-bottom: 5px;">Select the league from which you'd like to receive price data.</div>
+        <label class="wrap">
+          <select class="select" id="leagueSelect"></select>
+        </label>
+      </div>
+
+      <div class="title">
+        <i class="fas fa-clock grey"></i>
+        <span class="small">Autoclose</span>
+      </div>
+
+      <div class="content" id="settings">
+        <div class="text" style="margin-bottom: 5px;">Choose after how many second an entry should automatically disappear for certain item types. 0 disables autoclose.</div>
+
+        <table width="100%">
+          <tbody>
+            <tr data-type="currency">
+              <td style="text-align: left">Currency</td>
+              <td><a href="#" class="minusButton" data-type="currency"><i class="fas fa-minus-circle grey"></i></a></td>
+              <td><span class="seconds">0</span><span class="grey very-small">s</span></td>
+              <td><a href="#" class="plusButton" data-type="currency"><i class="fas fa-plus-circle grey"></i></a></td>
+            </tr>
+            <tr data-type="item">
+              <td style="text-align: left">Item</td>
+              <td><a href="#" class="minusButton" data-type="item"><i class="fas fa-minus-circle grey"></i></a></td>
+              <td><span class="seconds">0</span><span class="grey very-small">s</span></td>
+              <td><a href="#" class="plusButton" data-type="item"><i class="fas fa-plus-circle grey"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <script>window.$ = window.jQuery = require('jquery');</script>
@@ -44,7 +83,7 @@
     width: 75
   }
   </script>
-  
+
   <script type="text/javascript" src="index.js"></script>
 </body>
 </html>

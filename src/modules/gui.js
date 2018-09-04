@@ -28,6 +28,77 @@ class GUI {
   initialize() {
     this.initializeButtons();
     this.updateWindowHeight();
+    this.initializeSettings();
+  }
+
+  /**
+  * Initializes the settings
+  */
+  initializeSettings() {
+    var self = this;
+
+    $(".settings").find("[data-type='currency']").find(".seconds").html(this.app.config.get("timeouts.currency"));
+    $(".settings").find("[data-type='item']").find(".seconds").html(this.app.config.get("timeouts.item"));
+
+    $(".settings").find(".plusButton").click(function(e) {
+      e.preventDefault();
+      self.changeTimeoutValue($(this).attr("data-type"), 1);
+    });
+
+    $(".settings").find(".minusButton").click(function(e) {
+      e.preventDefault();
+      self.changeTimeoutValue($(this).attr("data-type"), -1);
+    });
+  }
+
+  /**
+  * Initializes league settings
+  */
+  initializeLeagueSettings(leagues) {
+    var self = this;
+
+    $.each(leagues, function (i, league) {
+      $("#leagueSelect").append($("<option>", {
+        value: league,
+        text : league
+      }));
+    });
+
+    $("#leagueSelect").change(function() {
+      self.app.config.set("league", $("#leagueSelect").val());
+      self.app.updateNinja();
+    });
+
+    // Select league from config
+    $("#leagueSelect").find("option[value='" + this.app.config.get("league") + "']").attr("selected", "selected");
+  }
+
+  /**
+  * Toggles between settings and entries
+  */
+  toggleSettings() {
+    $("#settingsButton").find("i").toggleClass("grey");
+
+    $(".entries").toggleClass("hidden");
+    $(".settings").toggleClass("hidden");
+
+    this.updateWindowHeight();
+  }
+
+  /**
+  * Changes the value of a timeout in the GUI and config
+  *
+  * @param {string} type data-type/config property of the timeout
+  * @param {number} add Number to add to config value
+  */
+  changeTimeoutValue(type, add) {
+    var value = this.app.config.get("timeouts." + type);
+    value += add;
+
+    if(value >= 0) {
+      this.app.config.set("timeouts." + type, value);
+      $(".settings").find("[data-type='" + type + "']").find(".seconds").html(value);
+    }
   }
 
   /**
@@ -49,6 +120,11 @@ class GUI {
     $("#updateButton").click(function(e) {
       e.preventDefault();
       self.app.updateNinja();
+    });
+
+    $("#settingsButton").click(function(e) {
+      e.preventDefault();
+      self.toggleSettings();
     });
   }
 

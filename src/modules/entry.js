@@ -81,7 +81,9 @@ class Entry {
   * Focuses Path of Exile on a button click
   */
   _onButtonClick() {
-    Helpers.focusPathOfExile();
+    if(this.app.config.get("focusPathOfExile")) {
+      Helpers.focusPathOfExile();
+    }
   }
 
   /**
@@ -140,7 +142,7 @@ class Entry {
     $(".entry[data-id='" + this.id + "']").remove();
     this.app.gui.updateWindowHeight();
 
-    if(focusPathOfExile) {
+    if(focusPathOfExile && this.app.config.get("focusPathOfExile")) {
       Helpers.focusPathOfExile();
     }
   }

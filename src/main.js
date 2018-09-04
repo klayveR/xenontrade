@@ -1,10 +1,14 @@
 const {app, BrowserWindow} = require("electron");
 const {ipcMain} = require("electron");
 
+try {
+	require("electron-reloader")(module);
+} catch (err) {}
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
-let debug = true;
+let debug = false;
 
 function createWindow () {
   // Create the browser window.
