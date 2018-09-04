@@ -29,7 +29,11 @@ class XenonTrade {
           currency: 0,
           item: 0
         },
-        focusPathOfExile: true
+        focusPathOfExile: true,
+        window: {
+          x: 0,
+          y: 0
+        }
       }
     });
 

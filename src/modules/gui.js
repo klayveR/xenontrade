@@ -27,8 +27,14 @@ class GUI {
   */
   initialize() {
     this.initializeButtons();
-    this.updateWindowHeight();
     this.initializeSettings();
+    this.updateWindowHeight();
+
+    // Initialize position from config
+    this.setWindowPosition(this.app.config.get("window.x"), this.app.config.get("window.y"));
+
+    // Finally show window
+    ipcRenderer.send("ready");
   }
 
   /**
@@ -114,7 +120,7 @@ class GUI {
 
     $("#closeButton").click(function(e) {
       e.preventDefault();
-      self.window.close();
+      self.close();
     });
 
     $("#updateButton").click(function(e) {
@@ -129,11 +135,32 @@ class GUI {
   }
 
   /**
+  * Saves position to config and closes GUI
+  */
+  close() {
+    var windowPosition = this.window.getPosition();
+    this.app.config.set("window.x", windowPosition[0]);
+    this.app.config.set("window.y", windowPosition[1]);
+
+    this.window.close();
+  }
+
+  /**
   * Updates the window height based on contents
   */
   updateWindowHeight() {
     var height = $(".container").innerHeight();
     ipcRenderer.send("resize", this.width, height);
+  }
+
+  /**
+  * Updates the window position
+  *
+  * @param {number} x x position
+  * @param {number} y y position
+  */
+  setWindowPosition(x, y) {
+    ipcRenderer.send("position", x, y);
   }
 
   /**

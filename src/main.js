@@ -16,7 +16,8 @@ function createWindow () {
     width: 300,
     height: 0,
     frame: false,
-    hasShadow: false
+    hasShadow: false,
+		show: false
   });
 
   if(debug) {
@@ -68,4 +69,12 @@ app.on("activate", () => {
 
 ipcMain.on("resize", function (e, w, h) {
   if(!debug) { win.setSize(Math.round(w), Math.round(h)); }
+});
+
+ipcMain.on("position", function (e, x, y) {
+  win.setPosition(Math.round(x), Math.round(y));
+});
+
+ipcMain.on("ready", function (e) {
+  win.show();
 });
