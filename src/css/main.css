@@ -101,6 +101,10 @@ i {
   font-size: 10px;
 }
 
+.content .text a {
+  font-size: 10px;
+}
+
 .entry .content svg {
   margin: 5px 0px 0px 0px;
 }
