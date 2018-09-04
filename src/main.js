@@ -16,22 +16,21 @@ function createWindow () {
     width: 300,
     height: 0,
     frame: false,
-    hasShadow: false,
-		show: false
+    hasShadow: false
   });
 
   if(debug) {
     win.setSize(800, 600);
+		win.show();
   }
 
   // and load the index.html of the app.
   win.loadFile("./src/index.html");
   win.setResizable(false);
-  win.setAlwaysOnTop(true, "floating", 1);
 
-  // allows the window to show over a fullscreen window
-  win.setVisibleOnAllWorkspaces(true);
-  win.setFullScreenable(false);
+	win.setAlwaysOnTop(true, "floating");
+	win.setVisibleOnAllWorkspaces(true);
+	win.setFullScreenable(false);
 
   // Open the DevTools.
   if(debug) { win.webContents.openDevTools(); }

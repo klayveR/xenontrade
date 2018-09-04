@@ -9,7 +9,7 @@ class Templates {
   * @param {string} path Path to the folder that contains the templates
   */
   constructor() {
-    this.path = path.join(__dirname, "/resource/templates/");
+    this.path = path.join(__dirname, "/resource/templates");
     this.templates = {};
   }
 

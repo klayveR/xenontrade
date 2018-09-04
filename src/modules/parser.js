@@ -210,7 +210,7 @@ class Parser {
 
           if(match) {
             type = parserTypes[rarity][i].type;
-            type = type.replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ''); // Replace newline garbage
+            type = type.replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ""); // Replace newline garbage
             break;
           }
         }

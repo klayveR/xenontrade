@@ -5,7 +5,7 @@ const clipboardy = require("clipboardy");
 const os = require("os");
 const request= require("request-promise-native");
 
-const Config = require('electron-store');
+const Config = require("electron-store");
 const NinjaAPI = require("poe-ninja-api-manager");
 const Templates = require("./modules/templates.js");
 const Helpers = require("./modules/helpers.js");
@@ -76,7 +76,7 @@ class XenonTrade {
   * Loads entry template files, on success updates poe.ninja and checks dependencies
   */
   loadLeagues() {
-    request('http://api.pathofexile.com/leagues?type=main', {json: true})
+    request("http://api.pathofexile.com/leagues?type=main", {json: true})
     .then((body) => {
       var leagues = [];
       var leaguesCount = 0;
@@ -118,15 +118,10 @@ class XenonTrade {
     var self = this;
 
     if(os.platform() === "linux") {
-      Helpers.isPackageInstalled("xdotool", function(error, isInstalled) {
-        if(error) {
-          self.gui.entries.addText("Error checking dependencies", error.message, "fa-exclamation-circle red");
-        }
-
-        if(!isInstalled) {
-          self.gui.entries.addText("Missing dependency", "This tool uses <i>xdotool</i> to focus Path of Exile. The price checking feature works without this, but it is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
-        }
-      })
+      Helpers.isPackageInstalled("xdotool")
+      .catch((error) => {
+        return this.gui.entries.addText("Missing dependency", "This tool uses <strong>xdotool</strong> to focus Path of Exile. The price checking feature works without this, but it is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
+      });
     }
   }
 
@@ -164,7 +159,7 @@ class XenonTrade {
 
     if(this.ninjaAPI.hasData(this.config.get("league"))) {
       if(!["Magic", "Rare"].includes(parser.getItemType()) && parser.isIdentified() === true) {
-        this.ninjaAPI.getItem(parser.getName(), {links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
+        this.ninjaAPI.getItem(parser.getName(), {league: this.config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
         .then((itemArray) => {
           this.onNinjaItemReceive(parser, itemArray[0]);
         })
@@ -173,7 +168,7 @@ class XenonTrade {
         });
       }
     } else {
-      this.gui.entries.addText("No data", "There's no data for " + this.config.get("league") + ". You should update before attempting to price check another item.", "fa-exclamation-triangle yellow", {timeout: 30});
+      this.gui.entries.addText("No data", "There's no data for " + this.config.get("league") + ". You should update before attempting to price check another item.", "fa-exclamation-triangle yellow", {timeout: 15});
     }
   }
 
@@ -196,16 +191,16 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating) {
       this.updating = true;
-      var updateEntry = this.gui.entries.addTitle("Updating " + this.config.get("league") + "...", "fa-info-circle grey", {closeable: false});
+      var updateEntry = this.gui.entries.addTitle("Updating poe.ninja prices...", "fa-info-circle grey", {closeable: false});
 
-      this.ninjaAPI.update()
+      this.ninjaAPI.update({league: this.config.get("league")})
       .then((result) => {
         updateEntry.close();
-        this.gui.entries.addTitle("Updated " + this.config.get("league") + "!", "fa-check-circle green", {timeout: 10});
+        this.gui.entries.addTitle("Update successful 🎉", "fa-check-circle green", {timeout: 15});
       })
       .catch((error) => {
         updateEntry.close();
-        return this.gui.entries.addText("Update failed!", error.message, "fa-exclamation-triangle yellow");
+        return this.gui.entries.addText("Failed to update", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
         return this.updating = false;

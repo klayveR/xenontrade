@@ -34,7 +34,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "clipboardy": "^1.2.3",
+    "child-process-promise": "^2.2.1",
+    "clipboardy": "github:klayveR/clipboardy",
     "electron-store": "^2.0.0",
     "iohook": "^0.2.0",
     "jquery": "^3.3.1",
@@ -70,13 +71,18 @@
         "rpm"
       ],
       "category": "Game",
-      "asar": false,
+      "asarUnpack": [
+        "*.node"
+      ],
       "icon": "build/icon.icns"
     },
     "win": {
       "icon": "build/icon.ico",
       "target": "portable",
-      "asar": false
+      "asarUnpack": [
+        "*.node",
+        "src/modules/resource/executables"
+      ]
     }
   },
   "devDependencies": {

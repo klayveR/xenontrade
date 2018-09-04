@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>XenonTrade</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link href="css/main.css" rel="stylesheet">
   <link href="css/attr-classes.css" rel="stylesheet">
@@ -16,24 +16,22 @@
         XenonTrade
       </span>
       <span style="float: left">
-        <a href="#" id="settingsButton" class="grey text"><i class="fas fa-cog grey"></i></a>
-        <a href="#" id="updateButton" class="grey text"><i class="fas fa-sync-alt grey"></i></a>
+        <a href="#" id="settingsButton" class="grey"><i class="fas fa-cog grey"></i></a>
+        <a href="#" id="updateButton" class="grey"><i class="fas fa-sync-alt grey"></i></a>
       </span>
       <span style="float: right">
         <a href="#" id="minimizeButton"><i class="fas fa-window-minimize grey"></i></a>
         <a href="#" id="closeButton"><i class="fas fa-times-circle grey"></i></a>
       </span>
     </div>
-    <div class="entries">
-      <div class="entry"></div>
-    </div>
+    <div class="entries"></div>
     <div class="settings hidden">
       <div class="title">
         <i class="fas fa-flag grey"></i>
-        <span class="small">League</span>
+        <span>League</span>
       </div>
 
-      <div class="content" style="margin-bottom: 15px">
+      <div class="content" style="margin: 10px 0px 10px 0px">
         <label class="wrap">
           <select class="select" id="leagueSelect"></select>
         </label>
@@ -44,7 +42,7 @@
         <span class="small">Autoclose</span>
       </div>
 
-      <div class="content" style="margin-bottom: 15px" id="settings">
+      <div class="content" style="margin: 10px 0px 10px 0px" id="settings">
         <table width="100%">
           <tbody>
             <tr data-type="currency">

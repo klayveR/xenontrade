@@ -1,10 +1,9 @@
 * {
   color: #e6eaf2;
   overflow: hidden;
-  font-size: 12px;
-  letter-spacing: 0.9px;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 html, body {
@@ -15,20 +14,19 @@ html, body {
 .header {
   background-color: #171c23;
   padding: 5px;
-  font-weight: bold;
   text-align: center;
   font-family: "Roboto", sans-serif;
   color: #c5d3e8;
   font-size: 12px;
-  letter-spacing: 1.8px;
+  font-weight: 700;
+  letter-spacing: normal;
 }
 
 .header a {
   -webkit-app-region: no-drag;
 }
 
-.header i {
-  -webkit-app-region: no-drag;
+i {
   vertical-align: top;
   padding-top: 2px;
 }
@@ -49,33 +47,41 @@ table td.top {
   vertical-align: top;
 }
 
-i {
-  vertical-align: middle;
-}
-
 .title {
   border-top: 1px solid #303a4c;
   border-bottom: 1px solid #303a4c;
   background-color: #272f3d;
-  padding: 0px 5px 3px 5px;
+  padding: 0px 5px 2px 5px;
   margin: 1px 0px 0px 0px;
+  font-size: 11px;
+  vertical-align: middle;
 }
 
 .title span {
   padding: 0px 0px 0px 5px;
-  font-weight: bold;
+  pointer-events: none;
 }
 
-.content img.icon {
-  height: 20px;
-  width: auto;
-  vertical-align: middle;
+.title span#timeout {
+  padding-right: 3px;
+  pointer-events: none;
+}
+
+.title a i {
+  padding-right: 2px;
 }
 
 .content {
   background-color: #202630;
   padding: 5px 5px 5px 5px;
   text-align: justify;
+  font-size: 12px;
+}
+
+.content img.icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
 }
 
 .content table td {
@@ -85,7 +91,6 @@ i {
 .settings .content table td {
   background-color: #272f3d;
   padding: 5px;
-  font-size: 10px;
 }
 
 .settings .content td a {
@@ -98,10 +103,6 @@ i {
 
 .content .text {
   color: #748199;
-  font-size: 10px;
-}
-
-.content .text a {
   font-size: 10px;
 }
 
@@ -119,7 +120,7 @@ i {
 
 .entry .content .arrow {
   padding: 2px 8px 0px 8px;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 label.wrap {
@@ -135,8 +136,8 @@ select {
   appearance: none;
   background: #272f3d repeat;
   padding: 7px;
+  font-size: 11px;
   border: 0;
-  font-size: 10px;
   width: 288px;
   -webkit-appearance: none;
   -moz-appearance: none;
