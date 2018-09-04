@@ -1,4 +1,4 @@
-const exec = require('child-process-promise').exec;
+const exec = require("child-process-promise").exec;
 const os = require("os");
 const path = require("path");
 
@@ -33,7 +33,7 @@ class Helpers {
   * Focuses the Path of Exile window based on the OS
   */
   static focusPathOfExile() {
-    var nirCmd = path.join(__dirname, '/resource/executables/nircmd.exe').replace('app.asar', 'app.asar.unpacked');
+    var nirCmd = path.join(__dirname, "/resource/executables/nircmd.exe").replace("app.asar", "app.asar.unpacked");
 
     if(os.platform() === "linux") {
       exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
@@ -68,7 +68,7 @@ class Helpers {
       })
       .catch((error) => {
         return reject(error);
-      })
+      });
     });
   }
 
@@ -99,7 +99,7 @@ class Helpers {
   * @param {callback} callback Callback that handles the response
   */
   static isPathOfExileActive(callback) {
-    var ahkExe = path.join(__dirname, '/resource/executables/isPathOfExileActive.exe').replace('app.asar', 'app.asar.unpacked');
+    var ahkExe = path.join(__dirname, "/resource/executables/poeActive.exe").replace("app.asar", "app.asar.unpacked");
 
     return new Promise(function(resolve, reject) {
       if(os.platform() === "linux") {
