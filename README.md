@@ -1,6 +1,6 @@
 
 # XenonTrade
-XenonTrade is an electron trading tool that was developed specifically is linux users. Path of Exile's performance on linux distributions has drastically increased in the past few months, but unfortunately there are barely any trading companions available for linux. The most well known tools that are used on Windows either don't work or are very complicated to get to work. And thus, this tool was created.
+XenonTrade is a Path of Exile trading tool based on electron that was developed specifically for linux users. Path of Exile's performance on linux distributions has drastically increased in the past few months, but unfortunately there are barely any trading companions available for linux. The most well known tools that are used on Windows either don't work or are very complicated to get to work. And thus, this tool was created.
 
 ![Preview](https://i.imgur.com/PFXRex5.png)
 

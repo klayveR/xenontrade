@@ -4,6 +4,7 @@ const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 const os = require("os");
 
+const Config = require('electron-store');
 const NinjaAPI = require("poe-ninja-api-manager");
 const Templates = require("./modules/templates.js");
 const Helpers = require("./modules/helpers.js");
@@ -19,13 +20,24 @@ class XenonTrade {
   constructor() {
     this.updating = false;
     this.loading = false;
-    this.config = {league: "Standard"};
+
+    // Set config defaults
+    this.config = new Config({
+      defaults: {
+        league: "Standard",
+        timeouts: {
+          currency: 0,
+          divinationCard: 0,
+          map: 0
+        }
+      }
+    });
 
     this.gui = new GUI(this, 300);
     this.templates = new Templates();
     this.ninjaAPI = new NinjaAPI({
       path: __dirname + "/",
-      league: this.config.league
+      league: this.config.get("league")
     });
 
     this.initialize();
@@ -98,17 +110,20 @@ class XenonTrade {
       var parser = new Parser(clipboard);
 
       if(parser.isPathOfExileData()) {
-        var parsedData = parser.parseData();
-        this.getItemFromParsedData(parsedData);
+        this.getItem(parser);
       }
     }
   }
 
-  getItemFromParsedData(data) {
-    if(data.type !== "Rare" && data.identified === true) {
-      this.ninjaAPI.getItem(data.name, {links: data.links, variant: data.variant, relic: data.relic})
+  getItem(parser) {
+    var itemType = parser.getItemType();
+
+    if(itemType !== "Magic" && itemType !== "Rare" && parser.isIdentified() === true) {
+      console.log("Basetype", parser.getBaseType());
+
+      this.ninjaAPI.getItem(parser.getName(), {links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
       .then((itemArray) => {
-        this.onNinjaItemReceive(data, itemArray[0]);
+        this.onNinjaItemReceive(parser, itemArray[0]);
       })
       .catch((error) => {
         console.error(error);
@@ -116,12 +131,12 @@ class XenonTrade {
     }
   }
 
-  onNinjaItemReceive(parsedData, item) {
-    // this.gui.maximize();
+  onNinjaItemReceive(parser, item) {
+    var itemType = parser.getItemType();
     var entry;
 
-    if(parsedData.type === "Currency" || parsedData.type === "Fragment") {
-      entry = this.gui.entries.addCurrency(item, parsedData.stackSize);
+    if(itemType === "Currency" || itemType === "Fragment") {
+      entry = this.gui.entries.addCurrency(item, parser.getStackSize());
     } else {
       entry = this.gui.entries.addItem(item);
     }

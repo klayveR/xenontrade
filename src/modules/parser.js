@@ -12,7 +12,6 @@ class Parser {
   */
   constructor(clipboard) {
     this.clipboard = clipboard;
-    this.data = {};
   }
 
   /**
@@ -26,24 +25,6 @@ class Parser {
     }
 
     return false;
-  }
-
-  /**
-  * Returns an object containing data parsed from the clipboard
-  *
-  * @returns {Object}
-  */
-  parseData() {
-    this.data.rarity = this.getRarity();
-    this.data.type = this.getItemType();
-    this.data.name = this.getName();
-    this.data.identified = this.isIdentified();
-    this.data.links = this.getLinks();
-    this.data.relic = this.isRelic();
-    this.data.variant = this.getVariant();
-    this.data.stackSize = this.getStackSize();
-
-    return this.data;
   }
 
   /**
@@ -62,14 +43,15 @@ class Parser {
   */
   getVariant() {
     var variant = null;
+    var itemType = this.getItemType();
 
-    if(this.data.type === "SkillGem") {
+    if(itemType === "SkillGem") {
       variant = this._getGemVariant();
     } else
-    if(this.data.type === "Unique") {
+    if(itemType === "Unique") {
       variant = this._getUniqueVariant();
     } else
-    if(this.data.type === "Map") {
+    if(itemType === "Map") {
       variant = this._getMapVariant();
     }
 
@@ -173,6 +155,23 @@ class Parser {
       }
 
       return name;
+    }
+
+    /**
+    * Returns the base type of the clipboard item
+    *
+    * @returns {string}
+    */
+    getBaseType() {
+      var lines = this.getClipboardLines();
+      var baseType = lines[2].replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ''); // Replace newline garbage
+
+      // If the base type doesn't have letters return null because that's not a base type
+      if(!/[a-z]/i.test(baseType)) {
+        return null;
+      }
+
+      return baseType;
     }
 
     /**
