@@ -45,15 +45,17 @@ If you want to package this app yourself, [Node.js](https://nodejs.org/en/) and 
 **Linux**    
 `npm install && npm run dist`
 
-**Windows** (currently not tested)    
+**Windows** (not fully tested)    
 `npm install && npm run dist-win`
+
+If you don't trust the executables in `src/modules/resource/executables`, you can get/create them yourself. Get  `nircmd.exe` from the [official NirCmd homepage](http://www.nirsoft.net/utils/nircmd.html). You can create the `poeActive.exe` executable using [ahk2exe](https://autohotkey.com/docs/Scripts.htm#ahk2exe) by choosing `poeActive.ahk` as the input script.
 
 Alternatively, if you simply want to try it out without packaging the app, clone the repository and run `npm start`.
 
 ## Planned features
 - Fix missing item variants
 - Whisper trade helper
-- Windows release
-  - *This tool currently works on Windows, but there are some problems with it not being always on top and design issues. A version for Windows will be released once some more testing has been done.*
+- Improve Windows version
+  - *To be honest, I don't even know if it works. I don't have a Windows installation that is able to run Path of Exile ;) Feedback and bug reports are appreciated.*
 - Automatically minimize window if Path of Exile is not focused
 	- *If there's a way. If this does not work, I'll implement an auto-minimize feature after x seconds of XenonTrade inactivity.*
