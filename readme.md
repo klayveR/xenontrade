@@ -35,10 +35,6 @@ It is strongly recommended to install these tools before using this app. The app
 ### Linux
 - [xdotool](https://www.semicomplete.com/projects/xdotool/)
 
-### Windows
-- [NirCmd](http://www.nirsoft.net/utils/nircmd.html)
-  - Choose `Yes` if the installer asks you to copy NirCmd into the Windows directory.
-
 ## Build it yourself
 If you want to package this app yourself, [Node.js](https://nodejs.org/en/) and [node-gyp](https://github.com/nodejs/node-gyp) need to be installed on your system.
 
