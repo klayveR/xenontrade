@@ -148,7 +148,7 @@ class Parser {
 
       var lines = this.getClipboardLines();
       var name = lines[index].replace("<<set:MS>><<set:M>><<set:S>>", "");
-      name = name.replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ""); // Replace newline garbage
+      name = name.replace(/[^0-9a-zA-ZäÄöÖüÜß\- ']/gi, ""); // Replace newline garbage
 
       if(type === "Map") {
         name = this._removeMapAffixes(name);
@@ -164,7 +164,7 @@ class Parser {
     */
     getBaseType() {
       var lines = this.getClipboardLines();
-      var baseType = lines[2].replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ""); // Replace newline garbage
+      var baseType = lines[2].replace(/[^0-9a-zA-ZäÄöÖüÜß\- ']/gi, ""); // Replace newline garbage
 
       // If the base type doesn't have letters return null because that's not a base type
       if(!/[a-z]/i.test(baseType)) {
@@ -210,7 +210,6 @@ class Parser {
 
           if(match) {
             type = parserTypes[rarity][i].type;
-            type = type.replace(/[^0-9a-zA-ZäÄöÖüÜß ']/gi, ""); // Replace newline garbage
             break;
           }
         }
