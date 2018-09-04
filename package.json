@@ -81,7 +81,7 @@
       "target": "portable",
       "asarUnpack": [
         "*.node",
-        "src/modules/resource/executables"
+        "src/modules/resource/executables/*.exe"
       ]
     }
   },

@@ -33,7 +33,11 @@ class Helpers {
   * Focuses the Path of Exile window based on the OS
   */
   static focusPathOfExile() {
-    var nirCmd = path.join(__dirname, "/resource/executables/nircmd.exe").replace("app.asar", "app.asar.unpacked");
+    var nirCmd = path.join(__dirname, "/resource/executables/nircmdc.exe").replace("app.asar", "app.asar.unpacked");
+
+    if(os.arch() === "x64") {
+      nirCmd = path.join(__dirname, "/resource/executables/nircmdc64.exe").replace("app.asar", "app.asar.unpacked");
+    }
 
     if(os.platform() === "linux") {
       exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
