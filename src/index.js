@@ -154,6 +154,11 @@ class XenonTrade {
     }
   }
 
+  /**
+  * Gets the item based on the parsed data from poe.ninja
+  *
+  * @param {Parser} parser Parser containing the item clipboard
+  */
   getItem(parser) {
     var itemType = parser.getItemType();
 
@@ -172,6 +177,12 @@ class XenonTrade {
     }
   }
 
+  /**
+  * Adds a new entry for the item that has been received from poe.ninja
+  *
+  * @param {Parser} parser Parser containing the item clipboard
+  * @param {Object} item Item object from poe.ninja
+  */
   onNinjaItemReceive(parser, item) {
     var itemType = parser.getItemType();
     var entry;
