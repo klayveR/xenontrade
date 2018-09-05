@@ -6,7 +6,7 @@ const Config = require("electron-store");
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 let config;
-let debug = true;
+let debug = false;
 
 function createConfig() {
 	config = new Config({
