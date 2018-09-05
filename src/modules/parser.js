@@ -1,7 +1,7 @@
-const itemVariants = require("./resource/itemVariants");
-const gemVariants = require("./resource/gemVariants");
-const parserTypes = require("./resource/parserTypes");
-const mapAffixes = require("./resource/mapAffixes");
+const itemVariants = require("../resource/itemVariants");
+const gemVariants = require("../resource/gemVariants");
+const parserTypes = require("../resource/parserTypes");
+const mapAffixes = require("../resource/mapAffixes");
 
 class Parser {
   /**

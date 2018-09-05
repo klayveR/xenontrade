@@ -30,23 +30,6 @@ class Helpers {
   }
 
   /**
-  * Focuses the Path of Exile window based on the OS
-  */
-  static focusPathOfExile() {
-    var nirCmd = path.join(__dirname, "/resource/executables/nircmdc.exe").replace("app.asar", "app.asar.unpacked");
-
-    if(os.arch() === "x64") {
-      nirCmd = path.join(__dirname, "/resource/executables/nircmdc64.exe").replace("app.asar", "app.asar.unpacked");
-    }
-
-    if(os.platform() === "linux") {
-      exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
-    } else if(os.platform() === "win32") {
-      exec(nirCmd + " win activate title 'Path of Exile'");
-    }
-  }
-
-  /**
   * Checks whether a package is installed on Linux
   *
   * @param {string} package Package to be checked for installation
@@ -77,19 +60,13 @@ class Helpers {
   }
 
   /**
-  * Checks whether a program is installed on Windows
-  *
-  * @param {string} path Path to program to be checked for installation
+  * Checks if Python is installed and added to PATH on windows
   */
-  static isExeInstalled(path) {
+  static isPythonInstalled() {
     return new Promise(function(resolve, reject) {
-      exec("IF EXIST '" + path + "' (echo yes) ELSE (echo no)")
+      exec("python --version")
       .then((output) => {
-        if(output.includes("yes")) {
-          resolve(true);
-        } else {
-          reject(new Error("Program at path " + path + " is not installed"));
-        }
+        resolve(version)
       })
       .catch((error) => {
         reject(error);
@@ -99,11 +76,9 @@ class Helpers {
 
   /**
   * Checks if Path of Exile is currently focused
-  *
-  * @param {callback} callback Callback that handles the response
   */
-  static isPathOfExileActive(callback) {
-    var ahkExe = path.join(__dirname, "/resource/executables/poeActive.exe").replace("app.asar", "app.asar.unpacked");
+  static isPathOfExileActive() {
+    var ahkExe = this.fixPathForAsarUnpack(path.join(__dirname, "/resource/executables/poeActive.exe"));
 
     return new Promise(function(resolve, reject) {
       if(os.platform() === "linux") {
@@ -132,6 +107,85 @@ class Helpers {
         });
       }
     });
+  }
+
+  /**
+  * Fixes path for asar unpack
+  *
+  * @param {path} path Path to fix
+  */
+  static fixPathForAsarUnpack(path) {
+    return path.replace("app.asar", "app.asar.unpacked");
+  }
+
+  /**
+  * Focuses the Path of Exile window based on the OS
+  */
+  static focusPathOfExile() {
+    var nirCmd = this.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/executables/nircmdc.exe"));
+
+    if(os.arch() === "x64") {
+      nirCmd = this.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/executables/nircmdc64.exe"));
+    }
+
+    if(os.platform() === "linux") {
+      exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
+    } else if(os.platform() === "win32") {
+      exec(nirCmd + " win activate title 'Path of Exile'");
+    }
+  }
+
+  /**
+  * Gets Path of Exile leagues that are non-SSF from GGG API and returns the names
+  */
+  static getPathOfExileLeagues() {
+    return new Promise(function(resolve, reject) {
+      request("http://api.pathofexile.com/leagues?type=main", {json: true})
+      .then((body) => {
+        var leagues = [];
+        var leaguesCount = 0;
+        // Iterate through each league
+        for(var i = 0; i < body.length; i++) {
+          var league = body[i];
+          var ssf = false;
+          leaguesCount++;
+
+          if(!Helpers.isSoloLeague(league)) { leagues.push(league.id); }
+
+          // When done with every league
+          if(leaguesCount === body.length) {
+            resolve(leagues);
+          }
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+  * Returns `true` if the league rules have a solo rules
+  *
+  * @return {boolean}
+  */
+  static isSoloLeague(league) {
+    if(league.rules.length > 0) {
+      for(var j = 0; j < league.rules.length; j++) {
+        if(league.rules[j].name === "Solo") {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+  * Convert an Uint8Array to a string
+  */
+  uint8arrayToString(data) {
+    return String.fromCharCode.apply(null, data);
   }
 }
 

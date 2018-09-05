@@ -18,8 +18,6 @@ class GUI {
     this.width = width;
     this.window = remote.getCurrentWindow();
     this.entries = new Entries(this.app);
-
-    this.initialize();
   }
 
   /**
@@ -29,12 +27,6 @@ class GUI {
     this.initializeButtons();
     this.initializeSettings();
     this.updateWindowHeight();
-
-    // Initialize position from config
-    this.setWindowPosition(this.app.config.get("window.x"), this.app.config.get("window.y"));
-
-    // Finally show window
-    ipcRenderer.send("ready");
   }
 
   /**
@@ -48,12 +40,12 @@ class GUI {
 
     $(".settings").find(".plusButton").click(function(e) {
       e.preventDefault();
-      self.changeTimeoutValue($(this).attr("data-type"), 1);
+      self.updateTimeoutSetting($(this).attr("data-type"), 1);
     });
 
     $(".settings").find(".minusButton").click(function(e) {
       e.preventDefault();
-      self.changeTimeoutValue($(this).attr("data-type"), -1);
+      self.updateTimeoutSetting($(this).attr("data-type"), -1);
     });
   }
 
@@ -63,6 +55,7 @@ class GUI {
   initializeLeagueSettings(leagues) {
     var self = this;
 
+    // Add leagues as options to select
     $.each(leagues, function (i, league) {
       $("#leagueSelect").append($("<option>", {
         value: league,
@@ -70,41 +63,14 @@ class GUI {
       }));
     });
 
+    // Select option change listener
     $("#leagueSelect").change(function() {
-      self.app.config.set("league", $("#leagueSelect").val());
-      self.app.updateNinja();
+      var league = $("#leagueSelect").val();
+      self.updateLeagueSetting(league);
     });
 
     // Select league from config
     $("#leagueSelect").find("option[value='" + this.app.config.get("league") + "']").attr("selected", "selected");
-  }
-
-  /**
-  * Toggles between settings and entries
-  */
-  toggleSettings() {
-    $("#settingsButton").find("i").toggleClass("grey");
-
-    $(".entries").toggleClass("hidden");
-    $(".settings").toggleClass("hidden");
-
-    this.updateWindowHeight();
-  }
-
-  /**
-  * Changes the value of a timeout in the GUI and config
-  *
-  * @param {string} type data-type/config property of the timeout
-  * @param {number} add Number to add to config value
-  */
-  changeTimeoutValue(type, add) {
-    var value = this.app.config.get("timeouts." + type);
-    value += add;
-
-    if(value >= 0) {
-      this.app.config.set("timeouts." + type, value);
-      $(".settings").find("[data-type='" + type + "']").find(".seconds").html(value);
-    }
   }
 
   /**
@@ -135,6 +101,59 @@ class GUI {
   }
 
   /**
+  * Toggles between settings and entries
+  */
+  toggleSettings() {
+    $("#settingsButton").find("i").toggleClass("grey");
+
+    $(".entries").toggleClass("hidden");
+    $(".settings").toggleClass("hidden");
+
+    this.updateWindowHeight();
+  }
+
+  /**
+  * Changes the league in config and update poe.ninja
+  *
+  * @param {string} league League name that should be saved to config
+  */
+  updateLeagueSetting(league) {
+    this.app.config.set("league", league);
+    this.app.updateNinja();
+  }
+
+  /**
+  * Changes the value of a timeout in the GUI and config
+  *
+  * @param {string} type data-type/config property of the timeout
+  * @param {number} add Number to add to config value
+  */
+  updateTimeoutSetting(type, add) {
+    var value = this.app.config.get("timeouts." + type);
+    value += add;
+
+    if(value >= 0) {
+      this.app.config.set("timeouts." + type, value);
+      $(".settings").find("[data-type='" + type + "']").find(".seconds").html(value);
+    }
+  }
+
+  /**
+  * Updates the window height based on contents
+  */
+  updateWindowHeight() {
+    var self = this;
+    var height = $(".container").height();
+
+    // There needs to be a slight delay before updating the window height
+    // because in some cases the last entry can get cut off without a timeout
+    // if the entries height is dynamically changed after appending
+    setTimeout(function() {
+      ipcRenderer.send("resize", self.width, height);
+    }, 20);
+  }
+
+  /**
   * Saves position to config and closes GUI
   */
   close() {
@@ -146,28 +165,22 @@ class GUI {
   }
 
   /**
-  * Updates the window height based on contents
+  * Shows the window
   */
-  updateWindowHeight() {
-    var height = $(".container").innerHeight();
-    ipcRenderer.send("resize", this.width, height);
+  show() {
+    if(!this.window.isVisible()) {
+      this.window.show();
+      Helpers.focusPathOfExile();
+    }
   }
 
   /**
-  * Updates the window position
-  *
-  * @param {number} x x position
-  * @param {number} y y position
+  * Hides the window
   */
-  setWindowPosition(x, y) {
-    ipcRenderer.send("position", x, y);
-  }
-
-  /**
-  * Maximizes the window
-  */
-  maximize() {
-    this.window.maximize();
+  minimize() {
+    if(this.window.isVisible()) {
+      this.window.minimize();
+    }
   }
 }
 

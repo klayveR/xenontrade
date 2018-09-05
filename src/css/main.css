@@ -124,7 +124,7 @@ table td.top {
 }
 
 label.wrap {
-  width: 288px;
+  width: 290px;
   overflow: hidden;
   position: relative;
   display: block;
@@ -138,7 +138,7 @@ select {
   padding: 7px;
   font-size: 11px;
   border: 0;
-  width: 288px;
+  width: 290px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

@@ -8,6 +8,8 @@ const request= require("request-promise-native");
 const Config = require("electron-store");
 const NinjaAPI = require("poe-ninja-api-manager");
 const Templates = require("./modules/templates.js");
+const LinuxWL = require("./modules/listeners/linux-window-listener.js");
+const WindowsWL = require("./modules/listeners/windows-window-listener.js");
 const Helpers = require("./modules/helpers.js");
 const Parser = require("./modules/parser.js");
 const GUI = require("./modules/gui.js");
@@ -21,22 +23,8 @@ class XenonTrade {
   constructor() {
     this.updating = false;
 
-    // Set config defaults
-    this.config = new Config({
-      defaults: {
-        league: "Delve",
-        timeouts: {
-          currency: 0,
-          item: 0
-        },
-        focusPathOfExile: true,
-        window: {
-          x: 0,
-          y: 0
-        }
-      }
-    });
-
+    this.poeFocused = false;
+    this.config = new Config();
     this.gui = new GUI(this, 300);
     this.templates = new Templates();
     this.ninjaAPI = new NinjaAPI();
@@ -45,67 +33,70 @@ class XenonTrade {
   }
 
   /**
-  * Initializes essential parts of the app
+  * Load templates, then initialize essential parts of the app
   */
   initialize() {
-    this.registerHotkeys();
-    this.loadTemplates();
-    ioHook.start();
-  }
-
-  /**
-  * Loads entry template files, on success updates poe.ninja and checks dependencies
-  */
-  loadTemplates() {
     this.templates.loadTemplates()
     .then(() => {
+      this.gui.initialize();
+      this.initializeWindowListener();
+      this.initializeHotkeys();
+      this.initializeLeagues();
       this.checkDependencies();
-      this.loadLeagues();
       return this.updateNinja();
     })
     .catch((error) => {
-      alert("Couldn't load templates\n" + error.message);
+      alert("Error initializing app\n" + error.message);
       return this.gui.window.close();
     });
   }
 
   /**
-  * Loads entry template files, on success updates poe.ninja and checks dependencies
+  * Starts the window listener based on OS
+  * The window listener automatically hides the GUI when Path of Exile is not focused
   */
-  loadLeagues() {
-    request("http://api.pathofexile.com/leagues?type=main", {json: true})
-    .then((body) => {
-      var leagues = [];
-      var leaguesCount = 0;
-      // Iterate through each league
-      for(var i = 0; i < body.length; i++) {
-        var league = body[i];
-        var ssf = false;
-        leaguesCount++;
+  initializeWindowListener() {
+    if(os.platform() === "linux") {
+      var linuxWL = new LinuxWL(this);
+      linuxWL.initialize()
+      .then(() => {
+        linuxWL.start();
+      });
+    } else
+    if(os.platform() === "win32") {
+      var windowsWL = new WindowsWL(this);
+      windowsWL.start();
+    }
+  }
 
-        // Check if any rule indicates that this is an SSF league
-        if(league.rules.length > 0) {
-          for(var j = 0; j < league.rules.length; j++) {
-            if(league.rules[j].name === "Solo") {
-              ssf = true;
-            }
-          }
-        }
-
-        // Add league if it's not SSF
-        if(!ssf) {
-          leagues.push(league.id);
-        }
-
-        // When done with every league
-        if(leaguesCount === body.length) {
-          this.gui.initializeLeagueSettings(leagues);
-        }
-      }
+  /**
+  * Loads leagues, adds them to the settings menu if successful, error entry if not
+  */
+  initializeLeagues() {
+    Helpers.getPathOfExileLeagues()
+    .then((leagues) => {
+      this.gui.initializeLeagueSettings(leagues);
     })
     .catch((error) => {
       this.gui.entries.addText("Error loading leagues", error.message, "fa-exclamation-circle red");
+    })
+  }
+
+  /**
+  * Registers global hotkeys
+  */
+  initializeHotkeys() {
+    var self = this;
+
+    // Register CTRL + C hotkey
+    const clipboardShortcut = ioHook.registerShortcut([29, 46], (keys) => {
+      // Waiting 100ms before calling the processing method, because the clipboard needs some time to be updated
+      setTimeout(function() {
+        self.onClipboard();
+      }, 100);
     });
+
+    ioHook.start();
   }
 
   /**
@@ -117,24 +108,14 @@ class XenonTrade {
     if(os.platform() === "linux") {
       Helpers.isPackageInstalled("xdotool")
       .catch((error) => {
-        return this.gui.entries.addText("Missing dependency", "This tool uses <strong>xdotool</strong> to focus Path of Exile. The price checking feature works without this, but it is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
+        return this.gui.entries.addText("Missing dependency", "This tool uses <strong>xdotool</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
+      });
+    } else if(os.platform() === "win32") {
+      Helpers.isPythonInstalled()
+      .catch((error) => {
+        return this.gui.entries.addText("Missing dependency", "This tool uses <strong>Python 3</strong> to automatically minimize this tool when Path of Exile is not active. It is recommended to install it for an optimal experience.<br /><b>Make sure to add Python to your environment variables.</b>", "fa-exclamation-triangle yellow");
       });
     }
-  }
-
-  /**
-  * Registers global hotkeys
-  */
-  registerHotkeys() {
-    var self = this;
-
-    // Register CTRL + C hotkey
-    const clipboardShortcut = ioHook.registerShortcut([29, 46], (keys) => {
-      // Waiting 100ms before calling the processing method, because the clipboard needs some time to be updated
-      setTimeout(function() {
-        self.onClipboard();
-      }, 100);
-    });
   }
 
   /**
