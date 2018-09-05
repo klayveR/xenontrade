@@ -93,7 +93,6 @@ table td.top {
 }
 
 .settings .content table td {
-  background-color: #272f3d;
   padding: 5px;
 }
 
@@ -138,7 +137,7 @@ select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background: #272f3d repeat;
+  background: #272f3d;
   padding: 7px;
   font-size: 11px;
   border: 0;
