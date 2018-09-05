@@ -66,25 +66,34 @@
   },
   "build": {
     "appId": "de.klayver.xenontrade",
+    "files": [
+      "**/*",
+      "!**/src/resource/python",
+      "!**/{*.md,.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}"
+    ],
     "linux": {
+      "icon": "build/icon.icns",
       "target": [
         "AppImage",
         "deb",
         "rpm"
       ],
       "category": "Game",
+      "asar": true,
       "asarUnpack": [
         "*.node"
       ],
-      "icon": "build/icon.icns"
+      "files": [
+        "!**/src/resource/executables"
+      ]
     },
     "win": {
       "icon": "build/icon.ico",
       "target": "portable",
+      "asar": true,
       "asarUnpack": [
         "*.node",
-        "src/resource/executables/*.exe",
-        "src/resource/python/*.py"
+        "src/resource/executables/*.exe"
       ]
     }
   },
