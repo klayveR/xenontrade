@@ -3,7 +3,6 @@
 const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 const os = require("os");
-const request= require("request-promise-native");
 
 const Config = require("electron-store");
 const NinjaAPI = require("poe-ninja-api-manager");
@@ -79,7 +78,7 @@ class XenonTrade {
     })
     .catch((error) => {
       this.gui.entries.addText("Error loading leagues", error.message, "fa-exclamation-circle red");
-    })
+    });
   }
 
   /**

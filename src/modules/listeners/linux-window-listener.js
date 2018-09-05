@@ -1,8 +1,8 @@
 var x11, Getx11Property;
 
 try {
-  x11 = require('x11');
-  Getx11Property = require('x11-prop').get_property;
+  x11 = require("x11");
+  Getx11Property = require("x11-prop").get_property;
 } catch(error) {
   // In case of an error requiring x11 dependencies the user is 99.9% using Windows, so this error can be ignored
 }
@@ -16,8 +16,8 @@ class LinuxWindowListener {
   */
   constructor(app) {
     this.app = app;
-    this.XClient = null;
-    this.XClientDisplay = null;
+    this.xClient = null;
+    this.xClientDisplay = null;
     this.initialized = false;
   }
 
@@ -33,8 +33,8 @@ class LinuxWindowListener {
           return reject(error);
         }
 
-        self.XClient = display.client;
-        self.XClientDisplay = display.screen[0].root;
+        self.xClient = display.client;
+        self.xClientDisplay = display.screen[0].root;
         self.initialized = true;
         return resolve();
       });
@@ -48,11 +48,11 @@ class LinuxWindowListener {
     if(this.initialized) {
       var self = this;
 
-      this.XClient.ChangeWindowAttributes(this.XClientDisplay, {
+      this.xClient.ChangeWindowAttributes(this.xClientDisplay, {
         eventMask: x11.eventMask.PropertyChange
       });
 
-      this.XClient.on('event', function(ev) {
+      this.xClient.on("event", function(ev) {
         self._windowPropertyChangeHandler(ev);
       });
     }
@@ -64,10 +64,10 @@ class LinuxWindowListener {
   _windowPropertyChangeHandler(ev) {
     var self = this;
 
-    if (ev.name == 'PropertyNotify') {
-      this.XClient.GetAtomName(ev.atom, function(error, name) {
-        if (name == '_NET_ACTIVE_WINDOW') {
-          Getx11Property(self.XClient, ev.wid, ev.atom, function(error, data) {
+    if (ev.name === "PropertyNotify") {
+      this.xClient.GetAtomName(ev.atom, function(error, name) {
+        if (name === "_NET_ACTIVE_WINDOW") {
+          Getx11Property(self.xClient, ev.wid, ev.atom, function(error, data) {
             self._handleActiveWindowChange(data);
           });
         }
@@ -82,9 +82,9 @@ class LinuxWindowListener {
   _handleActiveWindowChange(data) {
     var self = this;
 
-    Getx11Property(this.XClient, data[0], '_NET_WM_NAME', function(error, windowTitle) {
+    Getx11Property(this.xClient, data[0], "_NET_WM_NAME", function(error, windowTitle) {
       if(error) {
-        return
+        return;
       }
 
       if(windowTitle.length > 0) {

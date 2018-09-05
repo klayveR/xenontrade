@@ -1,7 +1,8 @@
-const cp = require('child-process-es6-promise');
+const cp = require("child-process-es6-promise");
 const os = require("os");
 const path = require("path");
-const spawn = require('child_process').spawn;
+const spawn = require("child_process").spawn;
+const request = require("request-promise-native");
 
 class Helpers {
   /**
@@ -68,7 +69,7 @@ class Helpers {
     return new Promise(function(resolve, reject) {
       cp.exec("python --version")
       .then((output) => {
-        resolve(output)
+        resolve(output);
       })
       .catch((error) => {
         reject(error);
