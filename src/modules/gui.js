@@ -26,7 +26,18 @@ class GUI {
   initialize() {
     this.initializeButtons();
     this.initializeSettings();
+    this.initializeLock();
+
     this.updateWindowHeight();
+  }
+
+  /**
+  * Initializes the lock status of the draggable header
+  */
+  initializeLock() {
+    if(this.app.config.get("window.locked")) {
+      this.toggleLock();
+    }
   }
 
   /**
@@ -98,6 +109,26 @@ class GUI {
       e.preventDefault();
       self.toggleSettings();
     });
+
+    $("#lockButton").click(function(e) {
+      e.preventDefault();
+      self.toggleLock();
+    });
+  }
+
+  /**
+  * Toggles the header lock and saves to config
+  */
+  toggleLock() {
+    $("#lockButton").find("i").toggleClass("fa-unlock-alt fa-lock");
+    $(".container > .header").toggleClass("draggable");
+
+    console.log(this.app.config.get("window.locked"));
+    var configLock = this.app.config.get("window.locked");
+    configLock = !configLock;
+
+    this.app.config.set("window.locked", configLock);
+    console.log(this.app.config.get("window.locked"));
   }
 
   /**
@@ -143,12 +174,12 @@ class GUI {
   */
   updateWindowHeight() {
     var self = this;
-    var height = $(".container").height();
 
     // There needs to be a slight delay before updating the window height
     // because in some cases the last entry can get cut off without a timeout
     // if the entries height is dynamically changed after appending
     setTimeout(function() {
+      var height = $(".container").height();
       ipcRenderer.send("resize", self.width, height);
     }, 20);
   }

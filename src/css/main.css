@@ -22,6 +22,10 @@ html, body {
   letter-spacing: normal;
 }
 
+.header .text {
+  padding-right: 15px;
+}
+
 .header a {
   -webkit-app-region: no-drag;
 }

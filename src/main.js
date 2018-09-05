@@ -2,10 +2,6 @@ const {app, BrowserWindow} = require("electron");
 const {ipcMain} = require("electron");
 const Config = require("electron-store");
 
-try {
-	require("electron-reloader")(module);
-} catch (err) {}
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
@@ -23,7 +19,8 @@ function createConfig() {
 			focusPathOfExile: true,
 			window: {
 				x: 0,
-				y: 0
+				y: 0,
+				locked: false
 			}
 		}
 	});
@@ -37,7 +34,7 @@ function createWindow() {
 		x: config.get("window.x"),
 		y: config.get("window.y"),
 		width: 300,
-		height: 300,
+		height: 0,
 		frame: false,
 		hasShadow: false
 	});
