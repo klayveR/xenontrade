@@ -110,11 +110,6 @@ class XenonTrade {
       .catch((error) => {
         return this.gui.entries.addText("Missing dependency", "This tool uses <strong>xdotool</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
       });
-    } else if(os.platform() === "win32") {
-      Helpers.isPythonInstalled()
-      .catch((error) => {
-        return this.gui.entries.addText("Missing dependency", "This tool uses <strong>Python 3</strong> to automatically minimize this tool when Path of Exile is not active. It is recommended to install it for an optimal experience.<br /><b>Make sure to add Python to your environment variables.</b>", "fa-exclamation-triangle yellow");
-      });
     }
   }
 
@@ -147,11 +142,11 @@ class XenonTrade {
           this.onNinjaItemReceive(parser, itemArray[0]);
         })
         .catch((error) => {
-          console.error(error);
+          // No item received, not much you can do, huh
         });
       }
     } else {
-      this.gui.entries.addText("No data", "There's no data for " + this.config.get("league") + ". You should update before attempting to price check another item.", "fa-exclamation-triangle yellow", {timeout: 15});
+      this.gui.entries.addText("No data", "There's no data for " + this.config.get("league") + ". You should update before attempting to price check another item.", "fa-exclamation-triangle yellow", {timeout: 10});
     }
   }
 
@@ -185,7 +180,7 @@ class XenonTrade {
       this.ninjaAPI.update({league: this.config.get("league")})
       .then((result) => {
         updateEntry.close();
-        this.gui.entries.addTitle("Update successful 🎉", "fa-check-circle green", {timeout: 15});
+        this.gui.entries.addTitle("Update successful 🎉", "fa-check-circle green", {timeout: 10});
       })
       .catch((error) => {
         updateEntry.close();

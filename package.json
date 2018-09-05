@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "child-process-promise": "^2.2.1",
+    "child-process-es6-promise": "^1.2.0",
     "clipboardy": "github:klayveR/clipboardy",
     "electron-store": "^2.0.0",
     "iohook": "^0.2.0",

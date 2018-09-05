@@ -82,14 +82,21 @@ class LinuxWindowListener {
   _handleActiveWindowChange(data) {
     var self = this;
 
-    Getx11Property(this.XClient, data[0], '_NET_WM_NAME', function(err, windowTitle) {
+    Getx11Property(this.XClient, data[0], '_NET_WM_NAME', function(error, windowTitle) {
+      if(error) {
+        return
+      }
 
-      if(windowTitle.length > 0 && ["Path of Exile", "XenonTrade"].includes(windowTitle[0])) {
-        self.app.poeFocused = true;
-        self.app.gui.show();
-      } else {
-        self.app.poeFocused = false;
-        self.app.gui.minimize();
+      if(windowTitle.length > 0) {
+        if(windowTitle[0] === "XenonTrade") {
+          self.app.poeFocused = false;
+        } else if(windowTitle[0] === "Path of Exile") {
+          self.app.poeFocused = true;
+          self.app.gui.show();
+        } else {
+          self.app.poeFocused = false;
+          self.app.gui.minimize();
+        }
       }
     });
   }

@@ -123,12 +123,10 @@ class GUI {
     $("#lockButton").find("i").toggleClass("fa-unlock-alt fa-lock");
     $(".container > .header").toggleClass("draggable");
 
-    console.log(this.app.config.get("window.locked"));
     var configLock = this.app.config.get("window.locked");
     configLock = !configLock;
 
     this.app.config.set("window.locked", configLock);
-    console.log(this.app.config.get("window.locked"));
   }
 
   /**
@@ -199,7 +197,7 @@ class GUI {
   * Shows the window
   */
   show() {
-    if(!this.window.isVisible()) {
+    if(this.window.isMinimized()) {
       this.window.show();
       Helpers.focusPathOfExile();
     }

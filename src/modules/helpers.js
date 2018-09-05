@@ -1,6 +1,7 @@
-const exec = require("child-process-promise").exec;
+const cp = require('child-process-es6-promise');
 const os = require("os");
 const path = require("path");
+const spawn = require('child_process').spawn;
 
 class Helpers {
   /**
@@ -37,12 +38,12 @@ class Helpers {
   static isPackageInstalled(pkg) {
     return new Promise(function(resolve, reject) {
       // APT based
-      exec("dpkg-query -W -f='${Status} ${Version}\n' " + pkg)
+      cp.exec("dpkg-query -W -f='${Status} ${Version}\n' " + pkg)
       .then((output) => {
         return resolve(true);
       })
       .catch((error) => {
-        return exec("rpm -qa | grep " + pkg);
+        return cp.exec("rpm -qa | grep " + pkg);
       })
       // RPM based
       .then((output) => {
@@ -61,51 +62,17 @@ class Helpers {
 
   /**
   * Checks if Python is installed and added to PATH on windows
+  * Currently unused
   */
   static isPythonInstalled() {
     return new Promise(function(resolve, reject) {
-      exec("python --version")
+      cp.exec("python --version")
       .then((output) => {
-        resolve(version)
+        resolve(output)
       })
       .catch((error) => {
         reject(error);
       });
-    });
-  }
-
-  /**
-  * Checks if Path of Exile is currently focused
-  */
-  static isPathOfExileActive() {
-    var ahkExe = this.fixPathForAsarUnpack(path.join(__dirname, "/resource/executables/poeActive.exe"));
-
-    return new Promise(function(resolve, reject) {
-      if(os.platform() === "linux") {
-        exec("xdotool getwindowfocus getwindowname")
-        .then((output) => {
-          if(output.includes("Path of Exile")) {
-            resolve(true);
-          } else {
-            reject(new Error("Path of Exile is not focused"));
-          }
-        })
-        .catch((error) => {
-          reject(error);
-        });
-      } else if(os.platform() === "win32") {
-        exec(ahkExe + " |more")
-        .then((output) => {
-          if(output.includes("true")) {
-            resolve(true);
-          } else {
-            reject(new Error("Path of Exile is not focused"));
-          }
-        })
-        .catch((error) => {
-          reject(error);
-        });
-      }
     });
   }
 
@@ -124,14 +91,17 @@ class Helpers {
   static focusPathOfExile() {
     var nirCmd = this.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/executables/nircmdc.exe"));
 
-    if(os.arch() === "x64") {
-      nirCmd = this.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/executables/nircmdc64.exe"));
-    }
-
     if(os.platform() === "linux") {
-      exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
+      cp.exec("poeWId=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $poeWId");
     } else if(os.platform() === "win32") {
-      exec(nirCmd + " win activate title 'Path of Exile'");
+      /**
+      * These were used for calling the python script directly, unfortunately that required python installed on the users system
+      * var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/python/focus-window.py"));
+      * var scriptExecution = spawn("python", [scriptPath]);
+      */
+
+      var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/executables/focus-window.exe"));
+      var scriptExecution = spawn(scriptPath);
     }
   }
 
@@ -184,7 +154,7 @@ class Helpers {
   /**
   * Convert an Uint8Array to a string
   */
-  uint8arrayToString(data) {
+  static uint8arrayToString(data) {
     return String.fromCharCode.apply(null, data);
   }
 }

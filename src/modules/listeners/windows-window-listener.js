@@ -20,17 +20,19 @@ class WindowsWindowListener {
     var self = this;
 
     try {
-      var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../../", "/resource/python/window-change-listener.py"));
-      var scriptExecution = spawn("python", [scriptPath]);
+      /**
+      * These were used for calling the python script directly, unfortunately that required python installed on the users system
+      * var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../../", "/resource/python/window-change-listener.py"));
+      * var scriptExecution = spawn("python", [scriptPath]);
+      */
+
+      var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../../", "/resource/executables/window-change-listener.exe"));
+      var scriptExecution = spawn(scriptPath);
 
       scriptExecution.stdout.on('data', (data) => {
-        if(["Path of Exile", "XenonTrade"].includes(Helpers.uint8arrayToString(data))) {
-          self.app.poeFocused = true;
-          self.app.gui.show();
-        } else {
-          self.app.poeFocused = false;
-          self.app.gui.minimize();
-        }
+        var output = Helpers.uint8arrayToString(data);
+
+        self._handleActiveWindowChange(output);
       });
 
       scriptExecution.stderr.on('data', (data) => {
@@ -41,7 +43,23 @@ class WindowsWindowListener {
         self.gui.entries.addText("Window listener exit", "The window listener quit, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
       });
     } catch(error) {
-      // TODO: Python probably not installed, maybe do something here
+      // TODO: This shouldn't fail but maybe it does
+    }
+  }
+
+  /**
+  * Handles the window change event by showing the gui when switched to Path of Exile or XenonTrade or
+  * hiding the GUI when switched to another window
+  */
+  _handleActiveWindowChange(windowTitle) {
+    if(windowTitle.includes("focus:'XenonTrade'")) {
+      this.app.poeFocused = false;
+    } else if(windowTitle.includes("focus:'Path of Exile'")) {
+      this.app.poeFocused = true;
+      this.app.gui.show();
+    } else {
+      this.app.poeFocused = false;
+      this.app.gui.minimize();
     }
   }
 }

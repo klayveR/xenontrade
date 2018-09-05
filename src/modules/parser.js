@@ -294,17 +294,6 @@ class Parser {
     */
     _getSocketString() {
       var sockets = "";
-      /*var lines = this.getClipboardLines();
-
-      for(var i = 0; i < lines.length; i++) {
-        if(lines[i].startsWith("Sockets:")) {
-          sockets = lines[i].replace("Sockets: ", "");
-        }
-      }
-
-      console.log("'" + sockets + "'");
-      */
-
       var regex = /Sockets: (.+)/;
       var match = this.clipboard.match(regex);
 

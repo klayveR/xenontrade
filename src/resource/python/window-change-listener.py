@@ -119,7 +119,7 @@ class WindowChangeEventListener(object):
 
 class WindowObserver(IWindowChangeObserver):
     def notify(self, win_title):
-        print(win_title)
+        print("focus:'%s'" % win_title)
         sys.stdout.flush()
 
 

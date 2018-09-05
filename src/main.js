@@ -6,7 +6,7 @@ const Config = require("electron-store");
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 let config;
-let debug = false;
+let debug = true;
 
 function createConfig() {
 	config = new Config({
@@ -47,7 +47,7 @@ function createWindow() {
 	win.loadFile("./src/index.html");
 	win.setResizable(false);
 
-	win.setAlwaysOnTop(true, "floating");
+	win.setAlwaysOnTop(true, "floating", 1);
 	win.setVisibleOnAllWorkspaces(true);
 	win.setFullScreenable(false);
 
