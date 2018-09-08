@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require("electron");
 const {ipcMain} = require("electron");
 const Config = require("electron-store");
+const os = require("os");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -126,6 +127,8 @@ ipcMain.on("resize", function (e, w, h) {
 	if(!debug) {
     var windowPosition = win.getPosition();
     win.setContentSize(Math.round(w), Math.round(h));
-    win.setPosition(windowPosition[0], windowPosition[1]);
+    if(os.platform() === "linux") {
+      win.setPosition(windowPosition[0], windowPosition[1]);
+    }
   }
 });
