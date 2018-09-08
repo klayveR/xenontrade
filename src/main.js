@@ -83,7 +83,7 @@ ipcMain.on("resize", function (e, w, h) {
   // user, this should fix it
 	if(!debug) {
     var windowPosition = win.getPosition();
-    win.setContentSize(Math.round(w), Math.round(h));
+    win.setSize(Math.round(w), Math.round(h));
     if(os.platform() === "linux") {
       win.setPosition(windowPosition[0], windowPosition[1]);
     }
