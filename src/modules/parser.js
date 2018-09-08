@@ -83,11 +83,11 @@ class Parser {
 
     if(itemVariants.hasOwnProperty(name)) {
       if(itemVariants[name].hasOwnProperty("regex")) {
-        var match = this.clipboard.match(new RegExp(itemVariants[name].regex));
+        var match = this.clipboard.match(new RegExp(itemVariants[name].regex.pattern));
 
         if(match) {
           var value = match[1];
-          variant = itemVariants[name].matches[value];
+          variant = itemVariants[name].regex.matches[value];
         }
       } else if(itemVariants[name].hasOwnProperty("mods")) {
         for(var index in itemVariants[name].mods) {
