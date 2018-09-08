@@ -234,6 +234,15 @@
     "corrupted": true
   },
   {
+    "variant": "20c",
+    "name": null,
+    "levelFrom": 20,
+    "qualityFrom": 0,
+    "levelTo": 20,
+    "qualityTo": 16,
+    "corrupted": true
+  },
+  {
     "variant": "20/23c",
     "name": null,
     "levelFrom": 20,
