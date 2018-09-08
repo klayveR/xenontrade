@@ -32,7 +32,7 @@ class WindowsWindowListener {
       this.started = true;
 
       var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../../", "/resource/executables/window-change-listener.exe"));
-      var scriptExecution = spawn(scriptPath);
+      this.scriptExecution = spawn(scriptPath);
 
       this.scriptExecution.stdout.on("data", (data) => {
         var output = self._uint8arrayToString(data);
