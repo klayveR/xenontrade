@@ -4,7 +4,7 @@
   "description": "Path of Exile trading app for price checking and whisper management",
   "main": "src/main.js",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps && electron-rebuild -f -w ffi",
+    "postinstall": "electron-builder install-app-deps",
     "start": "npm install && electron ./",
     "electron": "electron ./",
     "pack": "build --dir",
@@ -100,7 +100,6 @@
   },
   "devDependencies": {
     "electron": "^2.0.8",
-    "electron-builder": "^20.28.3",
-    "electron-rebuild": "^1.8.2"
+    "electron-builder": "^20.28.3"
   }
 }
