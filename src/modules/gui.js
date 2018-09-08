@@ -152,7 +152,7 @@ class GUI {
   show() {
     if(this.window.isMinimized()) {
       this.window.show();
-      Helpers.focusPathOfExile();
+      Helpers.focusGame();
     }
   }
 
@@ -177,7 +177,7 @@ class GUI {
   */
   onFocus() {
     if(config.get("focusPathOfExile")) {
-      Helpers.focusPathOfExile();
+      Helpers.focusGame();
     }
   }
 }
