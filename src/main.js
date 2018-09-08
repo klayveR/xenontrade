@@ -11,7 +11,6 @@ const find = require('find-process');
 let win;
 let config;
 let debug = false;
-let children = [];
 
 var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // Someone tried to run a second instance, we should focus our window.
@@ -131,8 +130,12 @@ function quitApp() {
     find('name', 'window-change-listener.exe')
     .then(function (list) {
       for(var index in list) {
-        var process = list[index]
-        kill(process.pid);
+        var proc = list[index];
+        kill(proc.pid);
+
+        if(proc.ppid != null) {
+          kill(proc.ppid); // Kill parent
+        }
       }
     })
     .catch((error) => {
