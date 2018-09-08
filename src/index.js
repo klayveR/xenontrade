@@ -38,7 +38,6 @@ class XenonTrade {
   * Load templates, then initialize essential parts of the app
   */
   initialize() {
-    this.initializeExit();
     templates.loadTemplates()
     .then(() => {
       gui.initialize();
@@ -53,20 +52,6 @@ class XenonTrade {
     });
   }
 
-  /**
-  * Prepares the app for exit, kill child processes
-  */
-  initializeExit() {
-    var self = this;
-    var cleanExit = function() { process.exit() };
-
-    process.on('SIGINT', cleanExit); // catch ctrl-c
-    process.on('SIGTERM', cleanExit); // catch kill
-
-    process.on('exit', function() {
-      self.windowsWindowListener.stop();
-    });
-  }
 
   /**
   * Starts the window listener based on OS

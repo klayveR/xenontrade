@@ -2,12 +2,14 @@ const {app, BrowserWindow} = require("electron");
 const {ipcMain} = require("electron");
 const Config = require("electron-store");
 const os = require("os");
+const kill = require('tree-kill');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 let config;
 let debug = false;
+let children = [];
 
 var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // Someone tried to run a second instance, we should focus our window.
@@ -20,42 +22,8 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 });
 
 if (shouldQuit) {
-  app.quit();
+  quitApp();
   return;
-}
-
-function createConfig() {
-	config = new Config({
-		defaults: {
-			league: "Delve",
-      focusPathOfExile: true,
-      autoMinimize: true,
-      pricecheck: true,
-      maxHeight: 500,
-      autoclose: {
-        enabled: true,
-        threshold: {
-          enabled: false,
-          value: 20
-        },
-        timeouts: {
-          currency: {
-            enabled: false,
-            value: 10
-          },
-          item: {
-            enabled: false,
-            value: 10
-          }
-        }
-      },
-			window: {
-				x: 0,
-				y: 0,
-				locked: false
-			}
-		}
-	});
 }
 
 function createWindow() {
@@ -105,19 +73,7 @@ app.on("ready", createWindow);
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-	// On macOS it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-	if (process.platform !== "darwin") {
-		app.quit();
-	}
-});
-
-app.on("activate", () => {
-	// On macOS it"s common to re-create a window in the app when the
-	// dock icon is clicked and there are no other windows open.
-	if (win === null) {
-		createWindow();
-	}
+		quitApp();
 });
 
 ipcMain.on("resize", function (e, w, h) {
@@ -132,3 +88,52 @@ ipcMain.on("resize", function (e, w, h) {
     }
   }
 });
+
+ipcMain.on("childSpawn", function (e, child) {
+  children.push(child);
+});
+
+function quitApp() {
+  killChildren();
+  app.quit();
+}
+
+function createConfig() {
+	config = new Config({
+		defaults: {
+			league: "Delve",
+      focusPathOfExile: true,
+      autoMinimize: true,
+      pricecheck: true,
+      maxHeight: 500,
+      autoclose: {
+        enabled: true,
+        threshold: {
+          enabled: false,
+          value: 20
+        },
+        timeouts: {
+          currency: {
+            enabled: false,
+            value: 10
+          },
+          item: {
+            enabled: false,
+            value: 10
+          }
+        }
+      },
+			window: {
+				x: 0,
+				y: 0,
+				locked: false
+			}
+		}
+	});
+}
+
+function killChildren() {
+  for(var child in children) {
+    kill(children[child].pid);
+  }
+}
