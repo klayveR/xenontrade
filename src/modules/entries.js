@@ -101,7 +101,7 @@ class Entries {
 
     var entry = Entries._add(template, replacements, {switchable: true, expandable: true, trend: true});
 
-    if(config.get("autoclose.timeouts.currency.enabled")) {
+    if(config.get("autoclose.enabled") && config.get("autoclose.timeouts.currency.enabled")) {
       entry.enableAutoClose(config.get("autoclose.timeouts.currency.value"));
     }
 
@@ -156,7 +156,7 @@ class Entries {
 
     var entry = Entries._add(template, replacements, {switchable, expandable, trend: true});
 
-    if(config.get("autoclose.timeouts.item.enabled")) {
+    if(config.get("autoclose.enabled") && config.get("autoclose.timeouts.item.enabled")) {
       if(!(config.get("autoclose.threshold.enabled") && item.chaosValue > config.get("autoclose.threshold.value"))) {
         entry.enableAutoClose(config.get("autoclose.timeouts.item.value"));
       }

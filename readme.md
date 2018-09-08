@@ -1,5 +1,5 @@
 
-# ![](https://i.imgur.com/Ml1Rno5.png) XenonTrade
+# ![](https://i.imgur.com/5MvAbBg.png) XenonTrade
 XenonTrade is a Path of Exile trading app based on electron that was initially developed specifically for Linux users. While Path of Exiles performance on Linux distributions has drastically increased in the past few months, there are barely any trading companions available for Linux. And thus, this app was created. Currently, it is used as an overlay for checking prices, but soon it'll receive a trade whisper helper as well.
 
 Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started!
