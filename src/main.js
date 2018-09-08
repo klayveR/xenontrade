@@ -78,10 +78,12 @@ app.on("ready", () => {
   const iconPath = path.join(__dirname, '../', 'build/icon_512.png');
   tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Show', click:  function(){
+    { label: 'Show', click: function(){
         win.show();
     }},
-    {role: 'close', type: 'normal'}
+    { label: 'Close', click: function(){
+        win.close();
+    }}
   ]);
 
   tray.setToolTip('XenonTrade');

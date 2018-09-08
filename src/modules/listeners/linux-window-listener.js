@@ -92,15 +92,15 @@ class LinuxWindowListener {
         return;
       }
 
-      if(windowTitle.length > 0 && config.get("autoMinimize")) {
+      if(windowTitle.length > 0) {
         if(windowTitle[0] === "XenonTrade") {
           app.poeFocused = false;
         } else if(windowTitle[0] === "Path of Exile") {
           app.poeFocused = true;
-          gui.show();
+          if(config.get("autoMinimize")) { gui.show(); }
         } else {
           app.poeFocused = false;
-          gui.minimize();
+          if(config.get("autoMinimize")) { gui.minimize(); }
         }
       }
     });

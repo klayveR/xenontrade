@@ -40,7 +40,7 @@ class WindowsWindowListener {
       });
 
       this.scriptExecution.stderr.on("data", (data) => {
-          Entries.addText("Window listener error", "The window listener failed, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
+        Entries.addText("Window listener error", "The window listener failed, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
       });
 
       this.scriptExecution.on("exit", (code) => {
@@ -57,16 +57,14 @@ class WindowsWindowListener {
   * hiding the GUI when switched to another window
   */
   _handleActiveWindowChange(windowTitle) {
-    if(config.get("autoMinimize")) {
-      if(windowTitle.includes("focus:'XenonTrade'")) {
-        app.poeFocused = false;
-      } else if(windowTitle.includes("focus:'Path of Exile'")) {
-        app.poeFocused = true;
-        gui.show();
-      } else {
-        app.poeFocused = false;
-        gui.minimize();
-      }
+    if(windowTitle.includes("focus:'XenonTrade'")) {
+      app.poeFocused = false;
+    } else if(windowTitle.includes("focus:'Path of Exile'")) {
+      app.poeFocused = true;
+      if(config.get("autoMinimize")) { gui.show(); }
+    } else {
+      app.poeFocused = false;
+      if(config.get("autoMinimize")) { gui.minimize(); }
     }
   }
 
