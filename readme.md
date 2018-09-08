@@ -4,7 +4,7 @@ XenonTrade is a Path of Exile trading app based on electron that was initially d
 
 Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started!
 
-![](https://i.imgur.com/PnT19ux.png) | ![](https://i.imgur.com/GtXL5Fz.png) | ![](https://i.imgur.com/WU9jiHe.png)
+![](https://i.imgur.com/PnT19ux.png) | ![](https://i.imgur.com/GtXL5Fz.png) | ![](https://i.imgur.com/wvfY1DO.png)
 :---:|:---:|:---:
 
 ## Wiki
