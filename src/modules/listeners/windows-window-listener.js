@@ -1,7 +1,3 @@
-const electron = require("electron");
-const remote = require("electron").remote;
-let { ipcRenderer } = electron;
-
 const path = require("path");
 const Helpers = require("../helpers.js");
 const Entries = require("../entries.js");
@@ -36,7 +32,6 @@ class WindowsWindowListener {
 
       var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../../", "/resource/executables/window-change-listener.exe"));
       this.scriptExecution = spawn(scriptPath);
-      ipcRenderer.send("childSpawn", this.scriptExecution);
 
       this.scriptExecution.stdout.on("data", (data) => {
         var output = self._uint8arrayToString(data);
@@ -54,15 +49,6 @@ class WindowsWindowListener {
       });
     } catch(error) {
       // TODO: This shouldn't fail but maybe it does
-    }
-  }
-
-  /**
-  * Stops script execution
-  */
-  stop() {
-    if(this.started) {
-      kill(this.scriptExecution.pid);
     }
   }
 

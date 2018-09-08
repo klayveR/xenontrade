@@ -1,8 +1,10 @@
 const {app, BrowserWindow} = require("electron");
 const {ipcMain} = require("electron");
 const Config = require("electron-store");
+
 const os = require("os");
 const kill = require('tree-kill');
+const find = require('find-process');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -89,15 +91,6 @@ ipcMain.on("resize", function (e, w, h) {
   }
 });
 
-ipcMain.on("childSpawn", function (e, child) {
-  children.push(child);
-});
-
-function quitApp() {
-  killChildren();
-  app.quit();
-}
-
 function createConfig() {
 	config = new Config({
 		defaults: {
@@ -132,8 +125,23 @@ function createConfig() {
 	});
 }
 
-function killChildren() {
-  for(var child in children) {
-    kill(children[child].pid);
+function quitApp() {
+  // Kill all child processes that have been created during runtime
+  if(os.platform() === "win32") {
+    find('name', 'window-change-listener.exe')
+    .then(function (list) {
+      for(var index in list) {
+        var process = list[index]
+        kill(process.pid);
+      }
+    })
+    .catch((error) => {
+      console.log("Error during app quit", error);
+    })
+    .then(() => {
+      app.quit();
+    });
+  } else {
+    app.quit();
   }
 }
