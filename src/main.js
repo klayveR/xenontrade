@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Tray} = require("electron");
+const {app, Menu, BrowserWindow, Tray} = require("electron");
 const {ipcMain} = require("electron");
 const Config = require("electron-store");
 
@@ -9,7 +9,7 @@ const find = require('find-process');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win;
+let win, tray;
 let config;
 let debug = false;
 
@@ -73,14 +73,19 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
-  tray = new Tray(path.join(__dirname, "/build/icon.ico"));
-  const contextMenu = Menu.buildFromTemplate([
-    {role: 'windowMenu', type: 'normal'}
-  ])
-  tray.setToolTip('XenonTrade')
-  tray.setContextMenu(contextMenu)
-
   createWindow();
+
+  const iconPath = path.join(__dirname, '../', 'build/icon_512.png');
+  tray = new Tray(iconPath);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show', click:  function(){
+        win.show();
+    }},
+    {role: 'close', type: 'normal'}
+  ]);
+
+  tray.setToolTip('XenonTrade');
+  tray.setContextMenu(contextMenu);
 });
 
 // Quit when all windows are closed.
