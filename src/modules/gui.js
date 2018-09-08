@@ -4,20 +4,18 @@ let { ipcRenderer } = electron;
 
 const Entries = require("./entries.js");
 const Helpers = require("./helpers.js");
+const Settings = require("./gui.settings.js");
 
 class GUI {
   /**
   * Creates a new GUI object
   *
   * @constructor
-  * @param {XenonTrade} app A XenonTrade object to which the entry should be added to
-  * @param {number} width Width of the GUI
   */
-  constructor(app, width) {
-    this.app = app;
-    this.width = width;
+  constructor() {
+    this.width = 300;
     this.window = remote.getCurrentWindow();
-    this.entries = new Entries(this.app);
+    this.settings = new Settings();
   }
 
   /**
@@ -25,8 +23,8 @@ class GUI {
   */
   initialize() {
     this.initializeButtons();
-    this.initializeSettings();
     this.initializeLock();
+    this.settings.initialize();
 
     this.updateWindowHeight();
   }
@@ -35,53 +33,9 @@ class GUI {
   * Initializes the lock status of the draggable header
   */
   initializeLock() {
-    if(this.app.config.get("window.locked")) {
+    if(config.get("window.locked")) {
       this.toggleLock();
     }
-  }
-
-  /**
-  * Initializes the settings
-  */
-  initializeSettings() {
-    var self = this;
-
-    $(".settings").find("[data-type='currency']").find(".seconds").html(this.app.config.get("timeouts.currency"));
-    $(".settings").find("[data-type='item']").find(".seconds").html(this.app.config.get("timeouts.item"));
-
-    $(".settings").find(".plusButton").click(function(e) {
-      e.preventDefault();
-      self.updateTimeoutSetting($(this).attr("data-type"), 1);
-    });
-
-    $(".settings").find(".minusButton").click(function(e) {
-      e.preventDefault();
-      self.updateTimeoutSetting($(this).attr("data-type"), -1);
-    });
-  }
-
-  /**
-  * Initializes league settings
-  */
-  initializeLeagueSettings(leagues) {
-    var self = this;
-
-    // Add leagues as options to select
-    $.each(leagues, function (i, league) {
-      $("#leagueSelect").append($("<option>", {
-        value: league,
-        text : league
-      }));
-    });
-
-    // Select option change listener
-    $("#leagueSelect").change(function() {
-      var league = $("#leagueSelect").val();
-      self.updateLeagueSetting(league);
-    });
-
-    // Select league from config
-    $("#leagueSelect").find("option[value='" + this.app.config.get("league") + "']").attr("selected", "selected");
   }
 
   /**
@@ -90,81 +44,75 @@ class GUI {
   initializeButtons() {
     var self = this;
 
-    $("#minimizeButton").click(function(e) {
+    $(".menu").find("[data-button='minimize']").click(function(e) {
       e.preventDefault();
       self.window.minimize();
     });
 
-    $("#closeButton").click(function(e) {
+    $(".menu").find("[data-button='close']").click(function(e) {
       e.preventDefault();
       self.close();
     });
 
-    $("#updateButton").click(function(e) {
+    $(".menu").find("[data-button='update']").click(function(e) {
       e.preventDefault();
-      self.app.updateNinja();
+      app.updateNinja();
     });
 
-    $("#settingsButton").click(function(e) {
+    $(".menu").find("[data-button='settings']").click(function(e) {
       e.preventDefault();
-      self.toggleSettings();
+      self.toggleSettingsMenu();
     });
 
-    $("#lockButton").click(function(e) {
+    $(".menu").find("[data-button='lock']").click(function(e) {
       e.preventDefault();
       self.toggleLock();
     });
+
+    $(".menu").find("[data-button='close-all']").click(function(e) {
+      e.preventDefault();
+      self.closeAllEntries();
+    });
+  }
+
+  /**
+  * Closes all entries
+  */
+  closeAllEntries() {
+    $('.entries').empty();
+
+    this.updateWindowHeight();
   }
 
   /**
   * Toggles the header lock and saves to config
   */
   toggleLock() {
-    $("#lockButton").find("i").toggleClass("fa-unlock-alt fa-lock");
-    $(".container > .header").toggleClass("draggable");
+    $("[data-button='lock']").find("i").toggleClass("fa-unlock fa-lock");
+    $(".container > .menu").toggleClass("draggable");
 
-    var configLock = this.app.config.get("window.locked");
-    configLock = !configLock;
+    var configLock = !config.get("window.locked");
 
-    this.app.config.set("window.locked", configLock);
+    config.set("window.locked", configLock);
+  }
+
+  /**
+  * Toggles the header update icon color
+  */
+  toggleUpdate() {
+    $("[data-button='update']").find("i").toggleClass("grey");
   }
 
   /**
   * Toggles between settings and entries
   */
-  toggleSettings() {
-    $("#settingsButton").find("i").toggleClass("grey");
+  toggleSettingsMenu() {
+    $("[data-button='settings']").find("i").toggleClass("grey");
 
     $(".entries").toggleClass("hidden");
     $(".settings").toggleClass("hidden");
 
     this.updateWindowHeight();
-  }
-
-  /**
-  * Changes the league in config and update poe.ninja
-  *
-  * @param {string} league League name that should be saved to config
-  */
-  updateLeagueSetting(league) {
-    this.app.config.set("league", league);
-    this.app.updateNinja();
-  }
-
-  /**
-  * Changes the value of a timeout in the GUI and config
-  *
-  * @param {string} type data-type/config property of the timeout
-  * @param {number} add Number to add to config value
-  */
-  updateTimeoutSetting(type, add) {
-    var value = this.app.config.get("timeouts." + type);
-    value += add;
-
-    if(value >= 0) {
-      this.app.config.set("timeouts." + type, value);
-      $(".settings").find("[data-type='" + type + "']").find(".seconds").html(value);
-    }
   }
 
   /**
@@ -187,8 +135,8 @@ class GUI {
   */
   close() {
     var windowPosition = this.window.getPosition();
-    this.app.config.set("window.x", windowPosition[0]);
-    this.app.config.set("window.y", windowPosition[1]);
+    config.set("window.x", windowPosition[0]);
+    config.set("window.y", windowPosition[1]);
 
     this.window.close();
   }
@@ -210,6 +158,13 @@ class GUI {
     if(this.window.isVisible()) {
       this.window.minimize();
     }
+  }
+
+  /**
+  * Scrolls to the bottom of the entries div
+  */
+  scrollToBottom() {
+    $('.entries').scrollTop($('.entries')[0].scrollHeight);
   }
 }
 

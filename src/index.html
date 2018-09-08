@@ -4,92 +4,140 @@
 <head>
   <meta charset="UTF-8">
   <title>XenonTrade</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-  <link href="css/main.css" rel="stylesheet">
-  <link href="css/attr-classes.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/attr-classes.css">
+  <link rel="stylesheet" href="css/nouislider.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
   <div class="container">
-    <div class="header draggable">
-      <span class="unselectable">
-        <span class="text">XenonTrade</span>
-      </span>
-      <span style="float: left">
-        <a href="#" id="settingsButton" class="grey"><i class="fas fa-cog grey"></i></a>
-        <a href="#" id="updateButton" class="grey"><i class="fas fa-sync-alt grey"></i></a>
-        <a href="#" id="lockButton" class="grey"><i class="fas fa-unlock-alt grey"></i></a>
-      </span>
-      <span style="float: right">
-        <a href="#" id="minimizeButton"><i class="fas fa-window-minimize grey"></i></a>
-        <a href="#" id="closeButton"><i class="fas fa-times-circle grey"></i></a>
-      </span>
+    <div class="menu draggable">
+      <div class="row">
+        <div class="left">
+          <div class="button">
+            <a href="#" data-button="settings"><i class="fas fa-cog grey"></i></a>
+          </div>
+          <div class="button">
+            <a href="#" data-button="update"><i class="fas fa-sync-alt grey"></i></a>
+          </div>
+          <div class="button">
+            <a href="#" data-button="close-all"><i class="fas fa-times-circle grey"></i></a>
+          </div>
+        </div>
+        <div class="middle"></div>
+        <div class="right">
+          <div class="button">
+            <a href="#" data-button="lock"><i class="fas fa-unlock grey"></i></a>
+          </div>
+          <div class="button">
+            <a href="#" data-button="minimize"><i class="fas fa-window-minimize grey"></i></a>
+          </div>
+          <div class="button">
+            <a href="#" data-button="close"><i class="fas fa-window-close grey"></i></a>
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="entries"></div>
     <div class="settings hidden">
-      <div class="title">
-        <i class="fas fa-flag grey"></i>
-        <span>League</span>
-      </div>
+      <table style="width: 100%">
+        <tbody>
+          <tr>
+            <td colspan="2" class="title">General</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <label class="wrap">
+                <select class="select" id="leagueSelect"></select>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Automatically minimize</td>
+            <td class="toggle"><a href="#" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></a></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="label">Maximum window height</td>
+          </tr>
+          <tr data-slider="maxHeight">
+            <td class="slider" style="width:90%">
+              <div slider-min="100" slider-max="1000"></div>
+            </td>
+            <td class="label" style="float: right"><span class="slider-value">0</span>px</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <div class="content" style="margin: 3px 0px 3px 0px">
-        <label class="wrap">
-          <select class="select" id="leagueSelect"></select>
-        </label>
-      </div>
+      <table style="width: 100%">
+        <tbody>
+          <tr>
+            <td class="title">Price check</td>
+            <td class="toggle"><a href="#" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
 
-      <div class="title">
-        <i class="fas fa-clock grey"></i>
-        <span class="small">Autoclose</span>
-      </div>
-
-      <div class="content" id="settings">
-        <table width="100%">
-          <tbody>
-            <tr data-type="currency">
-              <td style="text-align: left">Currency</td>
-              <td><a href="#" class="minusButton" data-type="currency"><i class="fas fa-minus-circle grey"></i></a></td>
-              <td><span class="seconds">0</span><span class="grey very-small">s</span></td>
-              <td><a href="#" class="plusButton" data-type="currency"><i class="fas fa-plus-circle grey"></i></a></td>
-            </tr>
-            <tr data-type="item">
-              <td style="text-align: left">Item</td>
-              <td><a href="#" class="minusButton" data-type="item"><i class="fas fa-minus-circle grey"></i></a></td>
-              <td><span class="seconds">0</span><span class="grey very-small">s</span></td>
-              <td><a href="#" class="plusButton" data-type="item"><i class="fas fa-plus-circle grey"></i></a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="title">
-        <i class="fas fa-users grey"></i>
-        <span class="small">Credits</span>
-      </div>
-
-      <div class="content">
-        <p class="text" style="margin-top: 0px">
-          Thanks to <b>rasmuskl</b> for the great poe.ninja API and <b>GGG</b> for their fantastic game.
-        </p>
-        <p class="text" style="margin-bottom: 0px">
-          Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
-        </p>
-      </div>
+      <table style="width: 100%">
+        <tbody>
+          <tr>
+            <td class="title" colspan="3">Auto close</td>
+            <td class="toggle"><a href="#" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+          </tr>
+          <tr data-slider="autoclose.timeouts.currency.value">
+            <td class="label">Currency</td>
+            <td class="slider-label"><span class="slider-value">0</span>s</td>
+            <td class="slider" style="width: 85%">
+              <div slider-min="1" slider-max="99"></div>
+            </td>
+            <td class="toggle"><a href="#" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+          </tr>
+          <tr data-slider="autoclose.timeouts.item.value">
+            <td class="label">Item</td>
+            <td class="slider-label"><span class="slider-value">0</span>s</td>
+            <td class="slider">
+              <div slider-min="1" slider-max="99"></div>
+            </td>
+            <td class="toggle"><a href="#" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+          </tr>
+          <tr data-slider="autoclose.threshold.value">
+            <td class="label">Threshold</td>
+            <td class="slider-label"><span class="slider-value">0</span>c</td>
+            <td class="slider">
+              <div slider-min="1" slider-max="99"></div>
+            </td>
+            <td class="toggle"><a href="#" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+          </tr>
+          <tr>
+            <td class="info" colspan="4">Use the threshold to disable auto close if the value of the item is higher than the threshold value.</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr />
+      <table style="width: 100%">
+        <tbody>
+          <tr>
+            <td class="info">Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
   <script>window.$ = window.jQuery = require('jquery');</script>
+  <script type="text/javascript" src="lib/nouislider.min.js"></script>
   <script type="text/javascript" src="lib/jquery.peity.min.js"></script>
   <script type="text/javascript">
   $.fn.peity.defaults.line = {
     delimiter: ",",
-    fill: "#636f84",
+    fill: "#404c60",
     height: 16,
     max: null,
     min: 0,
-    stroke: "#e6eaf2",
+    stroke: "#748199",
     strokeWidth: 1,
-    width: 75
+    width: 35
   }
   </script>
 

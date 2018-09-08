@@ -1,154 +1,273 @@
 * {
   color: #e6eaf2;
-  overflow: hidden;
   font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  user-select: none;
+  cursor: default;
 }
 
 html, body {
-  background-color: #202630;
   margin: 0 auto;
+  background-color: #202630;
+  overflow: hidden;
 }
 
-.header {
-  background-color: #171c23;
-  padding: 5px;
-  text-align: center;
-  font-family: "Roboto", sans-serif;
-  color: #c5d3e8;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: normal;
+a i {
+  cursor: pointer !important;
 }
 
-.header .text {
-  padding-right: 15px;
-}
-
-.header a {
-  -webkit-app-region: no-drag;
+hr {
+  border: 0;
+  height: 0;
+  border-bottom: 1px solid #303a4c;
 }
 
 i {
-  vertical-align: top;
-  padding-top: 2px;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-table td.shrink {
-  white-space: nowrap;
-}
-
-table td.expand {
-  width: 99%;
-}
-
-table td.top {
-  vertical-align: top;
-}
-
-.title {
-  border-top: 1px solid #303a4c;
-  border-bottom: 1px solid #303a4c;
-  background-color: #272f3d;
-  padding: 0px 5px 2px 5px;
-  margin: 1px 0px 0px 0px;
-  font-size: 11px;
   vertical-align: middle;
 }
 
-.title span {
-  padding: 0px 0px 0px 5px;
-  pointer-events: none;
-}
-
-.title span#timeout {
-  padding-right: 3px;
-  pointer-events: none;
-}
-
-.title a i {
-  padding-right: 2px;
-}
-
-.content {
+.container {
   background-color: #202630;
-  padding: 5px 5px 5px 5px;
-  text-align: justify;
-  font-size: 12px;
+  overflow-x: hidden;
 }
 
-.content img.icon {
-  height: 20px;
+.menu {
+  background-color: #171c23;
+  font-size: 13px;
+  display: table;
+  width: 100%;
+  padding: 0px 0px 2px 0px;
+}
+
+.menu a {
+  -webkit-app-region: no-drag;
+}
+
+.menu .left, .menu .middle, .menu .right {
+  display: table-cell;
+}
+
+.menu .left {
+  width: 50%;
+  text-align: left;
+  padding-left: 3px;
+}
+
+.menu .middle {
+  vertical-align: middle;
+  text-align: center;
+  color: #748199;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.menu .right {
+  width: 50%;
+  text-align: right;
+  padding-right: 3px;
+}
+
+.entries {
+  overflow: auto;
+  max-height: 200px;
+}
+
+.entries::-webkit-scrollbar {
+   width: 5px;
+}
+
+.entries::-webkit-scrollbar-track {
+   background: #272f3d;
+}
+
+.entries::-webkit-scrollbar-thumb {
+   background: #404c60;
+}
+
+.entry {
+  width: 100%;
+}
+
+.entry .title {
+  width: 100%;
+  background-color: #272f3d;
+  font-size: 12px;
+  padding: 0px 0px 3px 0px;
+}
+
+.entry .title .left {
+  text-align: left !important;
+  padding: 0px 0px 0px 3px;
+  float: left;
+}
+
+.entry .title .middle {
+  width: 220px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left !important;
+  font-weight: bold;
+  padding-left: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entry .title .right {
+  text-align: right !important;
+  padding: 0px 3px 0px 3px;
+  float: right;
+}
+
+.entry .title .timeout {
+  border-radius: 2px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: left !important;
+  background-color: #748199;
+  font-size: 10px;
+  color: #272f3d;
+  font-weight: bold;
+  padding: 0px 3px;
+  margin-top: 4px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.entry .content {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.entry .content .value {
+  vertical-align: middle;
+}
+
+.entry .content .text {
+  padding: 3px 3px;
+  font-weight: normal;
+  text-align: justify;
+}
+
+.entry .content .fa-arrow-right {
+  padding: 0px 5px;
+  vertical-align: middle;
+  color: #748199;
+}
+
+.entry .content img.icon {
+  height: 18px;
   width: auto;
   vertical-align: middle;
 }
 
-.content table td {
-  text-align: center;
+.entry .content .item {
+  position: relative;
 }
 
-.settings .content table td {
-  padding: 5px;
+.entry .content .price {
+  padding: 5px 3px;
 }
 
-.settings .content td a {
-  line-height: 0;
+.entry .content .confidence {
+  position: absolute;
+  width: 3px !important;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  float: left;
+  display: inline-block;
+  background-color: #748199;
 }
 
-.content table {
-  margin: 0 auto;
-}
-
-.content .text {
-  color: #748199;
-  font-size: 10px;
-}
-
-.entry .content svg {
-  margin: 5px 0px 0px 0px;
-}
-
-.entry .content img.left {
-  margin: 0px 5px 0px 0px;
-}
-
-.entry .content img.right {
-  margin: 0px 0px 0px 5px;
-}
-
-.entry .content .arrow {
-  padding: 2px 8px 0px 8px;
+.entry .content .peity {
+  position: absolute;
+  right: 0;
+  padding: 0px 3px;
+  float:right;
+  display: inline-block;
   vertical-align: middle;
 }
 
-label.wrap {
-  width: 290px;
+.entry .content .header {
+  position: relative;
+  font-weight: normal;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.settings {
+  padding: 0px 5px 5px 5px;
+}
+
+.settings td.title {
+  padding-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+.settings td.label {
+  font-size: 12px;
+  vertical-align: middle;
+  text-align: justify;
+  color: #748199;
+}
+
+.settings td.slider-label {
+  font-size: 12px;
+  vertical-align: middle;
+  color: #748199;
+  padding: 0px 3px;
+}
+
+.settings td.info {
+  font-size: 10px;
+  vertical-align: middle;
+  text-align: justify;
+  color: #748199;
+  line-height: 12px;
+}
+
+.settings td.info a {
+  color: #748199;
+}
+
+.settings .toggle a i {
+  font-size: 16px;
+  text-decoration: none;
+  padding-right: 3px;
+  vertical-align: top;
+  float: right;
+}
+
+.settings .slider {
+  padding: 0px 5px;
+}
+
+.settings label.wrap {
+  width: 100%;
   overflow: hidden;
   position: relative;
   display: block;
 }
 
-select {
+.settings select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background: #272f3d;
+  background: #303a4c;
   padding: 7px;
   font-size: 11px;
   border: 0;
-  width: 290px;
+  width: 100%;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
 }
 
-label.wrap:after {
+.settings label.wrap:after {
   content:"\f150";
   font-family: "Font Awesome\ 5 Free";
   color: #748199;
@@ -156,6 +275,6 @@ label.wrap:after {
   right: 0;
   top: 7px;
   z-index: 1;
-  width: 6%;
+  width: 8%;
   pointer-events: none;
 }

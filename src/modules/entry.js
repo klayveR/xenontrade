@@ -5,14 +5,12 @@ class Entry {
   * Creates a new Entry object
   *
   * @constructor
-  * @param {XenonTrade} app A XenonTrade object to which the entry should be added to
-  * @param {number} id ID of the entry
   */
-  constructor(app, id) {
-    this.app = app;
-    this.id = id;
+  constructor() {
+    this.id = Helpers.generateRandomId();
     this.template = "";
     this.replacements = [];
+    this.timeout = null;
   }
 
   /**
@@ -44,7 +42,7 @@ class Entry {
   */
   enableClose() {
     var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find("#closeButton");
+    var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
 
     button.show().click(function(e) {
       e.preventDefault();
@@ -57,7 +55,9 @@ class Entry {
   */
   enableToggle(toggle) {
     var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find("#" + toggle + "Button");
+    var button = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']");
+
+    $(".entry[data-id='" + this.id + "']").find(".left").removeClass("hidden");
 
     button.show().click(function(e) {
       e.preventDefault();
@@ -69,11 +69,11 @@ class Entry {
   * Toggles a toggle on this entry
   */
   _toggle(toggle) {
-    var icon = $(".entry[data-id='" + this.id + "']").find("#" + toggle + "Button").find("i");
+    var icon = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']").find("i");
     icon.toggleClass("grey");
 
-    $("[data-" + toggle +  "='" + this.id + "']").toggleClass("hidden");
-    this.app.gui.updateWindowHeight();
+    $(".entry[data-id='" + this.id + "']").find("[data-" + toggle + "]").toggleClass("hidden");
+    gui.updateWindowHeight();
     this._onButtonClick();
   }
 
@@ -81,7 +81,7 @@ class Entry {
   * Focuses Path of Exile on a button click
   */
   _onButtonClick() {
-    if(this.app.config.get("focusPathOfExile")) {
+    if(config.get("focusPathOfExile")) {
       Helpers.focusPathOfExile();
     }
   }
@@ -93,7 +93,7 @@ class Entry {
     var trend = $(".entry[data-id='" + this.id + "']").find(".trend");
 
     trend.peity("line");
-    this.app.gui.updateWindowHeight();
+    gui.updateWindowHeight();
   }
 
   /**
@@ -101,18 +101,19 @@ class Entry {
   */
   enableAutoClose(seconds) {
     var self = this;
-    var timeoutContainer = $(".entry[data-id='" + this.id + "']").find("#timeout");
+    var timeoutContainer = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
     if(seconds > 0) {
+      this._enableStopAutoCloseButton();
       timeoutContainer.html(seconds);
 
-      var autoClose = setInterval(function() {
+      this.timeout = setInterval(function() {
         seconds--;
         if(seconds < 99) {
           timeoutContainer.html(seconds);
         }
         if (seconds === 0) {
-          clearInterval(autoClose);
+          clearInterval(self.timeout);
           self.close(false);
         }
       }, 1000);
@@ -120,9 +121,32 @@ class Entry {
   }
 
   /**
+  * Enables button that autocloses entry
+  */
+  _enableStopAutoCloseButton() {
+    var self = this;
+    var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
+
+    button.click(function(e) {
+      e.preventDefault();
+      button.hide();
+      self.stopAutoClose();
+    });
+  }
+
+  /**
+  * Stops auto close timeout
+  */
+  stopAutoClose() {
+    clearInterval(this.timeout);
+    this._onButtonClick();
+  }
+
+  /**
   * Replaces replacements in entry and adds it to the GUI
   */
   add() {
+    var self = this;
     var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
     // Check if the entries div is empty, remove whitespaces and newlines
@@ -132,7 +156,7 @@ class Entry {
       $(".entries > .entry:last").after(template);
     }
 
-    this.app.gui.updateWindowHeight();
+    gui.updateWindowHeight();
   }
 
   /**
@@ -140,9 +164,9 @@ class Entry {
   */
   close(focusPathOfExile) {
     $(".entry[data-id='" + this.id + "']").remove();
-    this.app.gui.updateWindowHeight();
+    gui.updateWindowHeight();
 
-    if(focusPathOfExile && this.app.config.get("focusPathOfExile")) {
+    if(focusPathOfExile && config.get("focusPathOfExile")) {
       Helpers.focusPathOfExile();
     }
   }

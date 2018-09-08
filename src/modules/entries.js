@@ -3,17 +3,6 @@ const _ = require("underscore");
 
 class Entries {
   /**
-  * Creates a new Entries object
-  *
-  * @param {XenonTrade} app A XenonTrade object to which the entries should be added to
-  * @constructor
-  */
-  constructor(app) {
-    this.app = app;
-    this.entryCount = 0;
-  }
-
-  /**
   * Adds a title entry without a text and returns it
   *
   * @param {string} title Entry title
@@ -21,15 +10,15 @@ class Entries {
   * @param {Object} options _add options
   * @return {Entry}
   */
-  addTitle(title, icon = "fa-info-circle grey", options) {
-    var template = this.app.templates.get("title.html");
+  static addTitle(title, icon = "fa-info-circle grey", options) {
+    var template = templates.get("title.html");
 
     var replacements = [
       { find: "title", replace: title },
       { find: "icon", replace: icon }
     ];
 
-    return this._add(template, replacements, options);
+    return Entries._add(template, replacements, options);
   }
 
   /**
@@ -41,8 +30,8 @@ class Entries {
   * @param {Object} options _add options
   * @return {Entry}
   */
-  addText(title, text, icon = "fa-info-circle grey", options) {
-    var template = this.app.templates.get("text.html");
+  static addText(title, text, icon = "fa-info-circle grey", options) {
+    var template = templates.get("text.html");
 
     var replacements = [
       { find: "title", replace: title },
@@ -50,7 +39,7 @@ class Entries {
       { find: "icon", replace: icon }
     ];
 
-    return this._add(template, replacements, options);
+    return Entries._add(template, replacements, options);
   }
 
   /**
@@ -60,21 +49,21 @@ class Entries {
   * @param {number} stackSize Stack size of the currency
   * @return {Entry}
   */
-  addCurrency(currency, stackSize) {
-    var template = this.app.templates.get("currency.html");
-    var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
-    var currencyDetails = this.app.ninjaAPI.getCurrencyDetails(currency.currencyTypeName);
+  static addCurrency(currency, stackSize) {
+    var template = templates.get("currency.html");
+    var chaosDetails = ninjaAPI.getCurrencyDetails("Chaos Orb");
+    var currencyDetails = ninjaAPI.getCurrencyDetails(currency.currencyTypeName);
     var hasTrend = false;
 
     var pay = {
-      trend: this._formatTrendData(currency.paySparkLine),
+      trend: Entries._formatTrendData(currency.paySparkLine),
       value: "N/A",
       calculated: "N/A",
       confidence: "red"
     };
 
     var receive = {
-      trend: this._formatTrendData(currency.receiveSparkLine),
+      trend: Entries._formatTrendData(currency.receiveSparkLine),
       value: "N/A",
       calculated: "N/A",
       confidence: "red"
@@ -84,19 +73,14 @@ class Entries {
     if(currency.receive !== null) {
       receive.value = currency.receive.value;
       receive.calculated = receive.value * stackSize;
-      receive.confidence = this._getConfidenceColor(currency.receive.count);
+      receive.confidence = Entries._getConfidenceColor(currency.receive.count);
       pay.calculated = 1 / receive.value;
     }
 
     // Set the pay value
     if(currency.pay !== null) {
       pay.value = currency.pay.value;
-      pay.confidence = this._getConfidenceColor(currency.pay.count);
-    }
-
-    // Show trend if either the pay or the receive trend have values !== 0
-    if(pay.trend.some((el) => el !== 0) || receive.trend.some((el) => el !== 0)) {
-      hasTrend = true;
+      pay.confidence = Entries._getConfidenceColor(currency.pay.count);
     }
 
     var replacements = [
@@ -114,7 +98,13 @@ class Entries {
       { find: "receive-trend", replace: receive.trend }
     ];
 
-    return this._add(template, replacements, {switchable: true, expandable: true, trend: hasTrend});
+    var entry = Entries._add(template, replacements, {switchable: true, expandable: true, trend: true});
+
+    if(config.get("autoclose.timeouts.currency.enabled")) {
+      entry.enableAutoClose(config.get("autoclose.timeouts.currency.value"));
+    }
+
+    return entry;
   }
 
   /**
@@ -123,18 +113,18 @@ class Entries {
   * @param {Object} item poe.ninja item object
   * @return {Entry}
   */
-  addItem(item) {
-    var chaosDetails = this.app.ninjaAPI.getCurrencyDetails("Chaos Orb");
-    var exaltedDetails = this.app.ninjaAPI.getCurrencyDetails("Exalted Orb");
-    var template = this.app.templates.get("item.html");
+  static addItem(item) {
+    var chaosDetails = ninjaAPI.getCurrencyDetails("Chaos Orb");
+    var exaltedDetails = ninjaAPI.getCurrencyDetails("Exalted Orb");
+    var template = templates.get("item.html");
     var switchable = false;
     var expandable = false;
-    var trend = this._formatTrendData(item.sparkline);
+    var trend = Entries._formatTrendData(item.sparkline);
     var name = item.name;
     var info = "";
 
     var hasTrend = false;
-    var confidence = this._getConfidenceColor(item.count);
+    var confidence = Entries._getConfidenceColor(item.count);
 
     // Append variant to item name if it is a variant, not on maps
     if(item.variant !== null && item.variant !== "Atlas2") {
@@ -143,17 +133,12 @@ class Entries {
 
     // Prepend links to item name if links > 0
     if(item.links > 0) {
-      info += item.links + "-link";
+      info += item.links + "L";
     }
 
     // Enable switch button if exalted value is > 1
     if(item.exaltedValue >= 1) {
       switchable = true;
-    }
-
-    // Enable expand button if any trend value is !== 0
-    if(trend.some((el) => el !== 0)) {
-      hasTrend = true;
     }
 
     var replacements = [
@@ -168,7 +153,15 @@ class Entries {
       { find: "trend", replace: trend }
     ];
 
-    return this._add(template, replacements, {switchable, expandable, trend: true});
+    var entry = Entries._add(template, replacements, {switchable, expandable, trend: true});
+
+    if(config.get("autoclose.timeouts.item.enabled")) {
+      if(!(config.get("autoclose.threshold.enabled") && item.chaosValue > config.get("autoclose.threshold.value"))) {
+        entry.enableAutoClose(config.get("autoclose.timeouts.item.value"));
+      }
+    }
+
+    return entry;
   }
 
   /**
@@ -184,7 +177,7 @@ class Entries {
   * @param {boolean} [options.trend=false] `true` if the entry has trend graphs which should be visualized
   * @return {Entry}
   */
-  _add(template, replacements, options) {
+  static _add(template, replacements, options) {
     var defaultOptions = {
       timeout: 0,
       closeable: true,
@@ -195,7 +188,7 @@ class Entries {
 
     options = _.extend(defaultOptions, options);
 
-    var entry = new Entry(this.app, this.entryCount);
+    var entry = new Entry();
     entry.setTemplate(template);
     entry.setReplacements(replacements);
     entry.add();
@@ -217,11 +210,9 @@ class Entries {
     }
 
     if(options.trend) {
-      entry.enableToggle("trend");
       entry.visualizeTrend();
     }
 
-    this.entryCount++;
     return entry;
   }
 
@@ -231,7 +222,7 @@ class Entries {
   * @param {Object} sparkline Sparkline object that contains a sparkline data array
   * @return {Array}
   */
-  _formatTrendData(sparkline) {
+  static _formatTrendData(sparkline) {
     var trend = [0];
 
     if(sparkline != null && sparkline.hasOwnProperty("data")) {
@@ -245,12 +236,12 @@ class Entries {
   }
 
   /**
-  * Removes null from sparkline data and returns the trend as an array
+  * Returns a color based on a value
   *
-  * @param {Object} sparkline Sparkline object that contains a sparkline data array
-  * @return {Array}
+  * @param {number} count Number the confidence color should be based on
+  * @return {string}
   */
-  _getConfidenceColor(count) {
+  static _getConfidenceColor(count) {
     var color = "red";
 
     if(count >= 10) {

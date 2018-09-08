@@ -1,43 +1,34 @@
 <div class="entry" data-id="%entry-id%">
   <div class="title">
-    <table>
-      <tbody>
-        <tr>
-          <td class="shrink">
-            <a href="#" id="switchButton" class="hidden"><i class="fas fa-exchange-alt grey"></i></a>
-            <a href="#" id="trendButton" class="hidden"><i class="fas fa-chart-line grey"></i></a>
-          </td>
-          <td class="expand">
-            <span id="item-name">%item-name%</span>
-            <span class="grey">%item-info%</span>
-          </td>
-          <td class="shrink">
-            <span id="timeout" class="very-small grey"></span>
-            <a href="#" id="closeButton"><i class="fas fa-times-circle grey"></i></a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="left hidden">
+      <div class="button">
+        <a class="hidden" href="#" data-button="switch"><i class="fas fa-exchange-alt grey"></i></a>
+      </div>
+    </div>
+    <div class="middle">
+      %item-name% <span class="grey">%item-info%</span>
+    </div>
+    <div class="right">
+      <div class="timeout"></div>
+      <div class="button">
+        <a class="hidden" href="#" data-button="close"><i class="fas fa-window-close grey"></i></a>
+      </div>
+    </div>
   </div>
-  <div class="content">
-    <table>
-      <tbody>
-        <tr>
-          <td><img alt="%item-name%" class="icon" src="%item-icon%"></td>
-          <td class="arrow"><i class="fas fa-arrow-right %conf-color%"></i></td>
-          <td>
-            <span data-switch="%entry-id%">%item-value-chaos%</span>
-            <span data-switch="%entry-id%" class="hidden">%item-value-exalted%</span>
-          </td>
-          <td>
-            <img data-switch="%entry-id%" alt="Chaos Orb" class="icon right" src="%chaos-icon%">
-            <img data-switch="%entry-id%" alt="Exalted Orb" class="icon right hidden" src="%exalted-icon%">
-          </td>
-        </tr>
-        <tr data-trend="%entry-id%" class="hidden">
-          <td colspan="4"><span class="trend">%trend%</span></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="content center">
+    <div class="item">
+      <div class="confidence %conf-color%-bg"></div>
+      <div class="price">
+        <img class="icon right-margin" alt="%item-name%" src="%item-icon%">
+        <i class="fas fa-arrow-right"></i>
+        <span class="value" data-switch="%entry-id%">%item-value-chaos%</span>
+        <span class="value hidden" data-switch="%entry-id%">%item-value-exalted%</span>
+        <img class="icon left-margin" data-switch="%entry-id%" alt="Chaos Orb" src="%chaos-icon%">
+        <img class="icon left-margin hidden" data-switch="%entry-id%" alt="Exalted Orb" src="%exalted-icon%">
+        <div class="trend hidden">
+          %trend%
+        </div>
+      </div>
+    </div>
   </div>
 </div>

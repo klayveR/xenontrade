@@ -55,6 +55,11 @@ class LinuxWindowListener {
       this.xClient.on("event", function(ev) {
         self._windowPropertyChangeHandler(ev);
       });
+
+      this.xClient.on("error", function(error) {
+        // xCore throws a "Bad Window" error sometimes, we catch this here
+        // Without this error listener, an object of this class would simply stop working
+      });
     }
   }
 
@@ -87,15 +92,15 @@ class LinuxWindowListener {
         return;
       }
 
-      if(windowTitle.length > 0) {
+      if(windowTitle.length > 0 && config.get("autoMinimize")) {
         if(windowTitle[0] === "XenonTrade") {
-          self.app.poeFocused = false;
+          app.poeFocused = false;
         } else if(windowTitle[0] === "Path of Exile") {
-          self.app.poeFocused = true;
-          self.app.gui.show();
+          app.poeFocused = true;
+          gui.show();
         } else {
-          self.app.poeFocused = false;
-          self.app.gui.minimize();
+          app.poeFocused = false;
+          gui.minimize();
         }
       }
     });

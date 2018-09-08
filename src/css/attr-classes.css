@@ -1,48 +1,60 @@
-.unselectable {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-  cursor: default;
+.row  {
+  display: table-row;
 }
 
-.draggable {
-  -webkit-app-region: drag;
-}
-
-.small {
-  font-size: 10px;
-}
-
-.very-small {
-  font-size: 9px;
-}
-
-.uppercase {
-  text-transform: uppercase;
-}
-
-.grey {
-  color: #748199;
-}
-
-.green {
-  color: #9ae055;
-}
-
-.yellow {
-  color: #e0cf55;
-}
-
-.red {
-  color: #d14f4f;
+.button {
+  display: inline-block;
+  margin: 0px 1px 0px 1px;
 }
 
 .hidden {
   display: none;
 }
 
-.disabledLink {
-  cursor: not-allowed;
-  text-decoration: none;
+.left-margin {
+  margin-left: 5px;
+}
+
+.right-margin {
+  margin-right: 5px;
+}
+
+.center {
+  text-align: center;
+}
+
+.draggable {
+  -webkit-app-region: drag;
+}
+
+.white {
+  color: #e6eaf2 !important;
+}
+
+.grey {
+  color: #748199 !important;
+}
+
+.green {
+  color: #9ae055 !important;
+}
+
+.yellow {
+  color: #e0cf55 !important;
+}
+
+.red {
+  color: #d14f4f !important;
+}
+
+.green-bg {
+  background-color: #9ae055 !important;
+}
+
+.yellow-bg {
+  background-color: #e0cf55 !important;
+}
+
+.red-bg {
+  background-color: #d14f4f !important;
 }

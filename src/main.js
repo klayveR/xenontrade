@@ -27,11 +27,27 @@ function createConfig() {
 	config = new Config({
 		defaults: {
 			league: "Delve",
-			timeouts: {
-				currency: 0,
-				item: 0
-			},
-			focusPathOfExile: true,
+      focusPathOfExile: true,
+      autoMinimize: true,
+      pricecheck: true,
+      maxHeight: 500,
+      autoclose: {
+        enabled: true,
+        threshold: {
+          enabled: false,
+          value: 20
+        },
+        timeouts: {
+          currency: {
+            enabled: false,
+            value: 10
+          },
+          item: {
+            enabled: false,
+            value: 10
+          }
+        }
+      },
 			window: {
 				x: 0,
 				y: 0,
@@ -54,17 +70,18 @@ function createWindow() {
 		hasShadow: false
 	});
 
-	if(debug) {
-		win.setSize(800, 600);
-	}
+	if(debug) { win.setSize(800, 600); }
 
 	// and load the index.html of the app.
 	win.loadFile("./src/index.html");
-	win.setResizable(false);
 
+	win.setResizable(false);
 	win.setAlwaysOnTop(true, "floating", 1);
 	win.setVisibleOnAllWorkspaces(true);
 	win.setFullScreenable(false);
+
+  // Windows only
+  win.setFocusable(false);
 
 	// Open the DevTools.
 	if(debug) { win.webContents.openDevTools(); }
@@ -101,5 +118,12 @@ app.on("activate", () => {
 });
 
 ipcMain.on("resize", function (e, w, h) {
-	if(!debug) { win.setSize(Math.round(w), Math.round(h)); }
+  // Save position before resizing and then apply position again
+  // The window would resize but try to keep it centered for one
+  // user, this should fix it
+	if(!debug) {
+    var windowPosition = win.getPosition();
+    win.setSize(Math.round(w), Math.round(h));
+    win.setPosition(windowPosition[0], windowPosition[1]);
+  }
 });

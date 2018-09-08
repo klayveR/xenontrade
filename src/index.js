@@ -11,7 +11,13 @@ const LinuxWL = require("./modules/listeners/linux-window-listener.js");
 const WindowsWL = require("./modules/listeners/windows-window-listener.js");
 const Helpers = require("./modules/helpers.js");
 const Parser = require("./modules/parser.js");
+const Entries = require("./modules/entries.js");
 const GUI = require("./modules/gui.js");
+
+global.config = new Config();
+global.templates = new Templates();
+global.gui = new GUI();
+global.ninjaAPI = new NinjaAPI();
 
 class XenonTrade {
   /**
@@ -21,12 +27,7 @@ class XenonTrade {
   */
   constructor() {
     this.updating = false;
-
     this.poeFocused = false;
-    this.config = new Config();
-    this.gui = new GUI(this, 300);
-    this.templates = new Templates();
-    this.ninjaAPI = new NinjaAPI();
 
     this.initialize();
   }
@@ -35,18 +36,17 @@ class XenonTrade {
   * Load templates, then initialize essential parts of the app
   */
   initialize() {
-    this.templates.loadTemplates()
+    templates.loadTemplates()
     .then(() => {
-      this.gui.initialize();
+      gui.initialize();
       this.initializeWindowListener();
       this.initializeHotkeys();
-      this.initializeLeagues();
       this.checkDependencies();
       return this.updateNinja();
     })
     .catch((error) => {
-      alert("Error initializing app\n" + error.message);
-      return this.gui.window.close();
+      alert("Error initializing app\n" +  error);
+      return gui.window.close();
     });
   }
 
@@ -56,29 +56,16 @@ class XenonTrade {
   */
   initializeWindowListener() {
     if(os.platform() === "linux") {
-      var linuxWL = new LinuxWL(this);
-      linuxWL.initialize()
+      var linuxWindowListener = new LinuxWL(this);
+      linuxWindowListener.initialize()
       .then(() => {
-        linuxWL.start();
+        linuxWindowListener.start();
       });
     } else
     if(os.platform() === "win32") {
-      var windowsWL = new WindowsWL(this);
-      windowsWL.start();
+      var windowsWindowListener = new WindowsWL(this);
+      windowsWindowListener.start();
     }
-  }
-
-  /**
-  * Loads leagues, adds them to the settings menu if successful, error entry if not
-  */
-  initializeLeagues() {
-    Helpers.getPathOfExileLeagues()
-    .then((leagues) => {
-      this.gui.initializeLeagueSettings(leagues);
-    })
-    .catch((error) => {
-      this.gui.entries.addText("Error loading leagues", error.message, "fa-exclamation-circle red");
-    });
   }
 
   /**
@@ -89,10 +76,12 @@ class XenonTrade {
 
     // Register CTRL + C hotkey
     const clipboardShortcut = ioHook.registerShortcut([29, 46], (keys) => {
-      // Waiting 100ms before calling the processing method, because the clipboard needs some time to be updated
-      setTimeout(function() {
-        self.onClipboard();
-      }, 100);
+      if(config.get("pricecheck")) {
+        // Waiting 100ms before calling the processing method, because the clipboard needs some time to be updated
+        setTimeout(function() {
+          self.onClipboard();
+        }, 100);
+      }
     });
 
     ioHook.start();
@@ -107,7 +96,7 @@ class XenonTrade {
     if(os.platform() === "linux") {
       Helpers.isPackageInstalled("xdotool")
       .catch((error) => {
-        return this.gui.entries.addText("Missing dependency", "This tool uses <strong>xdotool</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
+        return Entries.addText("Missing dependency", "This tool uses <strong>xdotool</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
       });
     }
   }
@@ -134,9 +123,9 @@ class XenonTrade {
   getItem(parser) {
     var itemType = parser.getItemType();
 
-    if(this.ninjaAPI.hasData(this.config.get("league"))) {
+    if(ninjaAPI.hasData(config.get("league"))) {
       if(!["Magic", "Rare"].includes(parser.getItemType()) && parser.isIdentified() === true) {
-        this.ninjaAPI.getItem(parser.getName(), {league: this.config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
+        ninjaAPI.getItem(parser.getName(), {league: config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
         .then((itemArray) => {
           this.onNinjaItemReceive(parser, itemArray[0]);
         })
@@ -145,7 +134,7 @@ class XenonTrade {
         });
       }
     } else {
-      this.gui.entries.addText("No data", "There's no data for " + this.config.get("league") + ". You should update before attempting to price check another item.", "fa-exclamation-triangle yellow", {timeout: 10});
+      Entries.addText("No data", "There's no data for " + config.get("league") + ". You should update before attempting to price check another item.", "fa-exclamation-triangle yellow", {timeout: 10});
     }
   }
 
@@ -160,11 +149,9 @@ class XenonTrade {
     var entry;
 
     if(itemType === "Currency" || itemType === "Fragment") {
-      entry = this.gui.entries.addCurrency(item, parser.getStackSize());
-      entry.enableAutoClose(this.config.get("timeouts.currency"));
+      Entries.addCurrency(item, parser.getStackSize());
     } else {
-      entry = this.gui.entries.addItem(item);
-      entry.enableAutoClose(this.config.get("timeouts.item"));
+      Entries.addItem(item);
     }
   }
 
@@ -174,22 +161,24 @@ class XenonTrade {
   updateNinja() {
     if(!this.updating) {
       this.updating = true;
-      var updateEntry = this.gui.entries.addTitle("Updating poe.ninja prices...", "fa-info-circle grey", {closeable: false});
+      gui.toggleUpdate();
+      var updateEntry = Entries.addTitle("Updating poe.ninja prices...", "fa-info-circle grey", {closeable: false});
 
-      this.ninjaAPI.update({league: this.config.get("league")})
+      ninjaAPI.update({league: config.get("league")})
       .then((result) => {
         updateEntry.close();
-        this.gui.entries.addTitle("Update successful 🎉", "fa-check-circle green", {timeout: 10});
+        Entries.addTitle("Update successful 🎉", "fa-check-circle green", {timeout: 10});
       })
       .catch((error) => {
         updateEntry.close();
-        return this.gui.entries.addText("Failed to update", error.message, "fa-exclamation-triangle yellow");
+        return Entries.addText("Failed to update", error.message, "fa-exclamation-triangle yellow");
       })
       .then(() => {
+        gui.toggleUpdate();
         return this.updating = false;
       });
     }
   }
 }
 
-var app = new XenonTrade();
+global.app = new XenonTrade();

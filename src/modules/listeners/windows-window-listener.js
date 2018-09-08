@@ -22,6 +22,7 @@ class WindowsWindowListener {
     try {
       /**
       * These were used for calling the python script directly, unfortunately that required python installed on the users system
+      *
       * var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../../", "/resource/python/window-change-listener.py"));
       * var scriptExecution = spawn("python", [scriptPath]);
       */
@@ -30,7 +31,7 @@ class WindowsWindowListener {
       var scriptExecution = spawn(scriptPath);
 
       scriptExecution.stdout.on("data", (data) => {
-        var output = Helpers.uint8arrayToString(data);
+        var output = self.uint8arrayToString(data);
 
         self._handleActiveWindowChange(output);
       });
@@ -52,15 +53,24 @@ class WindowsWindowListener {
   * hiding the GUI when switched to another window
   */
   _handleActiveWindowChange(windowTitle) {
-    if(windowTitle.includes("focus:'XenonTrade'")) {
-      this.app.poeFocused = false;
-    } else if(windowTitle.includes("focus:'Path of Exile'")) {
-      this.app.poeFocused = true;
-      this.app.gui.show();
-    } else {
-      this.app.poeFocused = false;
-      this.app.gui.minimize();
+    if(config.get("autoMinimize")) {
+      if(windowTitle.includes("focus:'XenonTrade'")) {
+        app.poeFocused = false;
+      } else if(windowTitle.includes("focus:'Path of Exile'")) {
+        app.poeFocused = true;
+        gui.show();
+      } else {
+        app.poeFocused = false;
+        gui.minimize();
+      }
     }
+  }
+
+  /**
+  * Convert an Uint8Array to a string
+  */
+  _uint8arrayToString(data) {
+    return String.fromCharCode.apply(null, data);
   }
 }
 
