@@ -49,7 +49,8 @@ class Entries {
   * @param {number} stackSize Stack size of the currency
   * @return {Entry}
   */
-  static addCurrency(currency, stackSize) {
+  static addCurrency(currency, parser) {
+    var stackSize = parser.getStackSize();
     var template = templates.get("currency.html");
     var chaosDetails = ninjaAPI.getCurrencyDetails("Chaos Orb");
     var currencyDetails = ninjaAPI.getCurrencyDetails(currency.currencyTypeName);
@@ -113,7 +114,7 @@ class Entries {
   * @param {Object} item poe.ninja item object
   * @return {Entry}
   */
-  static addItem(item) {
+  static addItem(item, parser) {
     var chaosDetails = ninjaAPI.getCurrencyDetails("Chaos Orb");
     var exaltedDetails = ninjaAPI.getCurrencyDetails("Exalted Orb");
     var template = templates.get("item.html");

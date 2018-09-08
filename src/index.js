@@ -146,12 +146,11 @@ class XenonTrade {
   */
   onNinjaItemReceive(parser, item) {
     var itemType = parser.getItemType();
-    var entry;
 
     if(itemType === "Currency" || itemType === "Fragment") {
-      Entries.addCurrency(item, parser.getStackSize());
+      Entries.addCurrency(item, parser);
     } else {
-      Entries.addItem(item);
+      Entries.addItem(item, parser);
     }
   }
 

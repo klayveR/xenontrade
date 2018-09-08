@@ -69,6 +69,11 @@ class Parser {
 
   /**
   * Returns the variant of a unique item
+  * A terrible function that really shouldn't be looked at
+  * I can already hear Codacy cry "OI MATE YOUR METHOD IS WAY TOO COMPLEX"
+  * It's just confusing because I'm bad at naming my stuff, thanks
+  * It's not bad if it works
+  * TODO: Fine, I'll redo this method at some point...
   *
   * @returns {string}
   */
@@ -77,11 +82,31 @@ class Parser {
     var name = this.getName();
 
     if(itemVariants.hasOwnProperty(name)) {
-      var match = this.clipboard.match(new RegExp(itemVariants[name].regex));
+      if(itemVariants[name].hasOwnProperty("regex")) {
+        var match = this.clipboard.match(new RegExp(itemVariants[name].regex));
 
-      if(match) {
-        var value = match[1];
-        variant = itemVariants[name].matches[value];
+        if(match) {
+          var value = match[1];
+          variant = itemVariants[name].matches[value];
+        }
+      } else if(itemVariants[name].hasOwnProperty("mods")) {
+        for(var index in itemVariants[name].mods) {
+          var mods = itemVariants[name].mods[index];
+          var matchesRegex = true;
+
+          for(var regexIndex in mods.regex) {
+            var match = this.clipboard.match(new RegExp(mods.regex[regexIndex]));
+
+            if(!match) {
+              matchesRegex = false;
+            }
+          }
+
+          if(matchesRegex) {
+            variant = mods.variant;
+            break;
+          }
+        }
       }
     }
 
@@ -124,7 +149,7 @@ class Parser {
     var qualityRegex = /Quality: \+([0-9]*)%/;
     var levelMatch = this.clipboard.match(levelRegex);
     var qualityMatch = this.clipboard.match(qualityRegex);
-    var data = {level: 1, quality: 0};
+    var data = {level: 1, quality: 0, vaal: false};
 
     if(levelMatch) {
       data.level = parseInt(levelMatch[1]);
@@ -175,6 +200,10 @@ class Parser {
 
     if(type === "Map") {
       name = this._removeMapAffixesFromName(name);
+    }
+
+    if(type === "SkillGem" && this.clipboard.includes("Souls Per Use")) {
+      name = "Vaal " + name;
     }
 
     return name;
