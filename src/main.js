@@ -1,7 +1,8 @@
-const {app, BrowserWindow} = require("electron");
+const {app, BrowserWindow, Tray} = require("electron");
 const {ipcMain} = require("electron");
 const Config = require("electron-store");
 
+const path = require("path");
 const os = require("os");
 const kill = require('tree-kill');
 const find = require('find-process');
@@ -16,8 +17,8 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
   // Someone tried to run a second instance, we should focus our window.
   if (win) {
     if (win.isMinimized()) {
-			win.restore();
-		}
+      win.restore();
+    }
     win.focus();
   }
 });
@@ -28,60 +29,70 @@ if (shouldQuit) {
 }
 
 function createWindow() {
-	createConfig();
+  createConfig();
 
-	// Create the browser window.
-	win = new BrowserWindow({
-		x: config.get("window.x"),
-		y: config.get("window.y"),
-		width: 300,
-		height: 0,
-		frame: false,
-		hasShadow: false
-	});
+  // Create the browser window.
+  win = new BrowserWindow({
+    x: config.get("window.x"),
+    y: config.get("window.y"),
+    width: 300,
+    height: 0,
+    frame: false,
+    hasShadow: false,
+    skipTaskbar: true
+  });
 
-	if(debug) { win.setSize(800, 600); }
+  if(debug) { win.setSize(800, 600); }
 
-	// and load the index.html of the app.
-	win.loadFile("./src/index.html");
+  // and load the index.html of the app.
+  win.loadFile("./src/index.html");
 
-	win.setResizable(false);
-	win.setAlwaysOnTop(true, "floating", 1);
-	win.setVisibleOnAllWorkspaces(true);
-	win.setFullScreenable(false);
+  win.setResizable(false);
+  win.setAlwaysOnTop(true, "floating", 1);
+  win.setVisibleOnAllWorkspaces(true);
+  win.setFullScreenable(false);
 
-	// Open the DevTools.
-	if(debug) { win.webContents.openDevTools(); }
+  // Open the DevTools.
+  if(debug) { win.webContents.openDevTools(); }
 
-	// Emitted when the window is closed.
-	win.on("closed", () => {
-		// Dereference the window object, usually you would store windows
-		// in an array if your app supports multi windows, this is the time
-		// when you should delete the corresponding element.
-		win = null;
-	});
+  // Emitted when the window is closed.
+  win.on("closed", () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    win = null;
+  });
 
   // Send focus event to renderer
   win.on("focus", () => {
     win.webContents.send('focus');
-	});
+  });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", () => {
+  tray = new Tray(path.join(__dirname, "/build/icon.ico"));
+  const contextMenu = Menu.buildFromTemplate([
+    {role: 'windowMenu', type: 'normal'}
+  ])
+  tray.setToolTip('XenonTrade')
+  tray.setContextMenu(contextMenu)
+
+  createWindow();
+});
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-		quitApp();
+  quitApp();
 });
 
 ipcMain.on("resize", function (e, w, h) {
   // Save position before resizing and then apply position again
   // The window would resize but try to keep it centered for one
   // user, this should fix it
-	if(!debug) {
+  if(!debug) {
     var windowPosition = win.getPosition();
     win.setSize(Math.round(w), Math.round(h));
     if(os.platform() === "linux") {
@@ -91,11 +102,11 @@ ipcMain.on("resize", function (e, w, h) {
 });
 
 function createConfig() {
-	config = new Config({
-		defaults: {
-			league: "Delve",
+  config = new Config({
+    defaults: {
+      league: "Delve",
       focusPathOfExile: true,
-      autoMinimize: true,
+      autoMinimize: false,
       pricecheck: true,
       maxHeight: 500,
       autoclose: {
@@ -115,13 +126,13 @@ function createConfig() {
           }
         }
       },
-			window: {
-				x: 0,
-				y: 0,
-				locked: false
-			}
-		}
-	});
+      window: {
+        x: 0,
+        y: 0,
+        locked: false
+      }
+    }
+  });
 }
 
 function quitApp() {

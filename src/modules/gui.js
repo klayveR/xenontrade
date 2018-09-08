@@ -153,7 +153,6 @@ class GUI {
   show() {
     if(this.window.isMinimized()) {
       this.window.show();
-      Helpers.focusGame();
     }
   }
 

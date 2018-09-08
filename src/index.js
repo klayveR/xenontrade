@@ -77,7 +77,7 @@ class XenonTrade {
 
     // Register CTRL + C hotkey
     const clipboardShortcut = ioHook.registerShortcut([29, 46], (keys) => {
-      if(config.get("pricecheck")) {
+      if(config.get("pricecheck") && this.poeFocused) {
         // Waiting 100ms before calling the processing method, because the clipboard needs some time to be updated
         setTimeout(function() {
           self.onClipboard();
