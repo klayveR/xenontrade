@@ -21,6 +21,10 @@ class GUI {
     ipcRenderer.on("focus", function(event) {
       self.onFocus();
     });
+
+    ipcRenderer.on("window-all-closed", function(event) {
+      app.windowsWindowListener.stop();
+    });
   }
 
   /**

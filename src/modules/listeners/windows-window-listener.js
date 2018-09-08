@@ -5,6 +5,16 @@ const spawn = require("child_process").spawn;
 
 class WindowsWindowListener {
   /**
+  * Creates a new WindowsWindowListener object
+  *
+  * @constructor
+  */
+  constructor() {
+    this.scriptExecution = null;
+    this.started = false;
+  }
+
+  /**
   * Listen to window changes with python
   */
   start() {
@@ -18,24 +28,36 @@ class WindowsWindowListener {
       * var scriptExecution = spawn("python", [scriptPath]);
       */
 
+      this.started = true;
+
       var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../../", "/resource/executables/window-change-listener.exe"));
       var scriptExecution = spawn(scriptPath);
 
-      scriptExecution.stdout.on("data", (data) => {
+      this.scriptExecution.stdout.on("data", (data) => {
         var output = self._uint8arrayToString(data);
 
         self._handleActiveWindowChange(output);
       });
 
-      scriptExecution.stderr.on("data", (data) => {
+      this.scriptExecution.stderr.on("data", (data) => {
           Entries.addText("Window listener error", "The window listener failed, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
       });
 
-      scriptExecution.on("exit", (code) => {
+      this.scriptExecution.on("exit", (code) => {
+        self.started = false;
         Entries.addText("Window listener exit", "The window listener quit, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
       });
     } catch(error) {
       // TODO: This shouldn't fail but maybe it does
+    }
+  }
+
+  /**
+  * Stops script execution
+  */
+  stop() {
+    if(this.started) {
+      this.scriptExecution.kill();
     }
   }
 
