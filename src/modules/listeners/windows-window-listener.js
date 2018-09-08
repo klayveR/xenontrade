@@ -2,6 +2,7 @@ const path = require("path");
 const Helpers = require("../helpers.js");
 const Entries = require("../entries.js");
 const spawn = require("child_process").spawn;
+const kill = require('tree-kill');
 
 class WindowsWindowListener {
   /**
@@ -57,7 +58,7 @@ class WindowsWindowListener {
   */
   stop() {
     if(this.started) {
-      this.scriptExecution.kill();
+      kill(this.scriptExecution.pid);
     }
   }
 
