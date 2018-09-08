@@ -1,18 +1,9 @@
 const path = require("path");
 const Helpers = require("../helpers.js");
+const Entries = require("../entries.js");
 const spawn = require("child_process").spawn;
 
 class WindowsWindowListener {
-  /**
-  * Creates a new WindowsWindowListener object
-  *
-  * @constructor
-  * @param {XenonTrade} app The XenonTrade object
-  */
-  constructor(app) {
-    this.app = app;
-  }
-
   /**
   * Listen to window changes with python
   */
@@ -37,11 +28,11 @@ class WindowsWindowListener {
       });
 
       scriptExecution.stderr.on("data", (data) => {
-          self.gui.entries.addText("Window listener error", "The window listener failed, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
+          Entries.addText("Window listener error", "The window listener failed, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
       });
 
       scriptExecution.on("exit", (code) => {
-        self.gui.entries.addText("Window listener exit", "The window listener quit, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
+        Entries.addText("Window listener exit", "The window listener quit, which means this app can no longer be minimized automatically. Restart to restore functionality.", "fa-exclamation-circle red");
       });
     } catch(error) {
       // TODO: This shouldn't fail but maybe it does

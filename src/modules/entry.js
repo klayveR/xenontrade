@@ -46,7 +46,7 @@ class Entry {
 
     button.show().click(function(e) {
       e.preventDefault();
-      self.close(true);
+      self.close();
     });
   }
 
@@ -74,16 +74,6 @@ class Entry {
 
     $(".entry[data-id='" + this.id + "']").find("[data-" + toggle + "]").toggleClass("hidden");
     gui.updateWindowHeight();
-    this._onButtonClick();
-  }
-
-  /**
-  * Focuses Path of Exile on a button click
-  */
-  _onButtonClick() {
-    if(config.get("focusPathOfExile")) {
-      Helpers.focusPathOfExile();
-    }
   }
 
   /**
@@ -114,7 +104,7 @@ class Entry {
         }
         if (seconds === 0) {
           clearInterval(self.timeout);
-          self.close(false);
+          self.close();
         }
       }, 1000);
     }
@@ -139,7 +129,6 @@ class Entry {
   */
   stopAutoClose() {
     clearInterval(this.timeout);
-    this._onButtonClick();
   }
 
   /**
@@ -163,13 +152,9 @@ class Entry {
   /**
   * Closes and removes this entry
   */
-  close(focusPathOfExile) {
+  close() {
     $(".entry[data-id='" + this.id + "']").remove();
     gui.updateWindowHeight();
-
-    if(focusPathOfExile && config.get("focusPathOfExile")) {
-      Helpers.focusPathOfExile();
-    }
   }
 
   /**

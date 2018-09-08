@@ -28,6 +28,8 @@ class XenonTrade {
   constructor() {
     this.updating = false;
     this.poeFocused = false;
+    this.windowsWindowListener = new WindowsWL();
+    this.linuxWindowListener = new LinuxWL();
 
     this.initialize();
   }
@@ -56,15 +58,13 @@ class XenonTrade {
   */
   initializeWindowListener() {
     if(os.platform() === "linux") {
-      var linuxWindowListener = new LinuxWL(this);
-      linuxWindowListener.initialize()
+      this.linuxWindowListener.initialize()
       .then(() => {
-        linuxWindowListener.start();
+        this.linuxWindowListener.start();
       });
     } else
     if(os.platform() === "win32") {
-      var windowsWindowListener = new WindowsWL(this);
-      windowsWindowListener.start();
+      this.windowsWindowListener.start();
     }
   }
 

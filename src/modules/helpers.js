@@ -3,6 +3,7 @@ const os = require("os");
 const path = require("path");
 const spawn = require("child_process").spawn;
 const request = require("request-promise-native");
+const ffi = require('ffi');
 
 class Helpers {
   /**
@@ -117,8 +118,14 @@ class Helpers {
       * var scriptExecution = spawn("python", [scriptPath]);
       */
 
+      var time = Date.now();
       var scriptPath = Helpers.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/executables/focus-window.exe"));
       var scriptExecution = spawn(scriptPath);
+
+      scriptExecution.on("exit", (code) => {
+        var took = Date.now() - time;
+        console.log("Focusing windows exited after " + took + "ms with code", code);
+      });
     }
   }
 

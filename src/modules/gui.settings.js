@@ -1,6 +1,5 @@
 const Entries = require("./entries.js");
 const Helpers = require("./helpers.js");
-const rangeSlider = require("rangeslider-js");
 
 class Settings {
   /**

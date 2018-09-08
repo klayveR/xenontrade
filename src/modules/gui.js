@@ -13,9 +13,14 @@ class GUI {
   * @constructor
   */
   constructor() {
+    var self = this;
     this.width = 300;
     this.window = remote.getCurrentWindow();
     this.settings = new Settings();
+
+    ipcRenderer.on("focus", function(event) {
+      self.onFocus();
+    });
   }
 
   /**
@@ -165,6 +170,15 @@ class GUI {
   */
   scrollToBottom() {
     $('.entries').scrollTop($('.entries')[0].scrollHeight);
+  }
+
+  /**
+  * Called when window is focused
+  */
+  onFocus() {
+    if(config.get("focusPathOfExile")) {
+      Helpers.focusPathOfExile();
+    }
   }
 }
 

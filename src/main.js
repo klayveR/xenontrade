@@ -90,6 +90,11 @@ function createWindow() {
 		// when you should delete the corresponding element.
 		win = null;
 	});
+
+  // Send focus event to renderer
+  win.on("focus", () => {
+    win.webContents.send('focus');
+	});
 }
 
 // This method will be called when Electron has finished
@@ -120,7 +125,7 @@ ipcMain.on("resize", function (e, w, h) {
   // user, this should fix it
 	if(!debug) {
     var windowPosition = win.getPosition();
-    win.setSize(Math.round(w), Math.round(h));
+    win.setContentSize(Math.round(w), Math.round(h));
     win.setPosition(windowPosition[0], windowPosition[1]);
   }
 });

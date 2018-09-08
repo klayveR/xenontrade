@@ -210,7 +210,7 @@ i {
   font-size: 12px;
   vertical-align: middle;
   text-align: justify;
-  color: #748199;
+  /*color: #748199;*/
 }
 
 .settings td.slider-label {

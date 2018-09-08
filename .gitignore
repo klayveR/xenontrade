@@ -36,6 +36,7 @@ build/Release
 node_modules/
 jspm_packages/
 out/
+windows-focus-requester.js
 
 # TypeScript v1 declaration files
 typings/
