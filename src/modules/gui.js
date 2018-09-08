@@ -17,6 +17,7 @@ class GUI {
     this.width = 300;
     this.window = remote.getCurrentWindow();
     this.settings = new Settings();
+    this.inSettings = false;
 
     ipcRenderer.on("focus", function(event) {
       self.onFocus();
@@ -112,6 +113,7 @@ class GUI {
   * Toggles between settings and entries
   */
   toggleSettingsMenu() {
+    this.inSettings = !this.inSettings;
     $("[data-button='settings']").find("i").toggleClass("grey");
 
     $(".entries").toggleClass("hidden");
@@ -177,7 +179,7 @@ class GUI {
   * Called when window is focused
   */
   onFocus() {
-    if(config.get("focusPathOfExile")) {
+    if(config.get("focusPathOfExile") && !this.inSettings) {
       Helpers.focusGame();
     }
   }

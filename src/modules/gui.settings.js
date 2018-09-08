@@ -152,7 +152,7 @@ class Settings {
   */
   changeLeagueSetting(league) {
     config.set("league", league);
-    this.app.updateNinja();
+    app.updateNinja();
   }
 }
 
