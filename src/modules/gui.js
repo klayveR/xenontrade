@@ -132,6 +132,7 @@ class GUI {
     setTimeout(function() {
       var height = $(".container").height();
       ipcRenderer.send("resize", self.width, height);
+      self.scrollToBottom();
     }, 50);
   }
 

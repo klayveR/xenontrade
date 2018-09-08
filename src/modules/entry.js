@@ -146,7 +146,6 @@ class Entry {
     }
 
     gui.updateWindowHeight();
-    gui.scrollToBottom();
   }
 
   /**

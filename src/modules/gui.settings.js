@@ -59,7 +59,7 @@ class Settings {
   */
   _changeMaxHeight(value) {
     $(".entries").css("max-height", value + "px");
-    gui.scrollToBottom();
+    gui.updateWindowHeight();
   }
 
   /**
