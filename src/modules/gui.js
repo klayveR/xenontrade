@@ -127,7 +127,7 @@ class GUI {
     setTimeout(function() {
       var height = $(".container").height();
       ipcRenderer.send("resize", self.width, height);
-    }, 20);
+    }, 50);
   }
 
   /**

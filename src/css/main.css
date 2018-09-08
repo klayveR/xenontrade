@@ -57,7 +57,7 @@ i {
   text-align: center;
   color: #748199;
   font-size: 13px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .menu .right {
@@ -105,7 +105,7 @@ i {
   display: inline-block;
   vertical-align: middle;
   text-align: left !important;
-  font-weight: bold;
+  font-weight: 700;
   padding-left: 5px;
   white-space: nowrap;
   overflow: hidden;
@@ -121,21 +121,20 @@ i {
 .entry .title .timeout {
   border-radius: 2px;
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
   text-align: left !important;
   background-color: #748199;
-  font-size: 10px;
+  font-size: 9px;
   color: #272f3d;
-  font-weight: bold;
+  font-weight: 700;
   padding: 0px 3px;
-  margin-top: 4px;
   user-select: none;
   cursor: pointer;
 }
 
 .entry .content {
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .entry .content .value {
@@ -203,7 +202,7 @@ i {
 .settings td.title {
   padding-top: 5px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 700;
   vertical-align: top;
 }
 

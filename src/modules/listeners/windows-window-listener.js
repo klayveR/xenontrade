@@ -31,7 +31,7 @@ class WindowsWindowListener {
       var scriptExecution = spawn(scriptPath);
 
       scriptExecution.stdout.on("data", (data) => {
-        var output = self.uint8arrayToString(data);
+        var output = self._uint8arrayToString(data);
 
         self._handleActiveWindowChange(output);
       });

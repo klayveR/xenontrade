@@ -80,9 +80,6 @@ function createWindow() {
 	win.setVisibleOnAllWorkspaces(true);
 	win.setFullScreenable(false);
 
-  // Windows only
-  win.setFocusable(false);
-
 	// Open the DevTools.
 	if(debug) { win.webContents.openDevTools(); }
 
