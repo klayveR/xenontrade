@@ -161,7 +161,7 @@ class XenonTrade {
     if(!this.updating) {
       this.updating = true;
       gui.toggleUpdate();
-      var updateEntry = Entries.addTitle("Updating poe.ninja prices...", "fa-info-circle grey", {closeable: false});
+      var updateEntry = Entries.addTitle("Updating poe.ninja prices...", "fa-info-circle grey");
 
       ninjaAPI.update({league: config.get("league")})
       .then((result) => {
