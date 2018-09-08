@@ -1,7 +1,6 @@
 const cp = require("child-process-es6-promise");
 const os = require("os");
 const path = require("path");
-const spawn = require("child_process").spawn;
 const request = require("request-promise-native");
 const ffi = require('ffi');
 
