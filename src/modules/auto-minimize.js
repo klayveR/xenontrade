@@ -45,6 +45,8 @@ class AutoMinimize {
   }
 
   _initializeLinux() {
+    var self = this;
+
     return new Promise(function(resolve, reject) {
       x11.createClient(function(error, display) {
         if(error) {
@@ -88,7 +90,7 @@ class AutoMinimize {
   }
 
   _startLinux() {
-    console.log(this.xClient);
+    var self = this;
 
     this.xClient.on("event", function(ev) {
       self._windowPropertyChangeHandler(ev);

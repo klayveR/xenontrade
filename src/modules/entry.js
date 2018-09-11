@@ -44,7 +44,8 @@ class Entry {
     var self = this;
     var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
 
-    button.show().click(function(e) {
+    button.removeClass("hidden");
+    button.click(function(e) {
       e.preventDefault();
       self.close();
     });
@@ -59,7 +60,8 @@ class Entry {
 
     $(".entry[data-id='" + this.id + "']").find(".left").removeClass("hidden");
 
-    button.show().click(function(e) {
+    button.removeClass("hidden");
+    button.click(function(e) {
       e.preventDefault();
       self._toggle(toggle);
     });
