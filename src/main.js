@@ -134,7 +134,8 @@ function createConfig() {
       window: {
         x: 0,
         y: 0,
-        locked: false
+        locked: false,
+        poll: 1000
       }
     }
   });
