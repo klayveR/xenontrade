@@ -102,17 +102,19 @@ class AutoMinimize {
 
     activeWin()
     .then((data) => {
-      if(self._isNewWindowTitle(data.title)) {
-        self.previousWindowTitle = data.title;
-        self._handleWindowTitle(data.title);
+      if(this._isNewWindowTitle(data.title)) {
+        this.previousWindowTitle = data.title;
+        this._handleWindowTitle(data.title);
       }
     })
     .catch((error) => {
       console.error(error);
     })
     .then(() => {
-      if(self.started) {
-        setTimeout(self._pollWindowTitle, config.get("window.poll"));
+      if(this.started) {
+        setTimeout(function() {
+          self._pollWindowTitle();
+        }, config.get("window.poll"));
       }
     });
   }
