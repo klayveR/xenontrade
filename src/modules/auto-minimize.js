@@ -80,6 +80,7 @@ class AutoMinimize {
       activeWin()
       .then((data) => {
         if(self._isNewWindowTitle(data.title)) {
+          self.previousWindowTitle = data.title;
           self._handleWindowTitle(data.title);
         }
       });
