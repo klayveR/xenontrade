@@ -86,7 +86,7 @@ class AutoMinimize {
           self._handleWindowTitle(data.title);
         }
       });
-    }, config.window.poll);
+    }, config.get("window.poll"));
   }
 
   _startLinux() {
