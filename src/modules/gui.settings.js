@@ -12,19 +12,29 @@ class Settings {
     this._initializeMaxHeight();
   }
 
+  /**
+  * Initializes the maximum height CSS setting based on the config value
+  */
   _initializeMaxHeight() {
     this._changeMaxHeight(config.get("maxHeight"));
   }
 
+  /**
+  * Iterates through each slider in the settings menu and calls _initializeSlider
+  */
   _initializeSliders() {
     var self = this;
 
     $(".settings").find("[data-slider]").each(function (index, element) {
       self._initializeSlider($(this));
-      //self._initializeSliderState($(this));
     });
   }
 
+  /**
+  * Initializes slider by creating a noUiSlider and registering events
+  *
+  * @param {jQuery} $selector Slider div
+  */
   _initializeSlider(selector) {
     var self = this;
     var configKey = selector.attr("data-slider");
@@ -56,6 +66,8 @@ class Settings {
 
   /**
   * Change the maximum height of the entries div
+  *
+  * @param {number} value Maximum height value
   */
   _changeMaxHeight(value) {
     $(".entries").css("max-height", value + "px");
@@ -76,6 +88,8 @@ class Settings {
 
   /**
   * Sets the state of a toggle based on the config value
+  *
+  * @param {jQuery} $selector Toggle button
   */
   _initializeToggleState(selector) {
     var toggle = selector.attr("data-toggle");
@@ -86,6 +100,8 @@ class Settings {
 
   /**
   * Enables a toggle button
+  *
+  * @param {jQuery} $selector Toggle button
   */
   _initializeToggleButton(selector) {
     var self = this;
@@ -99,6 +115,8 @@ class Settings {
 
   /**
   * Toggles a setting in the config and the settings icon
+  *
+  * @param {string} toggle Name of toggle
   */
   toggleSetting(toggle) {
     var enabled = !config.get(toggle);
@@ -123,6 +141,8 @@ class Settings {
 
   /**
   * Initializes league settings
+  *
+  * @param {Array} leagues Array of leagues
   */
   _initializeLeagueSettings(leagues) {
     var self = this;

@@ -25,6 +25,10 @@ class AutoMinimize {
 
   /**
   * Initialize either Windows or linux listener
+  *
+  * @returns {Promise}
+  * @fulfil {} - Nothing
+  * @reject {Error} - The `error.message` contains information about why the promise was rejected
   */
   initialize() {
     var self = this;
@@ -45,6 +49,13 @@ class AutoMinimize {
     });
   }
 
+  /**
+  * Initialize linux listener
+  *
+  * @returns {Promise}
+  * @fulfil {} - Nothing
+  * @reject {Error} - The `error.message` contains information about why the promise was rejected
+  */
   _initializeLinux() {
     var self = this;
 
@@ -66,6 +77,9 @@ class AutoMinimize {
     });
   }
 
+  /**
+  * Starts listener
+  */
   start() {
     if(this.initialized) {
       if(os.platform() === "linux") {
@@ -76,6 +90,9 @@ class AutoMinimize {
     }
   }
 
+  /**
+  * Starts Windows listener by calling the recursive polling method for the first time
+  */
   _startWindows() {
     var self = this;
 
@@ -83,6 +100,9 @@ class AutoMinimize {
     this._pollWindowTitle();
   }
 
+  /**
+  * Registers X Client event on Linux
+  */
   _startLinux() {
     var self = this;
     this.started = true;
@@ -97,6 +117,9 @@ class AutoMinimize {
     });
   }
 
+  /**
+  * Polls the window title on Windows, waits for 1 second (default) and calls this function again if not stopped yet
+  */
   _pollWindowTitle() {
     var self = this;
 
@@ -119,6 +142,12 @@ class AutoMinimize {
     });
   }
 
+  /**
+  * Returns true if the provided title is different from the previous one
+  *
+  * @param {string} windowTitle Title of the new window
+  * @returns {boolean}
+  */
   _isNewWindowTitle(windowTitle) {
     if(windowTitle !== this.previousWindowTitle) {
       return true;
@@ -127,6 +156,9 @@ class AutoMinimize {
     return false;
   }
 
+  /**
+  * Called when the X Client window property changed, checks if event is a window change
+  */
   _windowPropertyChangeHandler(ev) {
     var self = this;
 
@@ -141,6 +173,9 @@ class AutoMinimize {
     }
   }
 
+  /**
+  * Called when the X Client event is a window change, gets window title
+  */
   _handleActiveWindowChange(data) {
     var self = this;
 
@@ -155,6 +190,9 @@ class AutoMinimize {
     });
   }
 
+  /**
+  * Handles new window title
+  */
   _handleWindowTitle(windowTitle) {
     if(windowTitle === "XenonTrade") {
       app.poeFocused = false;

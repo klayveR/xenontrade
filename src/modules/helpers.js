@@ -47,7 +47,7 @@ class Helpers {
   /**
   * Checks whether a package is installed on Linux
   *
-  * @param {string} package Package to be checked for installation
+  * @param {string} pkg Package to be checked for installation
   */
   static isPackageInstalled(pkg) {
     return new Promise(function(resolve, reject) {
@@ -77,6 +77,10 @@ class Helpers {
   /**
   * Checks if Python is installed and added to PATH on windows
   * Currently unused
+  *
+  * @returns {Promise}
+  * @fulfil {string} - Console output
+  * @reject {Error} - The `error.message` contains information about why the promise was rejected
   */
   static isPythonInstalled() {
     return new Promise(function(resolve, reject) {
@@ -160,6 +164,10 @@ class Helpers {
 
   /**
   * Gets Path of Exile leagues that are non-SSF from GGG API and returns the names
+  *
+  * @returns {Promise}
+  * @fulfil {Array} - An array containing every main non-SSF league
+  * @reject {Error} - The `error.message` contains information about why the promise was rejected
   */
   static getPathOfExileLeagues() {
     return new Promise(function(resolve, reject) {
