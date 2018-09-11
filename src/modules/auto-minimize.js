@@ -38,7 +38,7 @@ class AutoMinimize {
           return reject(error);
         });
       } else if(os.platform() === "win32") {
-        this.windowsTracker = new ActiveWindowTracker();
+        self.initialized = true;
         return resolve();
       }
     });
