@@ -7,8 +7,7 @@ const os = require("os");
 const Config = require("electron-store");
 const NinjaAPI = require("poe-ninja-api-manager");
 const Templates = require("./modules/templates.js");
-const LinuxWL = require("./modules/listeners/linux-window-listener.js");
-const WindowsWL = require("./modules/listeners/windows-window-listener.js");
+const AutoMinimize = require("./modules/auto-minimize.js");
 const Helpers = require("./modules/helpers.js");
 const Parser = require("./modules/parser.js");
 const Entries = require("./modules/entries.js");
@@ -28,9 +27,7 @@ class XenonTrade {
   constructor() {
     this.updating = false;
     this.poeFocused = false;
-    this.windowsWindowListener = new WindowsWL();
-    this.linuxWindowListener = new LinuxWL();
-
+    this.autoMinimize = new AutoMinimize();
     this.initialize();
   }
 
@@ -41,7 +38,7 @@ class XenonTrade {
     templates.loadTemplates()
     .then(() => {
       gui.initialize();
-      this.initializeWindowListener();
+      this.initializeAutoMinimize();
       this.initializeHotkeys();
       this.checkDependencies();
       return this.updateNinja();
@@ -57,16 +54,13 @@ class XenonTrade {
   * Starts the window listener based on OS
   * The window listener automatically hides the GUI when Path of Exile is not focused
   */
-  initializeWindowListener() {
-    if(os.platform() === "linux") {
-      this.linuxWindowListener.initialize()
+  initializeAutoMinimize() {
+    var self = this;
+
+      this.autoMinimize.initialize()
       .then(() => {
-        this.linuxWindowListener.start();
+        self.autoMinimize.start();
       });
-    } else
-    if(os.platform() === "win32") {
-      this.windowsWindowListener.start();
-    }
   }
 
   /**

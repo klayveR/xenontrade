@@ -4,8 +4,6 @@ const Config = require("electron-store");
 
 const path = require("path");
 const os = require("os");
-const kill = require('tree-kill');
-const find = require('find-process');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -24,7 +22,7 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 });
 
 if (shouldQuit) {
-  quitApp();
+  app.quit();
   return;
 }
 
@@ -92,7 +90,7 @@ app.on("ready", () => {
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-  quitApp();
+  app.quit();
 });
 
 ipcMain.on("resize", function (e, w, h) {
@@ -140,29 +138,4 @@ function createConfig() {
       }
     }
   });
-}
-
-function quitApp() {
-  // Kill all child processes that have been created during runtime
-  if(os.platform() === "win32") {
-    find('name', 'window-change-listener.exe')
-    .then(function (list) {
-      for(var index in list) {
-        var proc = list[index];
-        kill(proc.pid);
-
-        if(proc.ppid != null) {
-          kill(proc.ppid); // Kill parent
-        }
-      }
-    })
-    .catch((error) => {
-      console.log("Error during app quit", error);
-    })
-    .then(() => {
-      app.quit();
-    });
-  } else {
-    app.quit();
-  }
 }
