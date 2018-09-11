@@ -1,3 +1,4 @@
+const Config = require("electron-store");
 const cp = require("child-process-es6-promise");
 const os = require("os");
 const path = require("path");
@@ -201,6 +202,46 @@ class Helpers {
     }
 
     return false;
+  }
+
+  /**
+  * Creates the config and returns it
+  *
+  * @return {Config}
+  */
+  static createConfig() {
+    return new Config({
+      defaults: {
+        league: "Delve",
+        focusPathOfExile: true,
+        autoMinimize: false,
+        pricecheck: true,
+        maxHeight: 500,
+        autoclose: {
+          enabled: true,
+          threshold: {
+            enabled: false,
+            value: 20
+          },
+          timeouts: {
+            currency: {
+              enabled: false,
+              value: 10
+            },
+            item: {
+              enabled: false,
+              value: 10
+            }
+          }
+        },
+        window: {
+          x: 0,
+          y: 0,
+          locked: false,
+          poll: 1000
+        }
+      }
+    });
   }
 }
 

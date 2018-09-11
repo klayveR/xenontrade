@@ -1,7 +1,6 @@
 const {app, Menu, BrowserWindow, Tray} = require("electron");
 const {ipcMain} = require("electron");
-const Config = require("electron-store");
-
+const Helpers = require("./modules/helpers.js");
 const path = require("path");
 const os = require("os");
 
@@ -27,7 +26,7 @@ if (shouldQuit) {
 }
 
 function createWindow() {
-  createConfig();
+  config = Helpers.createConfig();
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -105,38 +104,3 @@ ipcMain.on("resize", function (e, w, h) {
     }
   }
 });
-
-function createConfig() {
-  config = new Config({
-    defaults: {
-      league: "Delve",
-      focusPathOfExile: true,
-      autoMinimize: false,
-      pricecheck: true,
-      maxHeight: 500,
-      autoclose: {
-        enabled: true,
-        threshold: {
-          enabled: false,
-          value: 20
-        },
-        timeouts: {
-          currency: {
-            enabled: false,
-            value: 10
-          },
-          item: {
-            enabled: false,
-            value: 10
-          }
-        }
-      },
-      window: {
-        x: 0,
-        y: 0,
-        locked: false,
-        poll: 1000
-      }
-    }
-  });
-}

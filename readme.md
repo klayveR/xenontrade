@@ -1,6 +1,7 @@
 
+
 # ![](https://i.imgur.com/5MvAbBg.png) XenonTrade
-XenonTrade is a Path of Exile trading app based on electron that was initially developed specifically for Linux users. While Path of Exiles performance on Linux distributions has drastically increased in the past few months, there are barely any trading companions available for Linux. And thus, this app was created. Currently, it is used as an overlay for checking prices, but soon it'll receive a trade whisper helper as well.
+**XenonTrade is a Path of Exile trading overlay**, initially developed specifically for Linux users. While Path of Exiles performance on Linux has drastically increased in the past few months, there are barely any trading companions available for Linux. And thus, this app was created. Currently, it is used as an overlay for checking prices, but soon it'll receive a trade whisper helper as well.
 
 Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started!
 
@@ -17,18 +18,21 @@ Check out the wiki to learn more about this app!
 - [Planned features and known bugs](https://github.com/klayveR/xenontrade/wiki/Planned-features-and-known-bugs)
 
 ## Features
-- Press `CTRL+C` while hovering over an item to get the latest price data in the overlay immediately
-- Price checks can be automatically closed after a certain period of time, configurable via the settings menu
-  - You can exclude expensive items from the auto close feature by setting a threshold
-- Color stripe on the left side indicates the confidence in the accuracy of the price
-  - Green indicates high confidence, yellow is average and red is low or very low
-- See price trend graphs immediately
+- XenonTrade is an overlay you can drag anywhere, on top of the game, on your second monitor, wherever you want it to be
+- When Path of Exile is not in focus, the overlay is able to automatically minimize and restore when Path of Exile is focused again
+- The app automatically loads the currently active main non-SSF leagues
 
-##### Item features
-- Switch between value in Chaos Orbs and Exalted Orbs
-- The tool automatically detects almost every unique item variant (see [Item variant support](https://github.com/klayveR/xenontrade/wiki/Item-variant-support)) as well as 5 and 6 links
+### Price check
+- Get the price of your item straight from [poe.ninja](https://poe.ninja/) by hovering over it and pressing `CTRL+C`
+	- Supports uniques, currencies, fragments, resonators, fossils, divination cards, prophecies, essences, gems and maps
+	- Unique item variants (e.g. Atziri's Splendour) are automatically detected
+	- Gem level and quality is taken into consideration as best as possible
+- Quick access to the price trend graph and price confidence levels
+- Switch between Chaos Orb and Exalted Orb price for items valued over 1 Exalted Orb
+- Easily get the value of your whole currency stack by clicking the expand button
+- Price check entries can automatically be closed after a configurable amount of time
+	- To override the auto-close feature for valuable items you can set a value threshold
+	- Auto-close can be cancelled by clicking on the countdown timer
 
-##### Currency features
-- Switch between seeing how many Chaos Orbs you'd receive for the currency and how many Chaos Orbs you'd have to pay for your currency
-- Check the value of your whole currency stack (available after clicking on the expand button)
-- Compare the actual price you'd have to pay for your currency to the calculated price based on how much you'd receive (available after clicking on the expand button)
+### Whisper helper
+- *Coming soon...*

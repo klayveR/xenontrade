@@ -13,7 +13,7 @@ const Parser = require("./modules/parser.js");
 const Entries = require("./modules/entries.js");
 const GUI = require("./modules/gui.js");
 
-global.config = new Config();
+global.config = Helpers.createConfig();
 global.templates = new Templates();
 global.gui = new GUI();
 global.ninjaAPI = new NinjaAPI();
