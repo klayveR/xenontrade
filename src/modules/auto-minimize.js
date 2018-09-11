@@ -16,6 +16,7 @@ class AutoMinimize {
   */
   constructor() {
     this.initialized = false;
+    this.started = false;
     this.windowsInterval = null;
     this.previousWindowTitle = "";
     this.xClient = null;
@@ -78,19 +79,13 @@ class AutoMinimize {
   _startWindows() {
     var self = this;
 
-    this.windowsInterval = setInterval(function() {
-      activeWin()
-      .then((data) => {
-        if(self._isNewWindowTitle(data.title)) {
-          self.previousWindowTitle = data.title;
-          self._handleWindowTitle(data.title);
-        }
-      });
-    }, config.get("window.poll"));
+    this.started = true;
+    this._pollWindowTitle();
   }
 
   _startLinux() {
     var self = this;
+    this.started = true;
 
     this.xClient.on("event", function(ev) {
       self._windowPropertyChangeHandler(ev);
@@ -99,6 +94,26 @@ class AutoMinimize {
     this.xClient.on("error", function(error) {
       // xCore throws a "Bad Window" error sometimes, we catch this here
       // Without this error listener, an object of this class would simply stop working
+    });
+  }
+
+  _pollWindowTitle() {
+    var self = this;
+
+    activeWin()
+    .then((data) => {
+      if(this._isNewWindowTitle(data.title)) {
+        this.previousWindowTitle = data.title;
+        this._handleWindowTitle(data.title);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .then(() => {
+      if(this.started) {
+        setTimeout(this._pollWindowTitle, config.get("window.poll"));
+      }
     });
   }
 
