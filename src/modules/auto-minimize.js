@@ -1,4 +1,4 @@
-const { ActiveWindowTracker } = require('active-window');
+const activeWin = require('active-win');
 var x11, Getx11Property;
 
 try {
@@ -16,7 +16,8 @@ class AutoMinimize {
   */
   constructor() {
     this.initialized = false;
-    this.windowsTracker = null;
+    this.windowsInterval = null;
+    this.previousWindowTitle = "";
     this.xClient = null;
     this.xClientDisplay = null;
   }
@@ -75,12 +76,14 @@ class AutoMinimize {
   _startWindows() {
     var self = this;
 
-    this.windowsTracker.registerListener(event => {
-      self._handleWindowTitle(event.title);
-    })
-
-    self.initialized = true;
-    this.windowsTracker.start();
+    this.windowsInterval = setInterval(function() {
+      activeWin()
+      .then((data) => {
+        if(self._isNewWindowTitle(data.title)) {
+          self._handleWindowTitle(data.title);
+        }
+      });
+    }, 1000);
   }
 
   _startLinux() {
@@ -94,6 +97,14 @@ class AutoMinimize {
       // xCore throws a "Bad Window" error sometimes, we catch this here
       // Without this error listener, an object of this class would simply stop working
     });
+  }
+
+  _isNewWindowTitle(windowTitle) {
+    if(windowTitle !== this.previousWindowTitle) {
+      return true;
+    }
+
+    return false;
   }
 
   _windowPropertyChangeHandler(ev) {
