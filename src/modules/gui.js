@@ -101,6 +101,9 @@ class GUI {
       el.addEventListener("mouseleave", () => {
         this.window.setIgnoreMouseEvents(false)
       });
+    } else {
+      // If OS is not Windows, add background color to body to prevent white flash on new entry/close entry
+      $("body").css("background-color", "#202630");
     }
   }
 
