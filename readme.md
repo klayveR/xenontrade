@@ -5,7 +5,7 @@
 
 Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started!
 
-![](https://i.imgur.com/PnT19ux.png) | ![](https://i.imgur.com/GtXL5Fz.png) | ![](https://i.imgur.com/wvfY1DO.png)
+![](https://i.imgur.com/h2u3pBl.png) | ![](https://i.imgur.com/vgULWsM.png) | ![](https://i.imgur.com/rrOOigD.png)
 :---:|:---:|:---:
 
 ## Wiki
