@@ -1,6 +1,5 @@
 * {
   color: #e6eaf2;
-  font-family: "Roboto", sans-serif;
   user-select: none;
   cursor: default;
 }
@@ -35,7 +34,7 @@ i {
   font-size: 13px;
   display: table;
   width: 100%;
-  padding: 0px 0px 2px 0px;
+  padding: 0px 0px 3px 0px;
 }
 
 .menu a {
@@ -53,6 +52,7 @@ i {
 }
 
 .menu .middle {
+  font-family: "Roboto", sans-serif;
   vertical-align: middle;
   text-align: center;
   color: #748199;
@@ -72,15 +72,15 @@ i {
 }
 
 .entries::-webkit-scrollbar {
-   width: 5px;
+  width: 5px;
 }
 
 .entries::-webkit-scrollbar-track {
-   background: #272f3d;
+  background: #272f3d;
 }
 
 .entries::-webkit-scrollbar-thumb {
-   background: #404c60;
+  background: #404c60;
 }
 
 .entry {
@@ -91,7 +91,7 @@ i {
   width: 100%;
   background-color: #272f3d;
   font-size: 12px;
-  padding: 0px 0px 3px 0px;
+  padding: 2px 0px 2px 0px;
 }
 
 .entry .title .left {
@@ -101,6 +101,7 @@ i {
 }
 
 .entry .title .middle {
+  font-family: "Roboto", sans-serif;
   width: 210px;
   display: inline-block;
   vertical-align: middle;
@@ -119,17 +120,19 @@ i {
 }
 
 .entry .title .timeout {
+  font-family: "Roboto", sans-serif;
   border-radius: 2px;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
   text-align: left !important;
   background-color: #748199;
-  font-size: 9px;
+  font-size: 10px;
   color: #272f3d;
   font-weight: 700;
-  padding: 0px 3px;
+  padding: 0px 2px;
   user-select: none;
   cursor: pointer;
+  margin-top: 2px;
 }
 
 .entry .content {
@@ -138,10 +141,12 @@ i {
 }
 
 .entry .content .value {
+  font-family: "Roboto", sans-serif;
   vertical-align: middle;
 }
 
 .entry .content .text {
+  font-family: "Roboto", sans-serif;
   padding: 3px 3px;
   font-weight: normal;
   text-align: justify;
@@ -188,6 +193,7 @@ i {
 }
 
 .entry .content .header {
+  font-family: "Roboto", sans-serif;
   position: relative;
   font-weight: normal;
   font-size: 10px;
@@ -196,20 +202,21 @@ i {
 }
 
 .settings {
-  padding: 0px 5px 5px 5px;
+  font-family: "Roboto", sans-serif;
+  padding: 10px;
 }
 
 .settings td.title {
-  padding-top: 5px;
-  font-size: 14px;
+  text-transform: uppercase;
   font-weight: 700;
-  vertical-align: top;
+  color: #748199;
 }
 
 .settings td.label {
   font-size: 12px;
   vertical-align: middle;
   text-align: justify;
+  font-weight: 700;
   /*color: #748199;*/
 }
 
@@ -226,6 +233,8 @@ i {
   text-align: justify;
   color: #748199;
   line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .settings td.info a {
@@ -245,6 +254,7 @@ i {
 }
 
 .settings label.wrap {
+  padding-bottom: 5px;
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -272,7 +282,7 @@ i {
   color: #748199;
   position: absolute;
   right: 0;
-  top: 7px;
+  top: 5px;
   z-index: 1;
   width: 8%;
   pointer-events: none;

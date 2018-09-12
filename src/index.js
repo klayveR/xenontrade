@@ -161,7 +161,7 @@ class XenonTrade {
       ninjaAPI.update({league: config.get("league")})
       .then((result) => {
         updateEntry.close();
-        Entries.addTitle("Update successful 🎉", "fa-check-circle green", {timeout: 10});
+        Entries.addTitle("Update successful", "fa-check-circle green", {timeout: 10});
       })
       .catch((error) => {
         updateEntry.close();
