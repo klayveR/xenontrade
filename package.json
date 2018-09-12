@@ -1,6 +1,6 @@
 {
   "name": "XenonTrade",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Path of Exile trading app for price checking and whisper management",
   "main": "src/main.js",
   "scripts": {
@@ -70,9 +70,12 @@
     "appId": "de.klayver.xenontrade",
     "files": [
       "**/*",
-      "!**/src/resource/python",
       "!**/{*.md,.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}",
       "build/*.png"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "*.node"
     ],
     "linux": {
       "icon": "build/icon.icns",
@@ -81,23 +84,11 @@
         "deb",
         "rpm"
       ],
-      "category": "Game",
-      "asar": true,
-      "asarUnpack": [
-        "*.node"
-      ],
-      "files": [
-        "!**/src/resource/executables"
-      ]
+      "category": "Game"
     },
     "win": {
       "icon": "build/icon.ico",
-      "target": "portable",
-      "asar": true,
-      "asarUnpack": [
-        "*.node",
-        "src/resource/executables/*.exe"
-      ]
+      "target": "portable"
     }
   },
   "devDependencies": {
