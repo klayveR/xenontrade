@@ -38,7 +38,8 @@ function createWindow() {
     hasShadow: false,
     skipTaskbar: true,
     alwaysOnTop: true,
-    show: false
+    show: false,
+    transparent: true
   });
 
   if(debug) { win.setSize(800, 600); }

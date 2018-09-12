@@ -6,7 +6,6 @@
 
 html, body {
   margin: 0 auto;
-  background-color: #202630;
   overflow: hidden;
 }
 
@@ -25,7 +24,6 @@ i {
 }
 
 .container {
-  background-color: #202630;
   overflow-x: hidden;
 }
 
@@ -200,6 +198,7 @@ i {
 }
 
 .settings {
+  background-color: #202630;
   font-family: "Roboto", sans-serif;
   padding: 10px;
 }

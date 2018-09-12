@@ -1,6 +1,7 @@
 const electron = require("electron");
 const remote = require("electron").remote;
 let { ipcRenderer } = electron;
+const os = require("os");
 
 const Helpers = require("./helpers.js");
 const Settings = require("./settings.js");
@@ -29,6 +30,7 @@ class GUI {
   initialize() {
     this._initializeButtons();
     this._initializeLock();
+    this._initializeWindowsTransparency();
     this.settings.initialize();
 
     this.updateWindowHeight();
@@ -78,6 +80,28 @@ class GUI {
       e.preventDefault();
       self.closeAllEntries();
     });
+  }
+
+  /**
+  * Registers mouse listeners for the empty transparent entries div, so clickthrough is possible
+  */
+  _initializeWindowsTransparency() {
+    if(os.platform() === "win32") {
+      // Set minimum height of entries div to 20px to make the window a total of 38px
+      $(".entries").css("min-height", "20px");
+
+      let el = document.getElementsByClassName('entries')[0];
+      el.addEventListener("mouseenter", () => {
+        // If entries div is empty
+        if (!$.trim($(".entries").html())) {
+          this.window.setIgnoreMouseEvents(true, {forward: true})
+        }
+      });
+
+      el.addEventListener("mouseleave", () => {
+        this.window.setIgnoreMouseEvents(false)
+      });
+    }
   }
 
   /**
