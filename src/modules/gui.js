@@ -2,9 +2,8 @@ const electron = require("electron");
 const remote = require("electron").remote;
 let { ipcRenderer } = electron;
 
-const Entries = require("./entries.js");
 const Helpers = require("./helpers.js");
-const Settings = require("./gui.settings.js");
+const Settings = require("./settings.js");
 
 class GUI {
   /**
@@ -17,7 +16,7 @@ class GUI {
     this.width = 300;
     this.window = remote.getCurrentWindow();
     this.settings = new Settings();
-    this.inSettings = false;
+    this.settingsMenuActive = false;
 
     ipcRenderer.on("focus", function(event) {
       self.onFocus();
@@ -28,8 +27,8 @@ class GUI {
   * Initializes essential parts of the GUI
   */
   initialize() {
-    this.initializeButtons();
-    this.initializeLock();
+    this._initializeButtons();
+    this._initializeLock();
     this.settings.initialize();
 
     this.updateWindowHeight();
@@ -38,7 +37,7 @@ class GUI {
   /**
   * Initializes the lock status of the draggable header
   */
-  initializeLock() {
+  _initializeLock() {
     if(config.get("window.locked")) {
       this.toggleLock();
     }
@@ -47,7 +46,7 @@ class GUI {
   /**
   * Initializes the header buttons
   */
-  initializeButtons() {
+  _initializeButtons() {
     var self = this;
 
     $(".menu").find("[data-button='minimize']").click(function(e) {
@@ -113,7 +112,7 @@ class GUI {
   * Toggles between settings and entries
   */
   toggleSettingsMenu() {
-    this.inSettings = !this.inSettings;
+    this.settingsMenuActive = !this.settingsMenuActive;
     $("[data-button='settings']").find("i").toggleClass("grey");
 
     $(".entries").toggleClass("hidden");
@@ -180,7 +179,7 @@ class GUI {
   * Called when window is focused
   */
   onFocus() {
-    if(config.get("focusPathOfExile") && !this.inSettings) {
+    if(config.get("focusPathOfExile") && !this.settingsMenuActive) {
       Helpers.focusGame();
     }
   }

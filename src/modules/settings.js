@@ -1,5 +1,5 @@
-const Entries = require("./entries.js");
 const Helpers = require("./helpers.js");
+const TextEntry = require("./entries/text-entry.js");
 
 class Settings {
   /**
@@ -135,7 +135,7 @@ class Settings {
       this._initializeLeagueSettings(leagues);
     })
     .catch((error) => {
-      Entries.addText("Error loading leagues", error.message, "fa-exclamation-circle red");
+      new TextEntry("Error loading leagues", error.message, {icon: "fa-exclamation-circle red"}).add();
     });
   }
 

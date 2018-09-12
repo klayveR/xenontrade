@@ -23,69 +23,11 @@ class Entry {
   }
 
   /**
-  * Returns the jQuery selector for this entry
-  */
-  getId() {
-    return this.id;
-  }
-
-  /**
   * Sets the template that should be used for this entry
   */
   setReplacements(replacements) {
     this.replacements = replacements;
     this.replacements.push({find: "entry-id", replace: this.id});
-  }
-
-  /**
-  * Enables the close button on this entry
-  */
-  enableClose() {
-    var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
-
-    button.removeClass("hidden");
-    button.click(function(e) {
-      e.preventDefault();
-      self.close();
-    });
-  }
-
-  /**
-  * Enables a toggle
-  */
-  enableToggle(toggle) {
-    var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']");
-
-    $(".entry[data-id='" + this.id + "']").find(".left").removeClass("hidden");
-
-    button.removeClass("hidden");
-    button.click(function(e) {
-      e.preventDefault();
-      self._toggle(toggle);
-    });
-  }
-
-  /**
-  * Toggles a toggle on this entry
-  */
-  _toggle(toggle) {
-    var icon = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']").find("i");
-    icon.toggleClass("grey");
-
-    $(".entry[data-id='" + this.id + "']").find("[data-" + toggle + "]").toggleClass("hidden");
-    gui.updateWindowHeight();
-  }
-
-  /**
-  * Visualizes every trend on this entry
-  */
-  visualizeTrend() {
-    var trend = $(".entry[data-id='" + this.id + "']").find(".trend");
-
-    trend.peity("line");
-    gui.updateWindowHeight();
   }
 
   /**
@@ -96,7 +38,7 @@ class Entry {
     var timeoutContainer = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
     if(seconds > 0) {
-      this._enableStopAutoCloseButton();
+      this._enableCancelAutoCloseButton();
       timeoutContainer.html(seconds);
 
       this.timeout = setInterval(function() {
@@ -115,29 +57,50 @@ class Entry {
   /**
   * Enables button that autocloses entry
   */
-  _enableStopAutoCloseButton() {
+  _enableCancelAutoCloseButton() {
     var self = this;
     var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
     button.click(function(e) {
       e.preventDefault();
       button.hide();
-      self.stopAutoClose();
+      self.cancelAutoClose();
     });
   }
 
   /**
   * Stops auto close timeout
   */
-  stopAutoClose() {
+  cancelAutoClose() {
     clearInterval(this.timeout);
+  }
+
+  /**
+  * Enables the close button on this entry
+  */
+  enableClose() {
+    var self = this;
+    var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
+
+    button.removeClass("hidden");
+    button.click(function(e) {
+      e.preventDefault();
+      self.close();
+    });
+  }
+
+  /**
+  * Closes and removes this entry
+  */
+  close() {
+    $(".entry[data-id='" + this.id + "']").remove();
+    gui.updateWindowHeight();
   }
 
   /**
   * Replaces replacements in entry and adds it to the GUI
   */
   add() {
-    var self = this;
     var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
     // Check if the entries div is empty, remove whitespaces and newlines
@@ -147,14 +110,6 @@ class Entry {
       $(".entries > .entry:last").after(template);
     }
 
-    gui.updateWindowHeight();
-  }
-
-  /**
-  * Closes and removes this entry
-  */
-  close() {
-    $(".entry[data-id='" + this.id + "']").remove();
     gui.updateWindowHeight();
   }
 
@@ -178,6 +133,13 @@ class Entry {
     }
 
     return template;
+  }
+
+  /**
+  * Returns the jQuery selector for this entry
+  */
+  getId() {
+    return this.id;
   }
 }
 

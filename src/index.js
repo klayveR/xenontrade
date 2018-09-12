@@ -10,8 +10,11 @@ const Templates = require("./modules/templates.js");
 const AutoMinimize = require("./modules/auto-minimize.js");
 const Helpers = require("./modules/helpers.js");
 const Parser = require("./modules/parser.js");
-const Entries = require("./modules/entries.js");
 const GUI = require("./modules/gui.js");
+
+const ItemEntry = require("./modules/entries/item-entry.js");
+const CurrencyEntry = require("./modules/entries/currency-entry.js");
+const TextEntry = require("./modules/entries/text-entry.js");
 
 global.config = Helpers.createConfig();
 global.templates = new Templates();
@@ -91,7 +94,8 @@ class XenonTrade {
     if(os.platform() === "linux") {
       Helpers.isPackageInstalled("xdotool")
       .catch((error) => {
-        return Entries.addText("Missing dependency", "This tool uses <strong>xdotool</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.", "fa-exclamation-triangle yellow");
+        var message = "This tool uses <strong>xdotool</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.";
+        new TextEntry("Missing dependency", message, {icon: "fa-exclamation-triangle yellow"}).add();
       });
     }
   }
@@ -129,7 +133,7 @@ class XenonTrade {
         });
       }
     } else {
-      Entries.addText("No data", "There's no data for " + config.get("league") + ". You should update before attempting to price check another item.", "fa-exclamation-triangle yellow", {timeout: 10});
+      new TextEntry("No data", "There's no data for " + config.get("league") + ". You should update before attempting to price check another item.", {icon: "fa-exclamation-triangle yellow", timeout: 10}).add();
     }
   }
 
@@ -143,9 +147,9 @@ class XenonTrade {
     var itemType = parser.getItemType();
 
     if(itemType === "Currency" || itemType === "Fragment") {
-      Entries.addCurrency(item, parser);
+      new CurrencyEntry(item, parser).add();
     } else {
-      Entries.addItem(item, parser);
+      new ItemEntry(item, parser).add();
     }
   }
 
@@ -156,16 +160,17 @@ class XenonTrade {
     if(!this.updating) {
       this.updating = true;
       gui.toggleUpdate();
-      var updateEntry = Entries.addTitle("Updating poe.ninja prices...", "fa-info-circle grey");
+      var updateEntry = new TextEntry("Updating poe.ninja prices...", {closeable: false});
+      updateEntry.add();
 
       ninjaAPI.update({league: config.get("league")})
       .then((result) => {
         updateEntry.close();
-        Entries.addTitle("Update successful", "fa-check-circle green", {timeout: 10});
+        new TextEntry("Update successful", {icon: "fa-check-circle green", timeout: 10}).add();
       })
       .catch((error) => {
         updateEntry.close();
-        return Entries.addText("Failed to update", error.message, "fa-exclamation-triangle yellow");
+        new TextEntry("Failed to update", error.message, {icon: "fa-exclamation-triangle yellow"}).add();
       })
       .then(() => {
         gui.toggleUpdate();
