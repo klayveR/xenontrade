@@ -123,7 +123,6 @@ i {
   font-family: "Roboto", sans-serif;
   border-radius: 2px;
   display: inline-block;
-  vertical-align: top;
   text-align: left !important;
   background-color: #748199;
   font-size: 10px;
@@ -132,7 +131,6 @@ i {
   padding: 0px 2px;
   user-select: none;
   cursor: pointer;
-  margin-top: 2px;
 }
 
 .entry .content {
