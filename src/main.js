@@ -45,7 +45,7 @@ function createWindow() {
   win.loadFile("./src/index.html");
 
   win.setResizable(false);
-  win.setAlwaysOnTop(true, "floating", 1);
+  win.setAlwaysOnTop(true);
   win.setVisibleOnAllWorkspaces(true);
   win.setFullScreenable(false);
 

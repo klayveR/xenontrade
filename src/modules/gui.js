@@ -155,7 +155,7 @@ class GUI {
   show() {
     if(this.window.isMinimized()) {
       this.window.show();
-      this.window.setAlwaysOnTop(true, "floating", 1);
+      this.window.setAlwaysOnTop(true);
       this.updateWindowHeight();
     }
   }
