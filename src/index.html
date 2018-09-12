@@ -45,34 +45,32 @@
       <table style="width: 100%">
         <tbody>
           <tr>
-            <td colspan="2" class="title">General</td>
+            <td colspan="3" class="title">General</td>
           </tr>
           <tr>
-            <td colspan="2">
+            <td colspan="3">
               <label class="wrap">
                 <select class="select" id="leagueSelect"></select>
               </label>
             </td>
           </tr>
-          <tr>
-            <td colspan="2" class="label">Maximum window height</td>
-          </tr>
           <tr data-slider="maxHeight">
-            <td class="slider" style="width:90%">
-              <div slider-min="100" slider-max="1000"></div>
+            <td class="label">Max. height</td>
+            <td class="slider" style="width: 150px">
+              <div slider-min="100" slider-max="999"></div>
             </td>
-            <td class="label" style="float: right"><span class="slider-value">0</span>px</td>
+            <td class="slider-label"><span class="slider-value">0</span>px</td>
           </tr>
           <tr>
-            <td class="label">Automatically minimize</td>
+            <td class="label" colspan="2">Automatically minimize</td>
             <td class="toggle"><a href="#" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></a></td>
           </tr>
           <tr>
-            <td class="label">Always focus Path of Exile</td>
+            <td class="label" colspan="2">Always focus Path of Exile</td>
             <td class="toggle"><a href="#" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></a></td>
           </tr>
           <tr>
-            <td class="info" colspan="2">By enabling this setting, the app will always focus Path of Exile again after interacting with it.</td>
+            <td class="info" colspan="3">By enabling this setting, the app will always focus Path of Exile again after interacting with it.</td>
           </tr>
         </tbody>
       </table>

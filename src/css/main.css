@@ -215,6 +215,7 @@ i {
   vertical-align: middle;
   text-align: justify;
   font-weight: 700;
+  white-space: nowrap;
   /*color: #748199;*/
 }
 
