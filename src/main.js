@@ -36,7 +36,9 @@ function createWindow() {
     height: 0,
     frame: false,
     hasShadow: false,
-    skipTaskbar: true
+    skipTaskbar: true,
+    alwaysOnTop: true,
+    show: false
   });
 
   if(debug) { win.setSize(800, 600); }
@@ -45,7 +47,6 @@ function createWindow() {
   win.loadFile("./src/index.html");
 
   win.setResizable(false);
-  win.setAlwaysOnTop(true);
   win.setVisibleOnAllWorkspaces(true);
   win.setFullScreenable(false);
 
@@ -64,6 +65,11 @@ function createWindow() {
   win.on("focus", () => {
     win.webContents.send('focus');
   });
+
+  win.on('ready-to-show', () => {
+    win.show();
+    win.setAlwaysOnTop(true);
+  })
 }
 
 // This method will be called when Electron has finished
