@@ -159,6 +159,7 @@ i {
 
 .entry .content .item {
   position: relative;
+  background-color: #202630;
 }
 
 .entry .content .price {
@@ -191,6 +192,7 @@ i {
   font-weight: 700;
   font-size: 10px;
   text-transform: uppercase;
+  background-color: #202630;
 }
 
 .entry .explanation {
@@ -220,7 +222,6 @@ i {
 .entry .feedback {
   display: table;
   width: 100%;
-  margin-bottom: 1px;
 }
 
 .entry .feedback .cell {
