@@ -106,14 +106,12 @@ class XenonTrade {
   * Checks if the copied content is item data from Path of Exile, parses it and adds an entry in the GUI
   */
   onClipboard() {
-    if(!this.updating) {
       var clipboard = clipboardy.readSync();
       var parser = new Parser(clipboard);
 
       if(parser.isPathOfExileData()) {
         this.getItem(parser);
       }
-    }
   }
 
   /**
@@ -129,7 +127,7 @@ class XenonTrade {
       // If rare, get poeprices data
       if(itemType === "Rare") {
         this._getRareItem(parser);
-      } else {
+      } else if(!this.updating) {
         // If not rare, get ninja data
         if(ninjaAPI.hasData(config.get("league"))) {
           if(itemType !== "Magic") {
