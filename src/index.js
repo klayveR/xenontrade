@@ -163,8 +163,6 @@ class XenonTrade {
   * @param {Parser} parser Parser containing the item clipboard
   */
   _getRareItem(parser) {
-    var obj={"itemBase64":"UmFyaXR5OiBSYXJlCkNvcnBzZSBHcmFzcApDb25qdXJlciBHbG92ZXMKLS0tLS0tLS0KUXVhbGl0eTogKzIwJSAoYXVnbWVudGVkKQpFbmVyZ3kgU2hpZWxkOiA3NyAoYXVnbWVudGVkKQotLS0tLS0tLQpSZXF1aXJlbWVudHM6CkxldmVsOiA3MApEZXg6IDk4CkludDogMTExCi0tLS0tLS0tClNvY2tldHM6IEItQi1HLUcgCi0tLS0tLS0tCkl0ZW0gTGV2ZWw6IDYzCi0tLS0tLS0tCis4MSB0byBtYXhpbXVtIExpZmUKKzM5JSB0byBGaXJlIFJlc2lzdGFuY2UKKzM2JSB0byBDb2xkIFJlc2lzdGFuY2UKKzM1JSB0byBMaWdodG5pbmcgUmVzaXN0YW5jZQorMjkgdG8gbWF4aW11bSBFbmVyZ3kgU2hpZWxkCg==","price":{"status":200,"min":89.76,"max":134.64,"currency":"chaos","error":0,"pred_explanation":[["(pseudo) +#% total Elemental Resistance",0.5888532774052838],["(pseudo) (total) +# to maximum Life",0.10565856451535269],["(pseudo) # Elemental Resistances",0.00003946896076002651],["ES",-0.3054486891186035]],"data":{}}}
-
     var entry = new TextEntry("Getting price prediction...", {closeable: false});
     entry.add();
 
@@ -175,7 +173,7 @@ class XenonTrade {
     })
     .catch((error) => {
       entry.close();
-      console.error(error);
+      new TextEntry("Failed to get price prediction", error.message, {icon: "fa-exclamation-triangle yellow"}).add();
     });
   }
 
