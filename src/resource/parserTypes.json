@@ -33,6 +33,10 @@
       "type": "Fragment"
     },
     {
+      "regex": "Travel to the Aspirants' Plaza and spend this item to open the Eternal Labyrinth.",
+      "type": "Fragment"
+    },
+    {
       "regex": "Travel to this Map by using it in the Templar Laboratory or a personal Map Device. Maps can only be used once.",
       "type": "Map"
     },
