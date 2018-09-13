@@ -1,4 +1,5 @@
 const Entry = require("../entry.js");
+const open = require("open");
 
 class PriceCheckEntry extends Entry {
   /**
@@ -19,8 +20,25 @@ class PriceCheckEntry extends Entry {
   cancelAutoClose() { super.cancelAutoClose(); }
   enableClose() { super.enableClose(); }
   close() { super.close(); }
-  getId() { super.getId(); }
+  getId() { return super.getId(); }
   add() { super.add(); }
+
+  /**
+  * Enables link buttons
+  */
+  enableLinks() {
+    var self = this;
+    $(".entry[data-id='" + this.id + "']").find("[data-link]").each(function() {
+      var link = $(this).attr("data-link");
+      $(this).removeClass("hidden");
+
+      $(this).click(function() {
+        open(link);
+      });
+    });
+
+    $(".entry[data-id='" + this.id + "']").find(".left").removeClass("hidden");
+  }
 
   /**
   * Enables a toggle
@@ -28,12 +46,11 @@ class PriceCheckEntry extends Entry {
   enableToggle(toggle) {
     var self = this;
     var button = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']");
+    button.removeClass("hidden");
 
     $(".entry[data-id='" + this.id + "']").find(".left").removeClass("hidden");
 
-    button.removeClass("hidden");
-    button.click(function(e) {
-      e.preventDefault();
+    button.click(function() {
       self._toggle(toggle);
     });
   }

@@ -14,13 +14,15 @@ class GUI {
   */
   constructor() {
     var self = this;
-    this.width = 300;
     this.window = remote.getCurrentWindow();
     this.settings = new Settings();
     this.settingsMenuActive = false;
+    this.overrideFocus = false;
 
     ipcRenderer.on("focus", function(event) {
-      self.onFocus();
+      setTimeout(function() {
+        self.onFocus();
+      }, 20);
     });
   }
 
@@ -51,33 +53,27 @@ class GUI {
   _initializeButtons() {
     var self = this;
 
-    $(".menu").find("[data-button='minimize']").click(function(e) {
-      e.preventDefault();
+    $(".menu").find("[data-button='minimize']").click(function() {
       self.window.minimize();
     });
 
-    $(".menu").find("[data-button='close']").click(function(e) {
-      e.preventDefault();
+    $(".menu").find("[data-button='close']").click(function() {
       self.close();
     });
 
-    $(".menu").find("[data-button='update']").click(function(e) {
-      e.preventDefault();
+    $(".menu").find("[data-button='update']").click(function() {
       app.updateNinja();
     });
 
-    $(".menu").find("[data-button='settings']").click(function(e) {
-      e.preventDefault();
+    $(".menu").find("[data-button='settings']").click(function() {
       self.toggleSettingsMenu();
     });
 
-    $(".menu").find("[data-button='lock']").click(function(e) {
-      e.preventDefault();
+    $(".menu").find("[data-button='lock']").click(function() {
       self.toggleLock();
     });
 
-    $(".menu").find("[data-button='close-all']").click(function(e) {
-      e.preventDefault();
+    $(".menu").find("[data-button='close-all']").click(function() {
       self.closeAllEntries();
     });
   }
@@ -159,8 +155,7 @@ class GUI {
     // if the entries height is dynamically changed after appending
     setTimeout(function() {
       var height = $(".container").height();
-      ipcRenderer.send("resize", self.width, height);
-      self.scrollToBottom();
+      ipcRenderer.send("resize", 300, height);
     }, 50);
   }
 
@@ -206,7 +201,7 @@ class GUI {
   * Called when window is focused
   */
   onFocus() {
-    if(config.get("focusPathOfExile") && !this.settingsMenuActive) {
+    if(config.get("focusPathOfExile") && !this.settingsMenuActive && !this.overrideFocus) {
       Helpers.focusGame();
     }
   }

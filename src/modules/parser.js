@@ -28,12 +28,12 @@ class Parser {
   }
 
   /**
-  * Returns an object containing previously parsed data from the clipboard
+  * Returns the item text
   *
-  * @returns {Object}
+  * @returns {string}
   */
-  getData() {
-    return this.data;
+  getItemText() {
+    return this.clipboard;
   }
 
   /**
@@ -190,7 +190,8 @@ class Parser {
     var rarity = this.getRarity();
     var index = 1;
 
-    if(rarity === "Rare") {
+    // If it's a map, the base type should be the name
+    if(type === "Map" && rarity === "Rare") {
       index = 2;
     }
 

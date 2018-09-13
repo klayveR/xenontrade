@@ -11,10 +11,12 @@ const AutoMinimize = require("./modules/auto-minimize.js");
 const Helpers = require("./modules/helpers.js");
 const Parser = require("./modules/parser.js");
 const GUI = require("./modules/gui.js");
+const PoePrices = require("./modules/poeprices.js");
 
 const ItemEntry = require("./modules/entries/item-entry.js");
 const CurrencyEntry = require("./modules/entries/currency-entry.js");
 const TextEntry = require("./modules/entries/text-entry.js");
+const RareItemEntry = require("./modules/entries/rare-item-entry.js");
 
 global.config = Helpers.createConfig();
 global.templates = new Templates();
@@ -115,26 +117,66 @@ class XenonTrade {
   }
 
   /**
-  * Gets the item based on the parsed data from poe.ninja
+  * Gets the item based on the parsed data
   *
   * @param {Parser} parser Parser containing the item clipboard
   */
   getItem(parser) {
     var itemType = parser.getItemType();
 
-    if(ninjaAPI.hasData(config.get("league"))) {
-      if(!["Magic", "Rare"].includes(parser.getItemType()) && parser.isIdentified() === true) {
-        ninjaAPI.getItem(parser.getName(), {league: config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
-        .then((itemArray) => {
-          this.onNinjaItemReceive(parser, itemArray[0]);
-        })
-        .catch((error) => {
-          // No item received, not much you can do, huh
-        });
+    // If identified...
+    if(parser.isIdentified() === true) {
+      // If rare, get poeprices data
+      if(itemType === "Rare") {
+        this._getRareItem(parser);
+      } else {
+        // If not rare, get ninja data
+        if(ninjaAPI.hasData(config.get("league"))) {
+          if(itemType !== "Magic") {
+            this._getNinjaItem(parser);
+          }
+        } else {
+          new TextEntry("No data", "There's no data for " + config.get("league") + ". You should update before attempting to price check another item.", {icon: "fa-exclamation-triangle yellow", timeout: 10}).add();
+        }
       }
-    } else {
-      new TextEntry("No data", "There's no data for " + config.get("league") + ". You should update before attempting to price check another item.", {icon: "fa-exclamation-triangle yellow", timeout: 10}).add();
     }
+  }
+
+  /**
+  * Gets the item based on the parsed data from poe.ninja
+  *
+  * @param {Parser} parser Parser containing the item clipboard
+  */
+  _getNinjaItem(parser) {
+    ninjaAPI.getItem(parser.getName(), {league: config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
+    .then((itemArray) => {
+      this.onNinjaItemReceive(parser, itemArray[0]);
+    })
+    .catch((error) => {
+      // No item received, not much you can do, huh
+    });
+  }
+
+  /**
+  * Gets the item price from poeprices
+  *
+  * @param {Parser} parser Parser containing the item clipboard
+  */
+  _getRareItem(parser) {
+    var obj={"itemBase64":"UmFyaXR5OiBSYXJlCkNvcnBzZSBHcmFzcApDb25qdXJlciBHbG92ZXMKLS0tLS0tLS0KUXVhbGl0eTogKzIwJSAoYXVnbWVudGVkKQpFbmVyZ3kgU2hpZWxkOiA3NyAoYXVnbWVudGVkKQotLS0tLS0tLQpSZXF1aXJlbWVudHM6CkxldmVsOiA3MApEZXg6IDk4CkludDogMTExCi0tLS0tLS0tClNvY2tldHM6IEItQi1HLUcgCi0tLS0tLS0tCkl0ZW0gTGV2ZWw6IDYzCi0tLS0tLS0tCis4MSB0byBtYXhpbXVtIExpZmUKKzM5JSB0byBGaXJlIFJlc2lzdGFuY2UKKzM2JSB0byBDb2xkIFJlc2lzdGFuY2UKKzM1JSB0byBMaWdodG5pbmcgUmVzaXN0YW5jZQorMjkgdG8gbWF4aW11bSBFbmVyZ3kgU2hpZWxkCg==","price":{"status":200,"min":89.76,"max":134.64,"currency":"chaos","error":0,"pred_explanation":[["(pseudo) +#% total Elemental Resistance",0.5888532774052838],["(pseudo) (total) +# to maximum Life",0.10565856451535269],["(pseudo) # Elemental Resistances",0.00003946896076002651],["ES",-0.3054486891186035]],"data":{}}}
+
+    var entry = new TextEntry("Getting price prediction...", {closeable: false});
+    entry.add();
+
+    PoePrices.request(parser.getItemText())
+    .then((result) => {
+      entry.close();
+      new RareItemEntry(result, parser).add();
+    })
+    .catch((error) => {
+      entry.close();
+      console.error(error);
+    });
   }
 
   /**

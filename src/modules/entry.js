@@ -36,6 +36,7 @@ class Entry {
   enableAutoClose(seconds) {
     var self = this;
     var timeoutContainer = $(".entry[data-id='" + this.id + "']").find(".timeout");
+    timeoutContainer.removeClass("hidden");
 
     if(seconds > 0) {
       this._enableCancelAutoCloseButton();
@@ -61,8 +62,7 @@ class Entry {
     var self = this;
     var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
-    button.click(function(e) {
-      e.preventDefault();
+    button.click(function() {
       button.hide();
       self.cancelAutoClose();
     });
@@ -83,8 +83,7 @@ class Entry {
     var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
 
     button.removeClass("hidden");
-    button.click(function(e) {
-      e.preventDefault();
+    button.click(function() {
       self.close();
     });
   }
@@ -111,6 +110,7 @@ class Entry {
     }
 
     gui.updateWindowHeight();
+    gui.scrollToBottom();
   }
 
   /**

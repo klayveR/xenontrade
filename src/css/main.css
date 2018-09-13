@@ -9,10 +9,6 @@ html, body {
   overflow: hidden;
 }
 
-a i {
-  cursor: pointer !important;
-}
-
 hr {
   border: 0;
   height: 0;
@@ -25,6 +21,7 @@ i {
 
 .container {
   overflow-x: hidden;
+  width: 300px;
 }
 
 .menu {
@@ -35,7 +32,7 @@ i {
   padding: 0px 0px 3px 0px;
 }
 
-.menu a {
+.menu .button {
   -webkit-app-region: no-drag;
 }
 
@@ -191,10 +188,86 @@ i {
 .entry .content .header {
   font-family: "Roboto", sans-serif;
   position: relative;
-  font-weight: normal;
+  font-weight: 700;
   font-size: 10px;
   text-transform: uppercase;
+}
+
+.entry .explanation {
+  text-align: center;
+}
+
+.entry .explanation-table {
+  margin: 0 auto;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-size: 10px;
+  padding: 3px 5px;
+}
+
+.entry .explanation-table .percentage {
+  font-family: "Roboto", sans-serif;
+  text-align: right;
+  vertical-align: top;
+}
+
+.entry .explanation-table .mod {
   letter-spacing: 0.5px;
+  vertical-align: top;
+  text-align: justify;
+}
+
+.entry .feedback {
+  display: table;
+  width: 100%;
+  margin-bottom: 1px;
+}
+
+.entry .feedback .cell {
+  font-family: "Roboto", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: table-cell;
+  padding: 2px 5px;
+  vertical-align: middle;
+}
+
+.entry .feedback .info {
+  background-color: #272f3d;
+  color: #748199;
+  text-align: left;
+}
+
+.entry .feedback .textarea {
+  padding: 4px 5px 2px 5px;
+  background-color: #272f3d;
+}
+
+.entry .feedback textarea {
+  width: 99%;
+  border: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 10px;
+  background-color: #202630;
+  text-align: left;
+  resize: none;
+}
+
+.entry .feedback textarea::placeholder {
+  color: #748199;
+}
+
+.entry .feedback .option {
+  width: 30px;
+  background-color: #323c4e;
+  border-left: 1px solid #202630;
+  text-align: center;
+  cursor: pointer;
+}
+
+.entry .feedback .option:hover, .entry .feedback .active {
+  background-color: #46546d !important;
 }
 
 .settings {
@@ -239,12 +312,13 @@ i {
   color: #748199;
 }
 
-.settings .toggle a i {
+.settings .toggle i {
   font-size: 16px;
   text-decoration: none;
   padding-right: 3px;
   vertical-align: top;
   float: right;
+  cursor: pointer;
 }
 
 .settings .slider {

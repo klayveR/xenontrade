@@ -1,3 +1,7 @@
+[data-link] {
+  cursor: pointer !important;
+}
+
 .row  {
   display: table-row;
 }
@@ -5,6 +9,10 @@
 .button {
   display: inline-block;
   margin: 0px 1px 0px 1px;
+}
+
+.button i {
+  cursor: pointer !important;
 }
 
 .hidden {

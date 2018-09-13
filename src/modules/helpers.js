@@ -218,7 +218,7 @@ class Helpers {
   * @return {Config}
   */
   static createConfig() {
-    return new Config({
+    var config = new Config({
       defaults: {
         league: "Delve",
         focusPathOfExile: true,
@@ -239,6 +239,10 @@ class Helpers {
             item: {
               enabled: false,
               value: 10
+            },
+            rare: {
+              enabled: false,
+              value: 20
             }
           }
         },
@@ -250,6 +254,18 @@ class Helpers {
         }
       }
     });
+
+    // 0.1.2
+    if(!config.has("window.poll")) {
+      config.set("window.poll", 1000);
+    }
+
+    // 0.2.0
+    if(!config.has("autoclose.timeouts.rare")) {
+      config.set("autoclose.timeouts.rare", {enabled: false, value: 20});
+    }
+
+    return config;
   }
 }
 

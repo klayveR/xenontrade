@@ -15,27 +15,15 @@
     <div class="menu draggable">
       <div class="row">
         <div class="left">
-          <div class="button">
-            <a href="#" data-button="settings"><i class="fas fa-cog grey"></i></a>
-          </div>
-          <div class="button">
-            <a href="#" data-button="update"><i class="fas fa-sync-alt grey"></i></a>
-          </div>
-          <div class="button">
-            <a href="#" data-button="close-all"><i class="fas fa-times-circle grey"></i></a>
-          </div>
+          <div class="button" data-button="settings"><i class="fas fa-cog grey"></i></div>
+          <div class="button" data-button="update"><i class="fas fa-sync-alt grey"></i></div>
+          <div class="button" data-button="close-all"><i class="fas fa-times-circle grey"></i></div>
         </div>
         <div class="middle"></div>
         <div class="right">
-          <div class="button">
-            <a href="#" data-button="lock"><i class="fas fa-unlock grey"></i></a>
-          </div>
-          <div class="button">
-            <a href="#" data-button="minimize"><i class="fas fa-window-minimize grey"></i></a>
-          </div>
-          <div class="button">
-            <a href="#" data-button="close"><i class="fas fa-window-close grey"></i></a>
-          </div>
+          <div class="button" data-button="lock"><i class="fas fa-unlock grey"></i></div>
+          <div class="button" data-button="minimize"><i class="fas fa-window-minimize grey"></i></div>
+          <div class="button" data-button="close"><i class="fas fa-window-close grey"></i></div>
         </div>
       </div>
     </div>
@@ -63,11 +51,11 @@
           </tr>
           <tr>
             <td class="label" colspan="2">Automatically minimize</td>
-            <td class="toggle"><a href="#" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></a></td>
+            <td class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
           <tr>
             <td class="label" colspan="2">Always focus Path of Exile</td>
-            <td class="toggle"><a href="#" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></a></td>
+            <td class="toggle" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
           <tr>
             <td class="info" colspan="3">By enabling this setting, the app will always focus Path of Exile again after interacting with it.</td>
@@ -79,7 +67,7 @@
         <tbody>
           <tr>
             <td class="title">Price check</td>
-            <td class="title toggle"><a href="#" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></a></td>
+            <td class="title toggle" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
         </tbody>
       </table>
@@ -88,7 +76,7 @@
         <tbody>
           <tr>
             <td class="title" colspan="3">Auto close</td>
-            <td class="title toggle"><a href="#" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+            <td class="title toggle" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
           <tr data-slider="autoclose.timeouts.currency.value">
             <td class="label">Currency</td>
@@ -96,7 +84,7 @@
             <td class="slider" style="width: 85%">
               <div slider-min="1" slider-max="99"></div>
             </td>
-            <td class="toggle"><a href="#" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+            <td class="toggle" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
           <tr data-slider="autoclose.timeouts.item.value">
             <td class="label">Item</td>
@@ -104,7 +92,15 @@
             <td class="slider">
               <div slider-min="1" slider-max="99"></div>
             </td>
-            <td class="toggle"><a href="#" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+            <td class="toggle" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></td>
+          </tr>
+          <tr data-slider="autoclose.timeouts.rare.value">
+            <td class="label">Rares</td>
+            <td class="slider-label"><span class="slider-value">0</span>s</td>
+            <td class="slider">
+              <div slider-min="1" slider-max="99"></div>
+            </td>
+            <td class="toggle" data-toggle="autoclose.timeouts.rare.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
           <tr data-slider="autoclose.threshold.value">
             <td class="label">Threshold</td>
@@ -112,18 +108,10 @@
             <td class="slider">
               <div slider-min="1" slider-max="99"></div>
             </td>
-            <td class="toggle"><a href="#" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></a></td>
+            <td class="toggle" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
           <tr>
             <td class="info" colspan="4">Use the threshold to disable auto close if the value of the item is higher than the threshold value.</td>
-          </tr>
-        </tbody>
-      </table>
-      <hr />
-      <table style="width: 100%">
-        <tbody>
-          <tr>
-            <td class="info">Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></td>
           </tr>
         </tbody>
       </table>

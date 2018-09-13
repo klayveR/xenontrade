@@ -64,3 +64,4 @@ typings/
 
 # xenontrade
 dist
+build/old

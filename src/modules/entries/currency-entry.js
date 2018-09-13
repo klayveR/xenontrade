@@ -1,4 +1,5 @@
 const PriceCheckEntry = require("./pricecheck-entry.js");
+const CurrencyIcons = require("../../resource/icons/currencyIcons");
 
 class CurrencyEntry extends PriceCheckEntry {
   /**
@@ -35,10 +36,7 @@ class CurrencyEntry extends PriceCheckEntry {
   }
 
   _buildReplacements() {
-    console.log(this.parser);
-
     var stackSize = this.parser.getStackSize();
-    var chaosDetails = ninjaAPI.getCurrencyDetails("Chaos Orb");
     var currencyDetails = ninjaAPI.getCurrencyDetails(this.item.currencyTypeName);
 
     var pay = {
@@ -79,7 +77,7 @@ class CurrencyEntry extends PriceCheckEntry {
       { find: "calculated-pay", replace: pay.calculated },
       { find: "conf-receive-color", replace: receive.confidence },
       { find: "conf-pay-color", replace: pay.confidence },
-      { find: "chaos-icon", replace: chaosDetails.icon },
+      { find: "chaos-icon", replace: CurrencyIcons["Chaos Orb"] },
       { find: "pay-trend", replace: pay.trend },
       { find: "receive-trend", replace: receive.trend }
     ];

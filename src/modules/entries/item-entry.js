@@ -1,4 +1,5 @@
 const PriceCheckEntry = require("./pricecheck-entry.js");
+const CurrencyIcons = require("../../resource/icons/currencyIcons");
 
 class ItemEntry extends PriceCheckEntry {
   /**
@@ -33,14 +34,12 @@ class ItemEntry extends PriceCheckEntry {
     // Enable autoclose if configured
     if(config.get("autoclose.enabled") && config.get("autoclose.timeouts.item.enabled")) {
       if(!(config.get("autoclose.threshold.enabled") && this.item.chaosValue > config.get("autoclose.threshold.value"))) {
-        entry.enableAutoClose(config.get("autoclose.timeouts.item.value"));
+        super.enableAutoClose(config.get("autoclose.timeouts.item.value"));
       }
     }
   }
 
   _buildReplacements() {
-    var chaosDetails = ninjaAPI.getCurrencyDetails("Chaos Orb");
-    var exaltedDetails = ninjaAPI.getCurrencyDetails("Exalted Orb");
     var confidence = super._getConfidenceColor(this.item.count);
     var trend = super._formatTrendData(this.item.sparkline);
     var name = this.item.name;
@@ -67,8 +66,8 @@ class ItemEntry extends PriceCheckEntry {
       { find: "item-icon", replace: this.item.icon },
       { find: "item-value-chaos", replace: this.item.chaosValue },
       { find: "item-value-exalted", replace: this.item.exaltedValue },
-      { find: "chaos-icon", replace: chaosDetails.icon },
-      { find: "exalted-icon", replace: exaltedDetails.icon },
+      { find: "chaos-icon", replace: CurrencyIcons["Chaos Orb"] },
+      { find: "exalted-icon", replace: CurrencyIcons["Exalted Orb"] },
       { find: "conf-color", replace: confidence },
       { find: "trend", replace: trend }
     ];

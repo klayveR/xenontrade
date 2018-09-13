@@ -107,8 +107,7 @@ class Settings {
     var self = this;
 
     var toggle = selector.attr("data-toggle");
-    selector.click(function(e) {
-      e.preventDefault();
+    selector.click(function() {
       self.toggleSetting(toggle);
     });
   }
