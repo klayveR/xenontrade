@@ -158,7 +158,7 @@ class RareItemEntry extends PriceCheckEntry {
         min: this.poePrices.price.min,
         max: this.poePrices.price.max,
         currency: this.poePrices.price.currency,
-        debug: 1
+        debug: 0
       });
 
       var options = {
