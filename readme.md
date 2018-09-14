@@ -7,7 +7,7 @@ Works on **Windows** and **Linux**. Check out the [Installation](https://github.
 
 Items | Currency | Settings
 :---:|:---:|:---:
-![](https://i.imgur.com/r8EYb6S.png) | ![](https://i.imgur.com/RHTxgRS.png) | ![](https://i.imgur.com/4Z76H4x.png)
+![](https://i.imgur.com/r8EYb6S.png) | ![](https://i.imgur.com/RHTxgRS.png) | ![](https://i.imgur.com/x7idAAt.png)
 
 ## Wiki
 
