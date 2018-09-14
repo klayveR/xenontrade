@@ -48,7 +48,7 @@ function createWindow() {
 
   win.setResizable(false);
   win.loadFile("./src/index.html");
-  win.setVisibleOnAllWorkspaces(true);
+  win.setVisibleOnAllWorkspaces(false);
   win.setFullScreenable(false);
 
   if(debug) {

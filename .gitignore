@@ -65,3 +65,4 @@ typings/
 # xenontrade
 dist
 build/old
+gh_token.yml
