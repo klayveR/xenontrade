@@ -9,8 +9,8 @@
     "electron": "electron ./",
     "dist-linux": "build",
     "dist-win": "build --win",
-    "dist": "build --win --linux",
-    "publish": "build --linux --publish always"
+    "publish-linux": "build --linux --publish always",
+    "publish-win": "build --win --publish always"
   },
   "keywords": [
     "poe",
