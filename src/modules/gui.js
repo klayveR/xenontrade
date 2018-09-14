@@ -189,7 +189,7 @@ class GUI {
   show() {
     if(this.window.isMinimized()) {
       this.window.show();
-      this.window.setAlwaysOnTop(true);
+      Helpers.setAlwaysOnTop();
       this.updateWindowHeight();
     }
   }
@@ -216,7 +216,7 @@ class GUI {
   onFocus() {
     setTimeout(function() {
       if(config.get("focusPathOfExile") && !this.settingsMenuActive && !this.overrideFocus) {
-        this.window.setAlwaysOnTop(true);
+        Helpers.setAlwaysOnTop();
         Helpers.focusGame();
       }
     }, 20);

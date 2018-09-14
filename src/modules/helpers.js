@@ -127,6 +127,21 @@ class Helpers {
   }
 
   /**
+  * Focuses the game on Linux
+  */
+  static setAlwaysOnTop() {
+    gui.window.setAlwaysOnTop(true);
+
+    // https://unix.stackexchange.com/a/180797
+    if(os.platform() === "linux") {
+      cp.exec("wmctrl -F -r 'XenonTrade' -b add,above")
+      .catch((error) => {
+        console.error("Tried to set XenonTrade always on top but failed, wmctrl may not be installed");
+      });
+    }
+  }
+
+  /**
   * Focuses the game on Windows
   */
   static _focusGameOnWindows() {
