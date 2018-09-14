@@ -1,4 +1,4 @@
-[data-link] {
+[data-link], [data-button] {
   cursor: pointer !important;
 }
 

@@ -62,10 +62,10 @@ class XenonTrade {
   initializeAutoMinimize() {
     var self = this;
 
-      this.autoMinimize.initialize()
-      .then(() => {
-        self.autoMinimize.start();
-      });
+    this.autoMinimize.initialize()
+    .then(() => {
+      self.autoMinimize.start();
+    });
   }
 
   /**
@@ -106,12 +106,12 @@ class XenonTrade {
   * Checks if the copied content is item data from Path of Exile, parses it and adds an entry in the GUI
   */
   onClipboard() {
-      var clipboard = clipboardy.readSync();
-      var parser = new Parser(clipboard);
+    var clipboard = clipboardy.readSync();
+    var parser = new Parser(clipboard);
 
-      if(parser.isPathOfExileData()) {
-        this.getItem(parser);
-      }
+    if(parser.isPathOfExileData()) {
+      this.getItem(parser);
+    }
   }
 
   /**

@@ -125,5 +125,5 @@ ipcMain.on("resize", function (e, w, h) {
 
 // when receiving a quitAndInstall signal, quit and install the new version ;)
 ipcMain.on("quitAndInstall", (event, arg) => {
-  // autoUpdater.quitAndInstall();
+  autoUpdater.quitAndInstall();
 })

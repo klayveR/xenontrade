@@ -1,6 +1,6 @@
 {
   "name": "XenonTrade",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Path of Exile trading app for price checking and whisper management",
   "main": "src/main.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "dist-linux": "build",
     "dist-win": "build --win",
     "dist": "build --win --linux",
-    "publish": "build --win --linux --publish always"
+    "publish": "build --linux --publish always"
   },
   "keywords": [
     "poe",
@@ -83,9 +83,7 @@
     "linux": {
       "icon": "build/icon.icns",
       "target": [
-        "AppImage",
-        "deb",
-        "rpm"
+        "AppImage"
       ],
       "category": "Game"
     },

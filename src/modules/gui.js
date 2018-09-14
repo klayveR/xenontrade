@@ -24,7 +24,7 @@ class GUI {
     });
 
     ipcRenderer.on("updateReady", function(event) {
-      new TextEntry("Update available", "A new version is available. Would you like to install it now?", {icon: "fa-box blue"}).add();
+      self.onUpdateReady();
     });
   }
 
@@ -208,6 +208,18 @@ class GUI {
         Helpers.focusGame();
       }
     }, 20);
+  }
+
+  /**
+  * Called when a new update is available and is ready to install
+  */
+  onUpdateReady() {
+    var entry = new TextEntry("Update available", "A new version of XenonTrade is available. Would you like to install it now? <span data-button='install'>Install now</span>", {icon: "fa-box blue"});
+    entry.add();
+
+    $(".entry[data-id='" + entry.getId() + "']").find("[data-button='install']").click(function() {
+      ipcRenderer.send("quitAndInstall");
+    });
   }
 }
 

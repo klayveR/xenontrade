@@ -65,5 +65,3 @@ typings/
 # xenontrade
 dist
 build/old
-dev-app-update.yml
-app-update.yml
