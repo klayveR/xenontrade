@@ -39,17 +39,17 @@ function createWindow() {
     width: 300,
     height: 0,
     frame: false,
-    hasShadow: false,
+    backgroundThrottling: false,
     skipTaskbar: true,
-    alwaysOnTop: true,
     show: false,
     transparent: true
   });
 
   win.setResizable(false);
   win.loadFile("./src/index.html");
-  win.setVisibleOnAllWorkspaces(false);
+  win.setVisibleOnAllWorkspaces(true);
   win.setFullScreenable(false);
+  win.setAlwaysOnTop(true);
 
   if(debug) {
     win.setSize(800, 600);

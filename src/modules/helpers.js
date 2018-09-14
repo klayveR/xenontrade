@@ -221,7 +221,7 @@ class Helpers {
     var config = new Config({
       defaults: {
         league: "Delve",
-        focusPathOfExile: true,
+        focusPathOfExile: false,
         autoMinimize: false,
         pricecheck: true,
         maxHeight: 500,

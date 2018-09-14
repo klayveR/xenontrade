@@ -216,6 +216,7 @@ class GUI {
   onFocus() {
     setTimeout(function() {
       if(config.get("focusPathOfExile") && !this.settingsMenuActive && !this.overrideFocus) {
+        this.window.setAlwaysOnTop(true);
         Helpers.focusGame();
       }
     }, 20);
