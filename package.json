@@ -35,6 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "active-win": "^3.0.0",
+    "child-process-es6-promise": "^1.2.0",
     "clipboardy": "github:klayveR/clipboardy",
     "electron-store": "^2.0.0",
     "ffi": "^2.2.0",
