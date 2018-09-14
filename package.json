@@ -7,10 +7,11 @@
     "postinstall": "electron-builder install-app-deps",
     "start": "npm install && electron ./",
     "electron": "electron ./",
-    "pack": "build --dir",
-    "dist": "build",
+    "pack-linux": "build --dir",
+    "dist-linux": "build",
     "pack-win": "build --dir --win",
-    "dist-win": "build --win"
+    "dist-win": "build --win",
+    "dist": "build --win --linux"
   },
   "keywords": [
     "poe",
@@ -89,7 +90,13 @@
     },
     "win": {
       "icon": "build/icon.ico",
-      "target": "portable"
+      "target": "nsis"
+
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "devDependencies": {
