@@ -82,20 +82,20 @@ i {
   width: 100%;
 }
 
-.entry .title {
+.title {
   width: 100%;
   background-color: #272f3d;
   font-size: 12px;
   padding: 2px 0px 2px 0px;
 }
 
-.entry .title .left {
+.title .left {
   text-align: left !important;
   padding: 0px 0px 0px 3px;
   float: left;
 }
 
-.entry .title .middle {
+.title .middle {
   font-family: "Roboto", sans-serif;
   width: 210px;
   display: inline-block;
@@ -108,13 +108,13 @@ i {
   text-overflow: ellipsis;
 }
 
-.entry .title .right {
+.title .right {
   text-align: right !important;
   padding: 0px 3px 0px 3px;
   float: right;
 }
 
-.entry .title .timeout {
+.title .timeout {
   font-family: "Roboto", sans-serif;
   border-radius: 2px;
   display: inline-block;
@@ -281,14 +281,11 @@ i {
 
 .settings {
   background-color: #202630;
-  font-family: "Roboto", sans-serif;
-  padding: 10px;
 }
 
-.settings td.title {
-  text-transform: uppercase;
-  font-weight: 700;
-  color: #748199;
+.settings table {
+  padding: 8px;
+  font-family: "Roboto", sans-serif;
 }
 
 .settings td.label {
