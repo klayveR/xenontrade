@@ -200,6 +200,7 @@ i {
   font-size: 10px;
   text-transform: uppercase;
   background-color: #202630;
+  padding: 2px 5px;
 }
 
 .entry .explanation {
@@ -211,7 +212,7 @@ i {
   font-family: "Roboto", sans-serif;
   font-weight: normal;
   font-size: 10px;
-  padding: 3px 5px;
+  padding: 5px 5px 0px 5px;
 }
 
 .entry .explanation-table .percentage {

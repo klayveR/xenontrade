@@ -1,5 +1,5 @@
 const Entry = require("../entry.js");
-const open = require("open");
+const shell = require('electron').shell;
 
 class PriceCheckEntry extends Entry {
   /**
@@ -33,7 +33,7 @@ class PriceCheckEntry extends Entry {
       $(this).removeClass("hidden");
 
       $(this).click(function() {
-        open(link);
+        shell.openExternal(link);
       });
     });
 
