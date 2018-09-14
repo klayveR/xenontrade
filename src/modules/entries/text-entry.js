@@ -43,27 +43,30 @@ class TextEntry extends Entry {
     if(this.options.timeout !== 0) {
       super.enableAutoClose(this.options.timeout);
     }
+
+    this._collapseIfEmptyText();
   }
 
   _getTemplate() {
-    if(typeof this.text !== "undefined" && this.text !== "") {
-      return templates.get("text.html");
-    }
-
-    return templates.get("title.html");
+    return templates.get("text.html");
   }
 
   _buildReplacements() {
-    var replacements = [
-      { find: "title", replace: this.title },
-      { find: "icon", replace: this.options.icon }
-    ];
-
+    var text = "";
     if(typeof this.text !== "undefined" && this.text !== "") {
-      replacements.push({ find: "text", replace: this.text })
+      text = this.text;
     }
+    return [
+      { find: "title", replace: this.title },
+      { find: "icon", replace: this.options.icon },
+      { find: "text", replace: text }
+    ];
+  }
 
-    return replacements;
+  _collapseIfEmptyText() {
+    if(typeof this.text === "undefined" || this.text === "") {
+      $(".entry[data-id='" + this.id + "']").find(".text").toggleClass("text empty");
+    }
   }
 }
 

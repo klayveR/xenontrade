@@ -138,7 +138,14 @@ i {
   vertical-align: middle;
 }
 
+.entry .content .empty {
+  background-color: #202630;
+  max-height: 1px;
+  min-height: 1px;
+}
+
 .entry .content .text {
+  background-color: #202630;
   font-family: "Roboto", sans-serif;
   padding: 3px 3px;
   font-weight: normal;
