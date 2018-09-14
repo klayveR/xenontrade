@@ -1,3 +1,4 @@
+const { version } = require('../../package.json');
 const Helpers = require("./helpers.js");
 const TextEntry = require("./entries/text-entry.js");
 
@@ -10,6 +11,9 @@ class Settings {
     this._initializeLeagues();
     this._initializeSliders();
     this._initializeMaxHeight();
+
+    // Show version
+    $(".settings").find(".rightText").html("v" + version);
   }
 
   /**

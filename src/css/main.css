@@ -36,7 +36,7 @@ i {
   -webkit-app-region: no-drag;
 }
 
-.menu .left, .menu .middle, .menu .right {
+.menu .left, .menu .middle, .menu .right, .menu .rightText {
   display: table-cell;
 }
 
@@ -112,6 +112,16 @@ i {
   text-align: right !important;
   padding: 0px 3px 0px 3px;
   float: right;
+}
+
+.title .rightText {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  text-align: right !important;
+  padding: 0px 3px 0px 3px;
+  float: right;
+  color: #748199;
+  vertical-align: middle;
 }
 
 .title .timeout {
