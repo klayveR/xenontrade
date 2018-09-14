@@ -118,12 +118,10 @@ class Entry {
   * Closes and removes this entry
   */
   close() {
-    if(this.closeable) {
-      $(".entry[data-id='" + this.id + "']").remove();
+    $(".entry[data-id='" + this.id + "']").remove();
 
-      entries = _.omit(entries, this.id);
-      gui.updateWindowHeight();
-    }
+    entries = _.omit(entries, this.id);
+    gui.updateWindowHeight();
   }
 
   /**
