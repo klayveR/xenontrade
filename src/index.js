@@ -95,9 +95,9 @@ class XenonTrade {
     var self = this;
 
     if(os.platform() === "linux") {
-      Helpers.isPackageInstalled("xdotool")
+      Helpers.isPackageInstalled("wmctrl")
       .catch((error) => {
-        var message = "This tool uses <strong>xdotool</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.";
+        var message = "This tool uses <strong>wmctrl</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.";
         new TextEntry("Missing dependency", message, {icon: "fa-exclamation-triangle yellow"}).add();
       });
     }

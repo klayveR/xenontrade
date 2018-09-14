@@ -120,9 +120,9 @@ class Helpers {
   * Focuses the game on Linux
   */
   static _focusGameOnLinux() {
-    cp.exec("WID=$(xdotool search --desktop 0 --name 'Path of Exile' | head -n1) && xdotool windowactivate $WID")
+    cp.exec("wmctrl -F -a 'Path of Exile'")
     .catch((error) => {
-      console.error("Tried to focus Path of Exile but failed, either xdotool is not installed or Path of Exile is not running");
+      console.error("Tried to focus Path of Exile but failed, either wmctrl is not installed or Path of Exile is not running");
     });
   }
 
