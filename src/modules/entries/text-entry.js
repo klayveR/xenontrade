@@ -64,9 +64,32 @@ class TextEntry extends Entry {
   }
 
   _collapseIfEmptyText() {
+    var selector = $(".entry[data-id='" + this.id + "']").find(".text");
+
     if(typeof this.text === "undefined" || this.text === "") {
-      $(".entry[data-id='" + this.id + "']").find(".text").toggleClass("text empty");
+      selector.addClass("empty");
+    } else {
+      selector.removeClass("empty");
     }
+  }
+
+  setText(text) {
+    this.text = text;
+    $(".entry[data-id='" + this.id + "']").find(".text").html(text);
+
+    this._collapseIfEmptyText();
+    gui.updateWindowHeight();
+  }
+
+  setTitle(title) {
+    this.title = title;
+    $(".entry[data-id='" + this.id + "']").find(".middle").html(title);
+  }
+
+  setIcon(icon) {
+    var selector = $(".entry[data-id='" + this.id + "']").find(".icon").find("i");
+    selector.removeClass();
+    selector.addClass("fas " + icon);
   }
 }
 

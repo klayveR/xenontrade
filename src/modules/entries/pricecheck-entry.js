@@ -22,6 +22,8 @@ class PriceCheckEntry extends Entry {
   getId() { return super.getId(); }
   add() { super.add(); }
   enableExternalLinks() { super.enableExternalLinks(); }
+  isCloseable() { return super.isCloseable(); }
+
   /**
   * Enables a toggle
   */

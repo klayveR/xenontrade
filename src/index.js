@@ -22,6 +22,7 @@ global.config = Helpers.createConfig();
 global.templates = new Templates();
 global.gui = new GUI();
 global.ninjaAPI = new NinjaAPI();
+global.entries = {};
 
 class XenonTrade {
   /**
@@ -170,8 +171,10 @@ class XenonTrade {
       new RareItemEntry(result, parser).add();
     })
     .catch((error) => {
-      entry.close();
-      new TextEntry("Failed to get price prediction", error.message, {icon: "fa-exclamation-triangle yellow"}).add();
+      entry.setTitle("Failed to get price prediction");
+      entry.setText(error.message);
+      entry.setIcon("fa-exclamation-triangle yellow");
+      entry.enableClose();
     });
   }
 
@@ -198,17 +201,22 @@ class XenonTrade {
     if(!this.updating) {
       this.updating = true;
       gui.toggleUpdate();
+
       var updateEntry = new TextEntry("Updating poe.ninja prices...", {closeable: false});
       updateEntry.add();
 
       ninjaAPI.update({league: config.get("league")})
       .then((result) => {
-        updateEntry.close();
-        new TextEntry("Update successful", {icon: "fa-check-circle green", timeout: 10}).add();
+        updateEntry.setTitle("Update successful");
+        updateEntry.setIcon("fa-check-circle green");
+        updateEntry.enableClose();
+        updateEntry.enableAutoClose(10);
       })
       .catch((error) => {
-        updateEntry.close();
-        new TextEntry("Failed to update", error.message, {icon: "fa-exclamation-triangle yellow"}).add();
+        updateEntry.setTitle("Update failed");
+        updateEntry.setText(error.message);
+        updateEntry.enableClose();
+        updateEntry.setIcon("fa-exclamation-triangle yellow");
       })
       .then(() => {
         gui.toggleUpdate();

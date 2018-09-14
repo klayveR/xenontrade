@@ -1,5 +1,6 @@
 const Helpers = require("./helpers.js");
 const shell = require('electron').shell;
+const _ = require("underscore");
 
 class Entry {
   /**
@@ -12,6 +13,7 @@ class Entry {
     this.template = "";
     this.replacements = [];
     this.timeout = null;
+    this.closeable = false;
   }
 
   /**
@@ -95,11 +97,18 @@ class Entry {
   /**
   * Enables the close button on this entry
   */
-  enableClose() {
+  enableClose(enable = true) {
     var self = this;
     var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
 
-    button.removeClass("hidden");
+    if(enable) {
+      this.closeable = true;
+      button.removeClass("hidden");
+    } else {
+      this.closeable = false;
+      button.addClass("hidden");
+    }
+
     button.click(function() {
       self.close();
     });
@@ -109,8 +118,12 @@ class Entry {
   * Closes and removes this entry
   */
   close() {
-    $(".entry[data-id='" + this.id + "']").remove();
-    gui.updateWindowHeight();
+    if(this.closeable) {
+      $(".entry[data-id='" + this.id + "']").remove();
+
+      entries = _.omit(entries, this.id);
+      gui.updateWindowHeight();
+    }
   }
 
   /**
@@ -126,6 +139,7 @@ class Entry {
       $(".entries > .entry:last").after(template);
     }
 
+    entries[this.id] = this;
     gui.updateWindowHeight();
     gui.scrollToBottom();
   }
@@ -157,6 +171,13 @@ class Entry {
   */
   getId() {
     return this.id;
+  }
+
+  /**
+  * Returns true if the entry is closeable
+  */
+  isCloseable() {
+    return this.closeable;
   }
 }
 

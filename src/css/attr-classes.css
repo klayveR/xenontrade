@@ -1,5 +1,11 @@
-[data-link], [data-button] {
+[data-link], [data-button], [data-update] {
   cursor: pointer !important;
+}
+
+[data-update] {
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
 }
 
 .row  {

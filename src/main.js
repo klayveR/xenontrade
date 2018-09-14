@@ -12,6 +12,7 @@ const os = require("os");
 let win, tray;
 let config;
 let debug = false;
+autoUpdater.autoDownload = false;
 
 let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // Someone tried to run a second instance, we should focus our window.
@@ -28,7 +29,7 @@ if (shouldQuit) {
   return;
 }
 
-// Creates default window
+// Creates XenonTrade window
 function createWindow() {
   config = Helpers.createConfig();
 
@@ -69,9 +70,10 @@ function createWindow() {
   win.on('ready-to-show', () => {
     win.show();
     win.setAlwaysOnTop(true);
-  })
+  });
 }
 
+// Creates XenonTrade Tray
 function createTray() {
   const iconPath = path.join(__dirname, '../', 'build/icon_512.png');
   tray = new Tray(iconPath);
@@ -105,11 +107,27 @@ app.on("window-all-closed", () => {
   app.quit();
 });
 
-// when the update has been downloaded and is ready to be installed, notify the BrowserWindow
-autoUpdater.on('update-downloaded', (info) => {
-  win.webContents.send('updateReady');
+// On update available, let browserWindow know
+autoUpdater.on('update-available', (info) => {
+  win.webContents.send('update-available', info);
 });
 
+// On update downloaded, let browserWindow know
+autoUpdater.on('update-downloaded', (info) => {
+  win.webContents.send('update-downloaded', info);
+});
+
+// Download update when receiving download-update
+ipcMain.on("download-update", (event, arg) => {
+  autoUpdater.downloadUpdate();
+});
+
+// When receiving a install-update, quit and install the new version
+ipcMain.on("install-update", (event, arg) => {
+  autoUpdater.quitAndInstall();
+});
+
+// When receiving resize signal, resize browserWindow
 ipcMain.on("resize", function (e, w, h) {
   // Save position before resizing and then apply position again
   // The window would resize but try to keep it centered for one
@@ -122,8 +140,3 @@ ipcMain.on("resize", function (e, w, h) {
     }
   }
 });
-
-// when receiving a quitAndInstall signal, quit and install the new version ;)
-ipcMain.on("quitAndInstall", (event, arg) => {
-  autoUpdater.quitAndInstall();
-})

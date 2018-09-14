@@ -18,13 +18,18 @@ class GUI {
     this.settings = new Settings();
     this.settingsMenuActive = false;
     this.overrideFocus = false;
+    this.updateEntry = null;
 
     ipcRenderer.on("focus", function(event) {
       self.onFocus();
     });
 
-    ipcRenderer.on("updateReady", function(event) {
-      self.onUpdateReady();
+    ipcRenderer.on("update-available", function(event, info) {
+      self.onUpdateAvailable(info);
+    });
+
+    ipcRenderer.on("update-downloaded", function(event, info) {
+      self.onUpdateDownloaded(info);
     });
   }
 
@@ -106,10 +111,16 @@ class GUI {
   }
 
   /**
-  * Closes all entries
+  * Closes all entries (if they're closable)
   */
   closeAllEntries() {
-    $('.entries').empty();
+    for(var entryIndex in entries) {
+      var entry = entries[entryIndex];
+
+      if(entry.isCloseable()) {
+        entry.close();
+      }
+    }
 
     this.updateWindowHeight();
   }
@@ -211,14 +222,38 @@ class GUI {
   }
 
   /**
-  * Called when a new update is available and is ready to install
+  * Called when a new update is available
   */
-  onUpdateReady() {
-    var entry = new TextEntry("Update available", "A new version of XenonTrade is available. <span data-button='install'>Click here to install it now</span>", {icon: "fa-box blue"});
-    entry.add();
+  onUpdateAvailable(info) {
+    var self = this;
 
-    $(".entry[data-id='" + entry.getId() + "']").find("[data-button='install']").click(function() {
-      ipcRenderer.send("quitAndInstall");
+    this.updateEntry = new TextEntry("Update available", "A new version of XenonTrade (<span>v" + info.version + "</span>) is available.<br /><i class='fas fa-arrow-right'></i> <span data-update='download'>Update now</span>", {icon: "fa-box blue"});
+    this.updateEntry.add();
+
+    $(".entry[data-id='" + this.updateEntry.getId() + "']").find("[data-update='download']").click(function() {
+      ipcRenderer.send("download-update");
+      $(".menu").find("[data-button='download']").removeClass("hidden");
+
+      self.updateEntry.setTitle("Downloading <span>v" + info.version + "</span>...");
+      self.updateEntry.setText("");
+      self.updateEntry.enableClose(false);
+    });
+  }
+
+  /**
+  * Called when new update has been downloaded and is ready to install
+  */
+  onUpdateDownloaded(info) {
+    if(this.updateEntry != null) {
+      this.updateEntry.setTitle("Update downloaded");
+      this.updateEntry.setText("XenonTrade <span>v" + info.version + "</span> has been downloaded. It will be automatically installed after closing XenonTrade.<br /><i class='fas fa-arrow-right'></i> <span data-update='install'>Install now</span>");
+      this.updateEntry.enableClose();
+    }
+
+    $(".menu").find("[data-button='download']").addClass("hidden");
+
+    $(".entry[data-id='" + this.updateEntry.getId() + "']").find("[data-update='install']").click(function() {
+      ipcRenderer.send("install-update");
     });
   }
 }

@@ -142,6 +142,7 @@ i {
   background-color: #202630;
   max-height: 1px;
   min-height: 1px;
+  padding: 0px !important;
 }
 
 .entry .content .text {
