@@ -149,9 +149,10 @@ class XenonTrade {
   _getNinjaItem(parser) {
     ninjaAPI.getItem(parser.getName(), {league: config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
     .then((itemArray) => {
-      this.onNinjaItemReceive(parser, itemArray[0]);
+      return this.onNinjaItemReceive(parser, itemArray[0]);
     })
     .catch((error) => {
+      console.error(error);
       // No item received, not much you can do, huh
     });
   }

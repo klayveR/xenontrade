@@ -11,6 +11,10 @@
       "type": "Essence"
     },
     {
+      "regex": "Remnant of Corruption",
+      "type": "Essence"
+    },
+    {
       "regex": "Place in a Resonator to influence item crafting.",
       "type": "Fossil"
     },
