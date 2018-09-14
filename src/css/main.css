@@ -115,9 +115,9 @@ i {
 }
 
 .title .rightText {
+  line-height: 16px;
   font-family: "Roboto", sans-serif;
   font-weight: 700;
-  text-align: right !important;
   padding: 0px 3px 0px 3px;
   float: right;
   color: #748199;
