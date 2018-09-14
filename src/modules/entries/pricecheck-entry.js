@@ -1,5 +1,4 @@
 const Entry = require("../entry.js");
-const shell = require('electron').shell;
 
 class PriceCheckEntry extends Entry {
   /**
@@ -22,24 +21,7 @@ class PriceCheckEntry extends Entry {
   close() { super.close(); }
   getId() { return super.getId(); }
   add() { super.add(); }
-
-  /**
-  * Enables link buttons
-  */
-  enableLinks() {
-    var self = this;
-    $(".entry[data-id='" + this.id + "']").find("[data-link]").each(function() {
-      var link = $(this).attr("data-link");
-      $(this).removeClass("hidden");
-
-      $(this).click(function() {
-        shell.openExternal(link);
-      });
-    });
-
-    $(".entry[data-id='" + this.id + "']").find(".left").removeClass("hidden");
-  }
-
+  enableExternalLinks() { super.enableExternalLinks(); }
   /**
   * Enables a toggle
   */

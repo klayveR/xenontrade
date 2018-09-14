@@ -1,5 +1,8 @@
 const {app, Menu, BrowserWindow, Tray} = require("electron");
 const {ipcMain} = require("electron");
+const {autoUpdater} = require("electron-updater");
+const isDev = require('electron-is-dev');
+
 const Helpers = require("./modules/helpers.js");
 const path = require("path");
 const os = require("os");
@@ -10,7 +13,7 @@ let win, tray;
 let config;
 let debug = false;
 
-var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // Someone tried to run a second instance, we should focus our window.
   if (win) {
     if (win.isMinimized()) {
@@ -25,10 +28,10 @@ if (shouldQuit) {
   return;
 }
 
+// Creates default window
 function createWindow() {
   config = Helpers.createConfig();
 
-  // Create the browser window.
   win = new BrowserWindow({
     x: config.get("window.x"),
     y: config.get("window.y"),
@@ -42,35 +45,47 @@ function createWindow() {
     transparent: true
   });
 
-  if(debug) { win.setSize(800, 600); }
-
-  // and load the index.html of the app.
-  win.loadFile("./src/index.html");
-
   win.setResizable(false);
+  win.loadFile("./src/index.html");
   win.setVisibleOnAllWorkspaces(true);
   win.setFullScreenable(false);
 
-  // Open the DevTools.
-  if(debug) { win.webContents.openDevTools(); }
+  if(debug) {
+    win.setSize(800, 600);
+    win.webContents.openDevTools();
+  }
 
-  // Emitted when the window is closed.
+  // Emitted when the window is closed
   win.on("closed", () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     win = null;
   });
 
-  // Send focus event to renderer
+  // Emitted when the window is focused
   win.on("focus", () => {
     win.webContents.send('focus');
   });
 
+  // Emitted when the window is ready to be shown
   win.on('ready-to-show', () => {
     win.show();
     win.setAlwaysOnTop(true);
   })
+}
+
+function createTray() {
+  const iconPath = path.join(__dirname, '../', 'build/icon_512.png');
+  tray = new Tray(iconPath);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show', click: function(){
+      win.show();
+    }},
+    { label: 'Close', click: function(){
+      win.close();
+    }}
+  ]);
+
+  tray.setToolTip('XenonTrade');
+  tray.setContextMenu(contextMenu);
 }
 
 // This method will be called when Electron has finished
@@ -78,25 +93,21 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
   createWindow();
+  createTray();
 
-  const iconPath = path.join(__dirname, '../', 'build/icon_512.png');
-  tray = new Tray(iconPath);
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Show', click: function(){
-        win.show();
-    }},
-    { label: 'Close', click: function(){
-        win.close();
-    }}
-  ]);
-
-  tray.setToolTip('XenonTrade');
-  tray.setContextMenu(contextMenu);
+  if (!isDev) {
+    autoUpdater.checkForUpdates();
+  }
 });
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
   app.quit();
+});
+
+// when the update has been downloaded and is ready to be installed, notify the BrowserWindow
+autoUpdater.on('update-downloaded', (info) => {
+  win.webContents.send('updateReady');
 });
 
 ipcMain.on("resize", function (e, w, h) {
@@ -111,3 +122,8 @@ ipcMain.on("resize", function (e, w, h) {
     }
   }
 });
+
+// when receiving a quitAndInstall signal, quit and install the new version ;)
+ipcMain.on("quitAndInstall", (event, arg) => {
+  // autoUpdater.quitAndInstall();
+})

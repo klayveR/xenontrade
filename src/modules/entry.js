@@ -1,4 +1,5 @@
 const Helpers = require("./helpers.js");
+const shell = require('electron').shell;
 
 class Entry {
   /**
@@ -28,6 +29,22 @@ class Entry {
   setReplacements(replacements) {
     this.replacements = replacements;
     this.replacements.push({find: "entry-id", replace: this.id});
+  }
+
+  /**
+  * Enables link buttons
+  */
+  enableExternalLinks() {
+    var self = this;
+
+    $(".entry[data-id='" + this.id + "']").find("[data-link]").each(function() {
+      var link = $(this).attr("data-link");
+      $(this).removeClass("hidden");
+
+      $(this).click(function() {
+        shell.openExternal(link);
+      });
+    });
   }
 
   /**

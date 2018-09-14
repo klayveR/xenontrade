@@ -7,11 +7,10 @@
     "postinstall": "electron-builder install-app-deps",
     "start": "npm install && electron ./",
     "electron": "electron ./",
-    "pack-linux": "build --dir",
     "dist-linux": "build",
-    "pack-win": "build --dir --win",
     "dist-win": "build --win",
-    "dist": "build --win --linux"
+    "dist": "build --win --linux",
+    "publish": "build --win --linux --publish always"
   },
   "keywords": [
     "poe",
@@ -38,7 +37,9 @@
     "active-win": "^3.0.0",
     "child-process-es6-promise": "^1.2.0",
     "clipboardy": "github:klayveR/clipboardy",
+    "electron-is-dev": "^0.3.0",
     "electron-store": "^2.0.0",
+    "electron-updater": "^3.1.2",
     "ffi": "^2.2.0",
     "iohook": "^0.2.0",
     "jquery": "^3.3.1",
@@ -91,7 +92,6 @@
     "win": {
       "icon": "build/icon.ico",
       "target": "nsis"
-
     },
     "nsis": {
       "oneClick": false,

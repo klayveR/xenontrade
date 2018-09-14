@@ -20,9 +20,11 @@ class GUI {
     this.overrideFocus = false;
 
     ipcRenderer.on("focus", function(event) {
-      setTimeout(function() {
-        self.onFocus();
-      }, 20);
+      self.onFocus();
+    });
+
+    ipcRenderer.on("updateReady", function(event) {
+      new TextEntry("Update available", "A new version is available. Would you like to install it now?", {icon: "fa-box blue"}).add();
     });
   }
 
@@ -201,9 +203,11 @@ class GUI {
   * Called when window is focused
   */
   onFocus() {
-    if(config.get("focusPathOfExile") && !this.settingsMenuActive && !this.overrideFocus) {
-      Helpers.focusGame();
-    }
+    setTimeout(function() {
+      if(config.get("focusPathOfExile") && !this.settingsMenuActive && !this.overrideFocus) {
+        Helpers.focusGame();
+      }
+    }, 20);
   }
 }
 
