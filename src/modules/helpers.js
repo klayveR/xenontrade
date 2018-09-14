@@ -186,7 +186,7 @@ class Helpers {
   */
   static getPathOfExileLeagues() {
     return new Promise(function(resolve, reject) {
-      request("http://api.pathofexile.com/leagues?type=main", {json: true})
+      request("http://api.pathofexile.com/leagues?type=main", {json: true, headers: {'Connection': 'keep-alive'}})
       .then((body) => {
         var leagues = [];
         var leaguesCount = 0;
