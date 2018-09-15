@@ -1,10 +1,10 @@
 <div class="entry" data-id="%entry-id%">
   <div class="title">
-    <div class="left hidden">
-      <div class="button hidden" data-button="expand">
+    <div class="left" style="display: none">
+      <div class="button" data-button="expand" style="display: none">
         <i class="fas fa-caret-square-down grey"></i>
       </div>
-      <div class="button hidden" data-button="switch">
+      <div class="button" data-button="switch" style="display: none">
         <i class="fas fa-exchange-alt grey"></i>
       </div>
     </div>
@@ -12,8 +12,8 @@
       %currency-name%
     </div>
     <div class="right">
-      <div class="timeout hidden"></div>
-      <div class="button hidden" data-button="close">
+      <div class="timeout" style="display: none"></div>
+      <div class="button" data-button="close" style="display: none">
         <i class="fas fa-window-close grey"></i>
       </div>
     </div>
@@ -21,47 +21,47 @@
   <div class="content center">
     <div class="item">
       <div class="confidence %conf-receive-color%-bg"></div>
-      <div data-switch class="confidence %conf-pay-color%-bg hidden"></div>
+      <div data-switch class="confidence %conf-pay-color%-bg" style="display: none"></div>
       <div class="price">
         <img data-switch class="icon right-margin" src="%currency-icon%">
-        <img data-switch class="icon right-margin hidden" src="%chaos-icon%">
+        <img data-switch class="icon right-margin" src="%chaos-icon%" style="display: none">
         <span class="value">1</span>
         <i class="fas fa-arrow-right"></i>
         <span data-switch class="value">%receive%</span>
-        <span data-switch class="value hidden">%pay%</span>
+        <span data-switch class="value" style="display: none">%pay%</span>
         <img data-switch class="icon left-margin" src="%chaos-icon%">
-        <img data-switch class="icon left-margin hidden" src="%currency-icon%">
+        <img data-switch class="icon left-margin" src="%currency-icon%" style="display: none">
         <span data-switch>
           <div class="trend">
             %receive-trend%
           </div>
         </span>
-        <span data-switch class="hidden">
+        <span data-switch style="display: none">
           <div class="trend">
             %pay-trend%
           </div>
         </span>
       </div>
     </div>
-    <div class="hidden" data-expand>
+    <div data-expand style="display: none">
       <div data-switch class="header grey">
         Stack value
       </div>
-      <div data-switch class="header grey hidden">
+      <div data-switch class="header grey" style="display: none">
         Based on receive value
       </div>
       <div class="item">
         <div data-switch class="confidence %conf-receive-color%-bg"></div>
         <div class="price">
           <img data-switch class="icon right-margin" src="%currency-icon%">
-          <img data-switch class="icon right-margin hidden" src="%chaos-icon%">
+          <img data-switch class="icon right-margin" src="%chaos-icon%" style="display: none">
           <span data-switch class="value">%stacksize%</span>
-          <span data-switch class="value hidden">1</span>
+          <span data-switch class="value" style="display: none">1</span>
           <i class="fas fa-arrow-right"></i>
           <span data-switch class="value">%calculated-receive%</span>
-          <span data-switch class="value hidden">%calculated-pay%</span>
+          <span data-switch class="value" style="display: none">%calculated-pay%</span>
           <img data-switch class="icon left-margin" src="%chaos-icon%">
-          <img data-switch class="icon left-margin hidden" src="%currency-icon%">
+          <img data-switch class="icon left-margin" src="%currency-icon%" style="display: none">
         </div>
       </div>
     </div>

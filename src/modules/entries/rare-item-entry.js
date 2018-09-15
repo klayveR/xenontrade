@@ -139,7 +139,7 @@ class RareItemEntry extends PriceCheckEntry {
 
   _disableCommentBox(disable) {
     var selector = $(".entry[data-id='" + this.id + "']").find("[data-comment]");
-    selector.toggleClass("hidden", disable);
+    selector.toggle(disable);
 
     gui.updateWindowHeight();
   }

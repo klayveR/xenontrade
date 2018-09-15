@@ -21,10 +21,6 @@
   cursor: pointer !important;
 }
 
-.hidden {
-  display: none !important;
-}
-
 .left-margin {
   margin-left: 5px;
 }

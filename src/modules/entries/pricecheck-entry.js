@@ -30,9 +30,9 @@ class PriceCheckEntry extends Entry {
   enableToggle(toggle) {
     var self = this;
     var button = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']");
-    button.removeClass("hidden");
+    button.show();
 
-    $(".entry[data-id='" + this.id + "']").find(".left").removeClass("hidden");
+    $(".entry[data-id='" + this.id + "']").find(".left").show();
 
     button.click(function() {
       self._toggle(toggle);
@@ -46,7 +46,7 @@ class PriceCheckEntry extends Entry {
     var icon = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']").find("i");
     icon.toggleClass("grey");
 
-    $(".entry[data-id='" + this.id + "']").find("[data-" + toggle + "]").toggleClass("hidden");
+    $(".entry[data-id='" + this.id + "']").find("[data-" + toggle + "]").toggle();
     gui.updateWindowHeight();
   }
 

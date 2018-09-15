@@ -41,7 +41,7 @@ class Entry {
 
     $(".entry[data-id='" + this.id + "']").find("[data-link]").each(function() {
       var link = $(this).attr("data-link");
-      $(this).removeClass("hidden");
+      $(this).show();
 
       $(this).click(function() {
         shell.openExternal(link);
@@ -55,7 +55,7 @@ class Entry {
   enableAutoClose(seconds) {
     var self = this;
     var timeoutContainer = $(".entry[data-id='" + this.id + "']").find(".timeout");
-    timeoutContainer.removeClass("hidden");
+    timeoutContainer.show();
 
     if(seconds > 0) {
       this._enableCancelAutoCloseButton();
@@ -103,10 +103,10 @@ class Entry {
 
     if(enable) {
       this.closeable = true;
-      button.removeClass("hidden");
+      button.show();
     } else {
       this.closeable = false;
-      button.addClass("hidden");
+      button.hide();
     }
 
     button.click(function() {

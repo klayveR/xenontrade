@@ -151,8 +151,8 @@ class GUI {
     this.settingsMenuActive = !this.settingsMenuActive;
     $("[data-button='settings']").find("i").toggleClass("grey");
 
-    $(".entries").toggleClass("hidden");
-    $(".settings").toggleClass("hidden");
+    $(".entries").toggle();
+    $(".settings").toggle();
 
     this.updateWindowHeight();
   }
@@ -233,7 +233,7 @@ class GUI {
 
     $(".entry[data-id='" + this.updateEntry.getId() + "']").find("[data-update='download']").click(function() {
       ipcRenderer.send("download-update");
-      $(".menu").find("[data-button='download']").removeClass("hidden");
+      $(".menu").find("[data-button='download']").show();
 
       self.updateEntry.setTitle("Downloading <span>v" + info.version + "</span>...");
       self.updateEntry.setText("");
@@ -251,7 +251,7 @@ class GUI {
       this.updateEntry.enableClose();
     }
 
-    $(".menu").find("[data-button='download']").addClass("hidden");
+    $(".menu").find("[data-button='download']").hide();
 
     $(".entry[data-id='" + this.updateEntry.getId() + "']").find("[data-update='install']").click(function() {
       ipcRenderer.send("install-update");

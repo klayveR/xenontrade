@@ -152,8 +152,7 @@ class XenonTrade {
       return this.onNinjaItemReceive(parser, itemArray[0]);
     })
     .catch((error) => {
-      console.error(error);
-      // No item received, not much you can do, huh
+      return this.onNinjaItemError(parser);
     });
   }
 
@@ -193,6 +192,20 @@ class XenonTrade {
     } else {
       new ItemEntry(item, parser).add();
     }
+  }
+
+  /**
+  * Adds a flashing icon on the menu bar when an item is not available on ninja
+  *
+  * @param {Parser} parser Parser containing the item clipboard
+  */
+  onNinjaItemError(parser) {
+    var statusButton = $(".menu").find("[data-button='status']");
+    var statusIcon = statusButton.find("i");
+
+    statusIcon.removeClass();
+    statusIcon.addClass("fas fa-exclamation-circle red");
+    statusButton.show().delay(1000).fadeOut("slow");
   }
 
   /**

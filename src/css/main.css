@@ -46,15 +46,6 @@ i {
   padding-left: 3px;
 }
 
-.menu .middle {
-  font-family: "Roboto", sans-serif;
-  vertical-align: middle;
-  text-align: center;
-  color: #748199;
-  font-size: 13px;
-  font-weight: 700;
-}
-
 .menu .right {
   width: 50%;
   text-align: right;
