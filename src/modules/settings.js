@@ -13,6 +13,7 @@ class Settings {
     this._initializeToggles();
     this._initializeLeagues();
     this._initializeMaxHeight();
+    this._initializeZoomFactor();
     this._initializeSliders();
 
     // Show version
@@ -28,6 +29,13 @@ class Settings {
     sliderDiv.attr("slider-max", mainScreen.size.height);
 
     this._changeMaxHeight(config.get("maxHeight"));
+  }
+
+  /**
+  * Initializes the maximum height CSS setting based on the config value
+  */
+  _initializeZoomFactor() {
+    this._changeZoomFactor(config.get("window.zoomFactor"));
   }
 
   /**
@@ -93,7 +101,7 @@ class Settings {
   * @param {number} value Maximum height value
   */
   _changeMaxHeight(value) {
-    $(".entries").css("max-height", value + "px");
+    $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
     gui.updateWindowHeight();
   }
 
@@ -104,6 +112,8 @@ class Settings {
   */
   _changeZoomFactor(value) {
     $(".container").css("zoom", value);
+    this._changeMaxHeight(config.get("maxHeight"));
+
     gui.updateWindowHeight();
   }
 

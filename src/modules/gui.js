@@ -38,7 +38,7 @@ class GUI {
   */
   initialize() {
     this._initializeButtons();
-    this._initializeConfigSettings();
+    this._initializeLock();
     this._initializeWindowsTransparency();
     this.settings.initialize();
 
@@ -46,14 +46,12 @@ class GUI {
   }
 
   /**
-  * Initializes the config settings
+  * Initializes the lock setting from the config
   */
-  _initializeConfigSettings() {
+  _initializeLock() {
     if(config.get("window.locked")) {
       this.toggleLock();
     }
-
-    $(".container").css("zoom", config.get("window.zoomFactor"));
   }
 
   /**
