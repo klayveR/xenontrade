@@ -1,3 +1,6 @@
+const electron = require('electron');
+var screenElectron = electron.screen;
+
 const { version } = require('../../package.json');
 const Helpers = require("./helpers.js");
 const TextEntry = require("./entries/text-entry.js");
@@ -9,8 +12,8 @@ class Settings {
   initialize() {
     this._initializeToggles();
     this._initializeLeagues();
-    this._initializeSliders();
     this._initializeMaxHeight();
+    this._initializeSliders();
 
     // Show version
     $(".settings").find(".rightText").html("v" + version);
@@ -20,6 +23,10 @@ class Settings {
   * Initializes the maximum height CSS setting based on the config value
   */
   _initializeMaxHeight() {
+    var mainScreen = screenElectron.getPrimaryDisplay();
+    var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
+    sliderDiv.attr("slider-max", mainScreen.size.height);
+
     this._changeMaxHeight(config.get("maxHeight"));
   }
 

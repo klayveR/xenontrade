@@ -11,7 +11,7 @@ const os = require("os");
 // be closed automatically when the JavaScript object is garbage collected.
 let win, tray;
 let config;
-let debug = false;
+let debug = true;
 autoUpdater.autoDownload = false;
 
 let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
