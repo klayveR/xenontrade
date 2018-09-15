@@ -52,26 +52,38 @@ class Settings {
     var sliderSelector = selector.find("div");
     var sliderLabel = selector.find(".slider-value");
     var slider = sliderSelector[0];
+    var step = parseFloat(sliderSelector.attr("slider-step"));
 
     noUiSlider.create(slider, {
     	start: [ config.get(configKey) ],
     	range: {
-    		'min': [ parseInt(sliderSelector.attr("slider-min")) ],
-    		'max': [ parseInt(sliderSelector.attr("slider-max")) ]
-    	}
+    		'min': [ parseFloat(sliderSelector.attr("slider-min")) ],
+    		'max': [ parseFloat(sliderSelector.attr("slider-max")) ]
+    	},
+      step: step
     });
 
     slider.noUiSlider.on('set', function(values){
       var value = Math.round(values[0]);
+      if(step !== 1) {
+        value = parseFloat(values[0]);
+      }
+
       config.set(configKey, value);
 
       if(configKey === "maxHeight") {
         self._changeMaxHeight(value);
+      } else if(configKey === "window.zoomFactor") {
+        self._changeZoomFactor(value);
       }
     });
 
     slider.noUiSlider.on('update', function(values){
-      sliderLabel.html(Math.round(values[0]));
+      if(step === 1) {
+        sliderLabel.html(Math.round(values[0]));
+      } else {
+        sliderLabel.html(parseFloat(values[0]));
+      }
     });
   }
 
@@ -82,6 +94,16 @@ class Settings {
   */
   _changeMaxHeight(value) {
     $(".entries").css("max-height", value + "px");
+    gui.updateWindowHeight();
+  }
+
+  /**
+  * Change the zoom factor of the window
+  *
+  * @param {number} value Zoom factor value
+  */
+  _changeZoomFactor(value) {
+    $(".container").css("zoom", value);
     gui.updateWindowHeight();
   }
 

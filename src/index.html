@@ -51,10 +51,17 @@
               </label>
             </td>
           </tr>
+          <tr data-slider="window.zoomFactor">
+            <td class="label">Scale factor</td>
+            <td class="slider" style="width: 150px">
+              <div slider-min="0.5" slider-max="2.5" slider-step="0.1"></div>
+            </td>
+            <td class="slider-label"><span class="slider-value">1</span>x</td>
+          </tr>
           <tr data-slider="maxHeight">
             <td class="label">Max. height</td>
             <td class="slider" style="width: 150px">
-              <div slider-min="100" slider-max="999"></div>
+              <div slider-min="100" slider-max="999" slider-step="1"></div>
             </td>
             <td class="slider-label"><span class="slider-value">0</span>px</td>
           </tr>
@@ -104,7 +111,7 @@
             <td class="label">Currency</td>
             <td class="slider-label"><span class="slider-value">0</span>s</td>
             <td class="slider" style="width: 85%">
-              <div slider-min="1" slider-max="99"></div>
+              <div slider-min="1" slider-max="99" slider-step="1"></div>
             </td>
             <td class="toggle" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
@@ -112,7 +119,7 @@
             <td class="label">Item</td>
             <td class="slider-label"><span class="slider-value">0</span>s</td>
             <td class="slider">
-              <div slider-min="1" slider-max="99"></div>
+              <div slider-min="1" slider-max="99" slider-step="1"></div>
             </td>
             <td class="toggle" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
@@ -120,7 +127,7 @@
             <td class="label">Rare</td>
             <td class="slider-label"><span class="slider-value">0</span>s</td>
             <td class="slider">
-              <div slider-min="1" slider-max="99"></div>
+              <div slider-min="1" slider-max="99" slider-step="1"></div>
             </td>
             <td class="toggle" data-toggle="autoclose.timeouts.rare.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>
@@ -128,7 +135,7 @@
             <td class="label">Threshold</td>
             <td class="slider-label"><span class="slider-value">0</span>c</td>
             <td class="slider">
-              <div slider-min="1" slider-max="99"></div>
+              <div slider-min="1" slider-max="99" slider-step="1"></div>
             </td>
             <td class="toggle" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></td>
           </tr>

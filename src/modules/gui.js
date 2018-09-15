@@ -38,7 +38,7 @@ class GUI {
   */
   initialize() {
     this._initializeButtons();
-    this._initializeLock();
+    this._initializeConfigSettings();
     this._initializeWindowsTransparency();
     this.settings.initialize();
 
@@ -46,12 +46,14 @@ class GUI {
   }
 
   /**
-  * Initializes the lock status of the draggable header
+  * Initializes the config settings
   */
-  _initializeLock() {
+  _initializeConfigSettings() {
     if(config.get("window.locked")) {
       this.toggleLock();
     }
+
+    $(".container").css("zoom", config.get("window.zoomFactor"));
   }
 
   /**
@@ -167,8 +169,9 @@ class GUI {
     // because in some cases the last entry can get cut off without a timeout
     // if the entries height is dynamically changed after appending
     setTimeout(function() {
-      var height = $(".container").height();
-      ipcRenderer.send("resize", 300, height);
+      var zoomFactor = config.get("window.zoomFactor");
+      var height = $(".container").height() * zoomFactor;
+      ipcRenderer.send("resize", 300 * zoomFactor, height);
     }, 50);
   }
 

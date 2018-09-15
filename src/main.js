@@ -11,7 +11,7 @@ const os = require("os");
 // be closed automatically when the JavaScript object is garbage collected.
 let win, tray;
 let config;
-let debug = true;
+let debug = false;
 autoUpdater.autoDownload = false;
 
 let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
@@ -36,7 +36,7 @@ function createWindow() {
   win = new BrowserWindow({
     x: config.get("window.x"),
     y: config.get("window.y"),
-    width: 300,
+    width: 300 * config.get("window.zoomFactor"),
     height: 0,
     frame: false,
     backgroundThrottling: false,

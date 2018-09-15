@@ -17,6 +17,16 @@ class Helpers {
   }
 
   /**
+  * Returns `true` if the number is an integer
+  *
+  * @param {number} number Number that should be checked for integer type
+  * @return {boolean}
+  */
+  static isInt(number) {
+    return Number(number) === number && number % 1 === 0;
+  }
+
+  /**
   * Returns `true` if the object is empty
   *
   * @param {Object} object The object to be checked for emptiness
@@ -265,7 +275,8 @@ class Helpers {
           x: 0,
           y: 0,
           locked: false,
-          poll: 1000
+          poll: 1000,
+          zoomFactor: 1
         }
       }
     });
@@ -278,6 +289,11 @@ class Helpers {
     // 0.2.0
     if(!config.has("autoclose.timeouts.rare")) {
       config.set("autoclose.timeouts.rare", {enabled: false, value: 20});
+    }
+
+    // 0.3.4
+    if(!config.has("window.zoomFactor")) {
+      config.set("window.zoomFactor", 1);
     }
 
     return config;
