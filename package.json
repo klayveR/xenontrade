@@ -1,6 +1,6 @@
 {
   "name": "XenonTrade",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Path of Exile trading app for price checking and whisper management",
   "main": "src/main.js",
   "scripts": {
@@ -92,7 +92,9 @@
       "target": "nsis"
     },
     "nsis": {
-      "oneClick": true
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true
     }
   },
   "devDependencies": {
