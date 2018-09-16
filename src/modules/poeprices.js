@@ -5,8 +5,9 @@ const _ = require("underscore");
 class PoePrices {
   static request(itemText) {
     return new Promise(function(resolve, reject) {
+      itemText = itemText.replace("\r", ""); // Remove carriage returns, otherwise causes problems with receiving poeprices.info data
       var itemBase64 = Base64.encode(itemText);
-      var url = "https://www.poeprices.info/api?l=" + config.get("league") + "&i=" + itemBase64;
+      var url = "https://www.poeprices.info/api?s=xenontrade&l=" + config.get("league") + "&i=" + itemBase64;
 
       request(url, {json: true})
       .then((result) => {
