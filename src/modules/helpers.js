@@ -62,21 +62,9 @@ class Helpers {
   static isPackageInstalled(pkg) {
     return new Promise(function(resolve, reject) {
       // APT based
-      cp.exec("dpkg-query -W -f='${Status} ${Version}\n' " + pkg)
+      cp.exec("which " + pkg)
       .then((output) => {
         return resolve(true);
-      })
-      .catch((error) => {
-        return cp.exec("rpm -qa | grep " + pkg);
-      })
-      // RPM based
-      .then((output) => {
-        // Check if there's any output at all
-        if(output && !output.trim()) {
-          return resolve(true);
-        } else {
-          return reject(new Error("Package " + pkg + " is not installed"));
-        }
       })
       .catch((error) => {
         return reject(error);
