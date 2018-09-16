@@ -86,25 +86,10 @@ class GUI {
   }
 
   /**
-  * Registers mouse listeners for the empty transparent entries div, so clickthrough is possible
+  * TODO: Fix blocking transparent area below menu bar, if no entries available
   */
   _initializeWindowsTransparency() {
-    if(os.platform() === "win32") {
-      // Set minimum height of entries div to 20px to make the window a total of 38px
-      $(".entries").css("min-height", "20px");
-
-      let el = document.getElementsByClassName('entries')[0];
-      el.addEventListener("mouseenter", () => {
-        // If entries div is empty
-        if (!$.trim($(".entries").html())) {
-          this.window.setIgnoreMouseEvents(true, {forward: true})
-        }
-      });
-
-      el.addEventListener("mouseleave", () => {
-        this.window.setIgnoreMouseEvents(false)
-      });
-    } else {
+    if(os.platform() !== "win32") {
       // If OS is not Windows, add background color to body to prevent white flash on new entry/close entry
       $("body").css("background-color", "#202630");
     }
