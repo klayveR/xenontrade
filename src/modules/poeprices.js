@@ -1,12 +1,10 @@
-const Base64 = require('js-base64').Base64;
 const request = require("request-promise-native");
 const _ = require("underscore");
 
 class PoePrices {
   static request(itemText) {
     return new Promise(function(resolve, reject) {
-      itemText = itemText.replace(/[\r]/g, ""); // Remove carriage returns, otherwise causes problems with receiving poeprices.info data
-      var itemBase64 = Base64.encode(itemText);
+      var itemBase64 = Buffer.from(itemText).toString('base64');
       var url = "https://www.poeprices.info/api?s=xenontrade&l=" + config.get("league") + "&i=" + itemBase64;
 
       request(url, {json: true})
