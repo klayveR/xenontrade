@@ -29,7 +29,7 @@ class RareItemEntry extends PriceCheckEntry {
     super.add();
 
     // Set buttons, links, prediction explanation and feedback elements
-    super.enableClose();
+    super.setCloseable(true);
     super.enableToggle("expand");
     super.enableExternalLinks();
     this._addExplanationTable();

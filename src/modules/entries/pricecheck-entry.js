@@ -17,7 +17,7 @@ class PriceCheckEntry extends Entry {
   setReplacements(replacements) { super.setReplacements(replacements); }
   enableAutoClose(seconds) { super.enableAutoClose(seconds); }
   cancelAutoClose() { super.cancelAutoClose(); }
-  enableClose() { super.enableClose(); }
+  setCloseable(closeable) { super.setCloseable(closeable); }
   close() { super.close(); }
   getId() { return super.getId(); }
   add() { super.add(); }

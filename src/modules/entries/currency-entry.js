@@ -25,7 +25,7 @@ class CurrencyEntry extends PriceCheckEntry {
 
     // Set buttons and trends
     this.visualizeTrend();
-    super.enableClose();
+    super.setCloseable(true);
     super.enableToggle("switch");
     super.enableToggle("expand");
 

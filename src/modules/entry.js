@@ -14,6 +14,7 @@ class Entry {
     this.replacements = [];
     this.timeout = null;
     this.closeable = false;
+    this.added = false;
   }
 
   /**
@@ -22,55 +23,66 @@ class Entry {
   * @param {string} template `.html` format template
   */
   setTemplate(template) {
-    this.template = template;
+    if(!this.added) {
+      this.template = template;
+    }
   }
 
   /**
   * Sets the template that should be used for this entry
+  *
+  * @param {Array} replacements An array of objects containing the properties find and replace
   */
   setReplacements(replacements) {
-    this.replacements = replacements;
-    this.replacements.push({find: "entry-id", replace: this.id});
+    if(!this.added) {
+      this.replacements = replacements;
+      this.replacements.push({find: "entry-id", replace: this.id});
+    }
   }
 
   /**
   * Enables link buttons
   */
   enableExternalLinks() {
-    var self = this;
+    if(this.added) {
+      var self = this;
 
-    $(".entry[data-id='" + this.id + "']").find("[data-link]").each(function() {
-      var link = $(this).attr("data-link");
-      $(this).show();
+      $(".entry[data-id='" + this.id + "']").find("[data-link]").each(function() {
+        var link = $(this).attr("data-link");
+        $(this).show();
 
-      $(this).click(function() {
-        shell.openExternal(link);
+        $(this).click(function() {
+          shell.openExternal(link);
+        });
       });
-    });
+    }
   }
 
   /**
   * Enables auto close for this entry
+  *
+  * @param {number} seconds Initial countdown value
   */
   enableAutoClose(seconds) {
-    var self = this;
-    var timeoutContainer = $(".entry[data-id='" + this.id + "']").find(".timeout");
-    timeoutContainer.show();
+    if(this.added) {
+      var self = this;
+      var timeoutContainer = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
-    if(seconds > 0) {
-      this._enableCancelAutoCloseButton();
-      timeoutContainer.html(seconds);
+      if(seconds > 0) {
+        this._enableCancelAutoCloseButton();
+        timeoutContainer.html(seconds);
+        timeoutContainer.show();
 
-      this.timeout = setInterval(function() {
-        seconds--;
-        if(seconds < 99) {
-          timeoutContainer.html(seconds);
-        }
-        if (seconds === 0) {
-          clearInterval(self.timeout);
-          self.close();
-        }
-      }, 1000);
+        this.timeout = setInterval(function() {
+          seconds--;
+          if(seconds > 0) {
+            timeoutContainer.html(seconds);
+          } else {
+            clearInterval(self.timeout);
+            self.close();
+          }
+        }, 1000);
+      }
     }
   }
 
@@ -78,76 +90,99 @@ class Entry {
   * Enables button that autocloses entry
   */
   _enableCancelAutoCloseButton() {
-    var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
+    if(this.added) {
+      var self = this;
+      var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
-    button.click(function() {
-      button.hide();
-      self.cancelAutoClose();
-    });
+      button.click(function() {
+        button.hide();
+        self.cancelAutoClose();
+      });
+    }
   }
 
   /**
   * Stops auto close timeout
   */
   cancelAutoClose() {
-    clearInterval(this.timeout);
+    if(this.timeout != null) {
+      clearInterval(this.timeout);
+    }
   }
 
   /**
   * Enables the close button on this entry
+  *
+  * @param {boolean} [closeable] Whether the close button should be enabled or disabled
   */
-  enableClose(enable = true) {
-    var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
+  setCloseable(closeable = true) {
+    if(this.added) {
+      var self = this;
+      var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
 
-    if(enable) {
-      this.closeable = true;
-      button.show();
-    } else {
-      this.closeable = false;
-      button.hide();
+      if(closeable) {
+        this.closeable = true;
+        button.show();
+
+        button.click(function() {
+          self.close();
+        });
+      } else {
+        this.closeable = false;
+        button.hide();
+
+        button.unbind();
+      }
     }
-
-    button.click(function() {
-      self.close();
-    });
   }
 
   /**
   * Closes and removes this entry
   */
   close() {
-    $(".entry[data-id='" + this.id + "']").remove();
+    if(this.added) {
+      this.added = false;
+      $(".entry[data-id='" + this.id + "']").remove();
 
-    entries = _.omit(entries, this.id);
-    gui.updateWindowHeight();
+      // Remove entry from global entries variable
+      entries = _.omit(entries, this.id);
+
+      gui.updateWindowHeight();
+    }
   }
 
   /**
   * Replaces replacements in entry and adds it to the GUI
   */
   add() {
-    var template = this._getReplacedTemplate(this.template, this.replacements, "%");
+    if(!this.added) {
+      this.added = true;
+      var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
-    // Check if the entries div is empty, remove whitespaces and newlines
-    if (!$.trim($(".entries").html())) {
-      $(".entries").html(template);
-    } else {
-      $(".entries > .entry:last").after(template);
+      // If no entries available, set whole content of div, otherwise append
+      if (!$.trim($(".entries").html())) {
+        $(".entries").html(template);
+      } else {
+        $(".entries > .entry:last").after(template);
+      }
+
+      // Add entry to global entries variable
+      entries[this.id] = this;
+
+      gui.updateWindowHeight();
+      gui.scrollToBottom();
     }
-
-    entries[this.id] = this;
-    gui.updateWindowHeight();
-    gui.scrollToBottom();
   }
 
   /**
   * Replaces replacements in template and returns it
   *
+  * @param {string} template `.html` format template
+  * @param {Array} replacements An array of objects containing the properties find and replace
+  * @param {string} [delimiter] Boundary delimiter for the find property
   * @return {Object}
   */
-  _getReplacedTemplate(template, replacements, delimiter) {
+  _getReplacedTemplate(template, replacements, delimiter = "%") {
     for(var i = 0; i < replacements.length; i++) {
       if(replacements[i].hasOwnProperty("replace") && replacements[i].hasOwnProperty("find")) {
         // Format if value is float
@@ -165,10 +200,27 @@ class Entry {
   }
 
   /**
-  * Returns the jQuery selector for this entry
+  * Returns the ID of this entry
   */
   getId() {
     return this.id;
+  }
+
+  /**
+  * Sets the ID of the Entry
+  *
+  * @param {string} id Entry identifier
+  */
+  setId(id) {
+    // Update ID in global entries variable and element if it has already been added
+    if(this.added) {
+      entries = _.omit(entries, this.id);
+      entries[id] = this;
+
+      $(".entry[data-id='" + this.id + "']").attr("data-id", id);
+    }
+
+    this.id = id;
   }
 
   /**

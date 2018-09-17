@@ -37,7 +37,7 @@ class TextEntry extends Entry {
     super.add();
 
     if(this.options.closeable) {
-      super.enableClose();
+      super.setCloseable(true);
     }
 
     if(this.options.timeout !== 0) {

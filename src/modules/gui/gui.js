@@ -1,9 +1,7 @@
-const electron = require("electron");
 const remote = require("electron").remote;
-let { ipcRenderer } = electron;
 const os = require("os");
 
-const Helpers = require("./helpers.js");
+const Helpers = require("../helpers.js");
 const Settings = require("./settings.js");
 
 class GUI {
@@ -18,28 +16,15 @@ class GUI {
     this.settings = new Settings();
     this.settingsMenuActive = false;
     this.overrideFocus = false;
-    this.updateEntry = null;
-
-    ipcRenderer.on("focus", function(event) {
-      self.onFocus();
-    });
-
-    ipcRenderer.on("update-available", function(event, info) {
-      self.onUpdateAvailable(info);
-    });
-
-    ipcRenderer.on("update-downloaded", function(event, info) {
-      self.onUpdateDownloaded(info);
-    });
   }
 
   /**
   * Initializes essential parts of the GUI
   */
   initialize() {
-    this._initializeButtons();
-    this._initializeLock();
-    this._initializeWindowsTransparency();
+    this.initializeButtons();
+    this.initializeLock();
+    this.initializeWindowsTransparency();
     this.settings.initialize();
 
     this.updateWindowHeight();
@@ -48,7 +33,7 @@ class GUI {
   /**
   * Initializes the lock setting from the config
   */
-  _initializeLock() {
+  initializeLock() {
     if(config.get("window.locked")) {
       this.toggleLock();
     }
@@ -57,7 +42,7 @@ class GUI {
   /**
   * Initializes the header buttons
   */
-  _initializeButtons() {
+  initializeButtons() {
     var self = this;
 
     $(".menu").find("[data-button='minimize']").click(function() {
@@ -88,7 +73,7 @@ class GUI {
   /**
   * TODO: Fix blocking transparent area below menu bar, if no entries available
   */
-  _initializeWindowsTransparency() {
+  initializeWindowsTransparency() {
     if(os.platform() !== "win32") {
       // If OS is not Windows, add background color to body to prevent white flash on new entry/close entry
       $("body").css("background-color", "#202630");
@@ -151,7 +136,7 @@ class GUI {
     // There needs to be a slight delay before updating the window height
     // because in some cases the last entry can get cut off without a timeout
     // if the entries height is dynamically changed after appending
-    setTimeout(function() {
+    var timeout = setTimeout(function() {
       var zoomFactor = config.get("window.zoomFactor");
       var height = $(".container").height() * zoomFactor;
       ipcRenderer.send("resize", 300 * zoomFactor, height);
@@ -200,7 +185,7 @@ class GUI {
   * Called when window is focused
   */
   onFocus() {
-    setTimeout(function() {
+    var timeout = setTimeout(function() {
       if(config.get("focusPathOfExile") && !this.settingsMenuActive && !this.overrideFocus) {
         Helpers.setAlwaysOnTop();
         Helpers.focusGame();
@@ -209,39 +194,57 @@ class GUI {
   }
 
   /**
-  * Called when a new update is available
+  * Flashes the error icon in the menu bar
   */
-  onUpdateAvailable(info) {
+  flashErrorIcon() {
+    var statusButton = $(".menu").find("[data-button='status']");
+    var statusIcon = statusButton.find("i");
+
+    statusIcon.removeClass();
+    statusIcon.addClass("fas fa-exclamation-circle red");
+    statusButton.show().delay(1000).fadeOut("slow");
+  }
+
+  /**
+  * Called when a new update is available
+  *
+  * @param {Object} info Update information
+  */
+  showUpdateAvailableEntry(info) {
     var self = this;
 
-    this.updateEntry = new TextEntry("Update available", "A new version of XenonTrade (<span>v" + info.version + "</span>) is available.<br /><i class='fas fa-arrow-right'></i> <span data-update='download'>Update now</span>", {icon: "fa-box blue"});
-    this.updateEntry.add();
+    var updateEntry = new TextEntry("Update available", "A new version of XenonTrade (<span>v" + info.version + "</span>) is available.<br /><i class='fas fa-arrow-right'></i> <span data-update='download'>Update now</span>", {icon: "fa-box blue"});
+    updateEntry.setId("update-entry");
+    updateEntry.add();
 
-    $(".entry[data-id='" + this.updateEntry.getId() + "']").find("[data-update='download']").click(function() {
+    $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-update='download']").click(function() {
       ipcRenderer.send("download-update");
       $(".menu").find("[data-button='download']").show();
 
-      self.updateEntry.setTitle("Downloading <span>v" + info.version + "</span>...");
-      self.updateEntry.setText("");
-      self.updateEntry.enableClose(false);
+      updateEntry.setTitle("Downloading <span>v" + info.version + "</span>...");
+      updateEntry.setText("");
+      updateEntry.setCloseable(false);
     });
   }
 
   /**
   * Called when new update has been downloaded and is ready to install
+  *
+  * @param {Object} info Update information
   */
-  onUpdateDownloaded(info) {
-    if(this.updateEntry != null) {
-      this.updateEntry.setTitle("Update downloaded");
-      this.updateEntry.setText("XenonTrade <span>v" + info.version + "</span> has been downloaded. It will be automatically installed after closing XenonTrade.<br /><i class='fas fa-arrow-right'></i> <span data-update='install'>Install now</span>");
-      this.updateEntry.enableClose();
+  showUpdateDownloadedEntry(info) {
+    if(entries.hasOwnProperty("update-entry")) {
+      var updateEntry = entries["update-entry"];
+      updateEntry.setTitle("Update downloaded");
+      updateEntry.setText("XenonTrade <span>v" + info.version + "</span> has been downloaded. It will be automatically installed after closing XenonTrade.<br /><i class='fas fa-arrow-right'></i> <span data-update='install'>Install now</span>");
+      updateEntry.setCloseable();
+
+      $(".menu").find("[data-button='download']").hide();
+
+      $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-update='install']").click(function() {
+        ipcRenderer.send("install-update");
+      });
     }
-
-    $(".menu").find("[data-button='download']").hide();
-
-    $(".entry[data-id='" + this.updateEntry.getId() + "']").find("[data-update='install']").click(function() {
-      ipcRenderer.send("install-update");
-    });
   }
 }
 

@@ -1,9 +1,9 @@
 const electron = require('electron');
 var screenElectron = electron.screen;
 
-const { version } = require('../../package.json');
-const Helpers = require("./helpers.js");
-const TextEntry = require("./entries/text-entry.js");
+const { version } = require('../../../package.json');
+const Helpers = require("../helpers.js");
+const TextEntry = require("../entries/text-entry.js");
 
 class Settings {
   /**
@@ -28,14 +28,14 @@ class Settings {
     var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
     sliderDiv.attr("slider-max", mainScreen.size.height);
 
-    this._changeMaxHeight(config.get("maxHeight"));
+    this.changeMaxHeight(config.get("maxHeight"));
   }
 
   /**
   * Initializes the maximum height CSS setting based on the config value
   */
   _initializeZoomFactor() {
-    this._changeZoomFactor(config.get("window.zoomFactor"));
+    this.changeZoomFactor(config.get("window.zoomFactor"));
   }
 
   /**
@@ -80,9 +80,9 @@ class Settings {
       config.set(configKey, value);
 
       if(configKey === "maxHeight") {
-        self._changeMaxHeight(value);
+        self.changeMaxHeight(value);
       } else if(configKey === "window.zoomFactor") {
-        self._changeZoomFactor(value);
+        self.changeZoomFactor(value);
       }
     });
 
@@ -93,28 +93,6 @@ class Settings {
         sliderLabel.html(parseFloat(values[0]));
       }
     });
-  }
-
-  /**
-  * Change the maximum height of the entries div
-  *
-  * @param {number} value Maximum height value
-  */
-  _changeMaxHeight(value) {
-    $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
-    gui.updateWindowHeight();
-  }
-
-  /**
-  * Change the zoom factor of the window
-  *
-  * @param {number} value Zoom factor value
-  */
-  _changeZoomFactor(value) {
-    $(".container").css("zoom", value);
-    this._changeMaxHeight(config.get("maxHeight"));
-
-    gui.updateWindowHeight();
   }
 
   /**
@@ -153,19 +131,6 @@ class Settings {
     selector.click(function() {
       self.toggleSetting(toggle);
     });
-  }
-
-  /**
-  * Toggles a setting in the config and the settings icon
-  *
-  * @param {string} toggle Name of toggle
-  */
-  toggleSetting(toggle) {
-    var enabled = !config.get(toggle);
-    config.set(toggle, enabled);
-
-    // Change settings icon accordingly
-    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey");
   }
 
   /**
@@ -208,6 +173,19 @@ class Settings {
   }
 
   /**
+  * Toggles a setting in the config and the settings icon
+  *
+  * @param {string} toggle Name of toggle
+  */
+  toggleSetting(toggle) {
+    var enabled = !config.get(toggle);
+    config.set(toggle, enabled);
+
+    // Change settings icon accordingly
+    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey");
+  }
+
+  /**
   * Changes the league in config and update poe.ninja
   *
   * @param {string} league League name that should be saved to config
@@ -215,6 +193,28 @@ class Settings {
   changeLeagueSetting(league) {
     config.set("league", league);
     app.updateNinja();
+  }
+
+  /**
+  * Change the maximum height of the entries div
+  *
+  * @param {number} value Maximum height value
+  */
+  changeMaxHeight(value) {
+    $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
+    gui.updateWindowHeight();
+  }
+
+  /**
+  * Change the zoom factor of the window
+  *
+  * @param {number} value Zoom factor value
+  */
+  changeZoomFactor(value) {
+    $(".container").css("zoom", value);
+    this.changeMaxHeight(config.get("maxHeight"));
+
+    gui.updateWindowHeight();
   }
 }
 

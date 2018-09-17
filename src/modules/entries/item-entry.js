@@ -26,7 +26,7 @@ class ItemEntry extends PriceCheckEntry {
 
     // Set buttons and trends
     this.visualizeTrend();
-    super.enableClose();
+    super.setCloseable(true);
     if(this.switchable) {
       super.enableToggle("switch");
     }
