@@ -9,8 +9,6 @@ class PoePrices {
       var itemBase64 = Base64.encode(itemText);
       var url = "https://www.poeprices.info/api?s=xenontrade&l=" + config.get("league") + "&i=" + itemBase64;
 
-      console.log(JSON.stringify({itemBase64, itemText}));
-
       request(url, {json: true})
       .then((result) => {
         if(!PoePrices.hasAllKeys(result)) {
