@@ -89,8 +89,7 @@
     },
     "win": {
       "icon": "build/icon.ico",
-      "target": "nsis",
-      "requestedExecutionLevel": "highestAvailable"
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": false,
