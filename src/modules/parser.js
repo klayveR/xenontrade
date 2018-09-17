@@ -196,7 +196,7 @@ class Parser {
     }
 
     var lines = this.getClipboardLines();
-    var name = lines[index].replace("<<set:MS>><<set:M>><<set:S>>", "");
+    var name = lines[index].replace(/<<.*?>>|<.*?>/g, "");
     name = name.replace(/[^0-9a-zA-ZäÄöÖüÜß\-, ']/gi, ""); // Replace newline garbage
 
     if(type === "Map") {

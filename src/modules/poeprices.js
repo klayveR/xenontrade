@@ -4,6 +4,7 @@ const _ = require("underscore");
 class PoePrices {
   static request(itemText) {
     return new Promise(function(resolve, reject) {
+      itemText = itemText.replace(/<<.*?>>|<.*?>/g, "");
       var itemBase64 = Buffer.from(itemText).toString('base64');
       var url = "https://www.poeprices.info/api?s=xenontrade&l=" + config.get("league") + "&i=" + itemBase64;
 
