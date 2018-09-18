@@ -20,7 +20,7 @@ class Pricecheck {
     if(parser.isPathOfExileData() && parser.isIdentified() === true) {
       if(itemType === "Rare") {
         Pricecheck._getRarePrice(parser);
-      } else if(itemType !== "Magic") {
+      } else if(itemType !== "Magic" && !ninjaAPI.isUpdating()) {
         Pricecheck._getNinjaPrice(parser);
       } else {
         gui.flashErrorIcon();
