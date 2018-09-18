@@ -12,6 +12,26 @@ class Parser {
   */
   constructor(clipboard) {
     this.clipboard = clipboard;
+
+    this.fixCannotUseText();
+  }
+
+  /**
+  * Removes the "You cannot use this item" text from the item text
+  */
+  fixCannotUseText() {
+    var lines = this.getClipboardLines();
+
+    var index = -1;
+    for(var i in lines) {
+      if(lines[i].includes("You cannot use this item. Its stats will be ignored")) {
+        index = i;
+        break;
+      }
+    }
+
+    lines.splice(index, 2);
+    this.clipboard = lines.join("\n");
   }
 
   /**
