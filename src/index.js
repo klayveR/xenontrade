@@ -29,7 +29,6 @@ class XenonTrade {
   * @constructor
   */
   constructor() {
-    this.updating = false;
     this.poeFocused = false;
     this.autoMinimize = new AutoMinimize();
     this.initialize();
@@ -123,8 +122,7 @@ class XenonTrade {
   * Updates poe.ninja data
   */
   updateNinja() {
-    if(!this.updating) {
-      this.updating = true;
+    if(!ninjaAPI.isUpdating()) {
       gui.toggleUpdate();
 
       var ninjaUpdateEntry = new TextEntry("Updating poe.ninja prices...", {closeable: false});
@@ -147,7 +145,6 @@ class XenonTrade {
       })
       .then(() => {
         gui.toggleUpdate();
-        return this.updating = false;
       });
     }
   }
