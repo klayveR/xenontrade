@@ -140,6 +140,25 @@ class Parser {
   }
 
   /**
+  * Returns the default variant of an item (gems)
+  *
+  * @returns {string}
+  */
+  getDefaultVariant() {
+    var defaultVariant = null;
+
+    if(this.getItemType() === "SkillGem") {
+      defaultVariant = "20";
+
+      if(this.isCorrupted()) {
+        defaultVariant += "c";
+      }
+    }
+
+    return defaultVariant;
+  }
+
+  /**
   * Returns an object containing level and quality of a gem
   *
   * @returns {Object}
@@ -203,7 +222,7 @@ class Parser {
       name = this._removeMapAffixesFromName(name);
     }
 
-    if(type === "SkillGem" && this.clipboard.includes("Souls Per Use")) {
+    if(type === "SkillGem" && this.clipboard.includes("Souls Per Use") && !name.includes("Vaal")) {
       name = "Vaal " + name;
     }
 

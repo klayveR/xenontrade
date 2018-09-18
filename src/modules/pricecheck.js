@@ -35,7 +35,7 @@ class Pricecheck {
   */
   static _getNinjaPrice(parser) {
     if(ninjaAPI.hasData(config.get("league"))) {
-      ninjaAPI.getItem(parser.getName(), {league: config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
+      ninjaAPI.getItem(parser.getName(), {league: config.get("league"), links: parser.getLinks(), variant: parser.getVariant(), fallbackVariant: parser.getDefaultVariant(), relic: parser.isRelic(), baseType: parser.getBaseType()})
       .then((itemArray) => {
         return Pricecheck._handleNinjaPrice(parser, itemArray[0]);
       })
