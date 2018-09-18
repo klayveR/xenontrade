@@ -1,6 +1,7 @@
 const Base64 = require('js-base64').Base64;
 const request = require("request-promise-native");
 const _ = require("underscore");
+const querystring = require('querystring');
 
 class PoePrices {
   /**
@@ -14,13 +15,14 @@ class PoePrices {
   static request(itemText) {
     return new Promise(function(resolve, reject) {
       itemText = itemText.replace(/<<.*?>>|<.*?>/g, "");
-      var encodedItemText = Base64.encodeURI(itemText);
-      var url = "https://www.poeprices.info/api?s=xenontrade&l=" + config.get("league") + "&i=d" + encodedItemText;
+      var encodedItemText = Base64.encode(itemText);
+      var url = "https://www.poeprices.info/api?";
+      var parameters = querystring.stringify({ i: encodedItemText, l: config.get("league"), s: "xenontrade" });
 
-      request(url, {json: true})
+      request(url + parameters, {json: true})
       .then((response) => {
         if(!PoePrices.hasAllKeys(response) || response.error !== 0) {
-          var requestObject = {request:{encodedItemText, itemText, league: config.get("league")},response};
+          var requestObject = {request:{encodedItemText, itemText, league: config.get("league")},response:response};
 
           log.warn("Request to poeprices.info was unsuccessful. Received an empty response.\nPlease post the following object into the corresponding issue on GitHub (https://github.com/klayveR/xenontrade/issues/9), but avoid spamming:\n" + JSON.stringify(requestObject, null, 4));
           reject(new Error("Request to <b>poeprices.info</b> was unsuccessful. Received an empty response."));
