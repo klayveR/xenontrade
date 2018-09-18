@@ -213,11 +213,11 @@ class GUI {
   showUpdateAvailableEntry(info) {
     var self = this;
 
-    var updateEntry = new TextEntry("Update available", "A new version of XenonTrade (<span>v" + info.version + "</span>) is available.<br /><i class='fas fa-arrow-right'></i> <span data-update='download'>Update now</span>", {icon: "fa-box blue"});
+    var updateEntry = new TextEntry("Update available", "A new version of XenonTrade (<span>v" + info.version + "</span>) is available.<br /><i class='fas fa-arrow-right'></i> <span data-entry-link='download'>Update now</span>", {icon: "fa-box blue"});
     updateEntry.setId("update-entry");
     updateEntry.add();
 
-    $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-update='download']").click(function() {
+    $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-entry-link='download']").click(function() {
       ipcRenderer.send("download-update");
       $(".menu").find("[data-button='download']").show();
 
@@ -236,12 +236,12 @@ class GUI {
     if(entries.hasOwnProperty("update-entry")) {
       var updateEntry = entries["update-entry"];
       updateEntry.setTitle("Update downloaded");
-      updateEntry.setText("XenonTrade <span>v" + info.version + "</span> has been downloaded. It will be automatically installed after closing XenonTrade.<br /><i class='fas fa-arrow-right'></i> <span data-update='install'>Install now</span>");
+      updateEntry.setText("XenonTrade <span>v" + info.version + "</span> has been downloaded. It will be automatically installed after closing XenonTrade.<br /><i class='fas fa-arrow-right'></i> <span data-entry-link='install'>Install now</span>");
       updateEntry.setCloseable();
 
       $(".menu").find("[data-button='download']").hide();
 
-      $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-update='install']").click(function() {
+      $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-entry-link='install']").click(function() {
         ipcRenderer.send("install-update");
       });
     }

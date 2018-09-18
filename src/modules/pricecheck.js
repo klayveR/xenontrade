@@ -66,6 +66,7 @@ class Pricecheck {
       entry.setText(error.message);
       entry.setIcon("fa-exclamation-triangle yellow");
       entry.setCloseable(true);
+      entry.addLogfileButton();
     });
   }
 

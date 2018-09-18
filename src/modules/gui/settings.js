@@ -142,7 +142,10 @@ class Settings {
       this._initializeLeagueSettings(leagues);
     })
     .catch((error) => {
-      new TextEntry("Error loading leagues", error.message, {icon: "fa-exclamation-circle red"}).add();
+      log.warn("Error loading leagues, " + error);
+      var entry = new TextEntry("Error loading leagues", "Please check the log file for more information.", {icon: "fa-exclamation-circle red"});
+      entry.add();
+      entry.addLogfileButton();
     });
   }
 

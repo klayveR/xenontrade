@@ -3,7 +3,8 @@ const cp = require("child-process-es6-promise");
 const os = require("os");
 const path = require("path");
 const request = require("request-promise-native");
-const ffi = require('ffi');
+const ffi = require("ffi");
+const {shell} = require("electron");
 
 class Helpers {
   /**
@@ -285,6 +286,21 @@ class Helpers {
     }
 
     return config;
+  }
+
+  /**
+  * Opens the logfile folder and selects the log file
+  */
+  static openLogFile() {
+    var logfile = "";
+
+    if(os.platform() === "linux") {
+      logfile = path.join(process.env.HOME, "/.config/XenonTrade/log.log");
+    } else {
+      logfile = path.join(process.env.HOME, "/AppData/Roaming/XenonTrade/log.log");
+    }
+
+    shell.openItem(logfile);
   }
 }
 

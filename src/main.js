@@ -2,6 +2,7 @@ const {app, Menu, BrowserWindow, Tray} = require("electron");
 const {ipcMain} = require("electron");
 const {autoUpdater} = require("electron-updater");
 const isDev = require('electron-is-dev');
+const log = require('electron-log');
 
 const Helpers = require("./modules/helpers.js");
 const path = require("path");
@@ -12,7 +13,10 @@ const os = require("os");
 let win, tray;
 let config;
 let debug = false;
+
 autoUpdater.autoDownload = false;
+log.transports.file.format = '[{d}/{m}/{y} {h}:{i}:{s}] [{level}] {text}';
+log.transports.console.format = '[{d}/{m}/{y} {h}:{i}:{s}] [{level}] {text}';
 
 let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // Someone tried to run a second instance, we should focus our window.

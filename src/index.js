@@ -13,9 +13,9 @@ const Pricecheck = require("./modules/pricecheck.js");
 const AutoMinimize = require("./modules/auto-minimize.js");
 const Helpers = require("./modules/helpers.js");
 const GUI = require("./modules/gui/gui.js");
-
 const TextEntry = require("./modules/entries/text-entry.js");
 
+global.log = require('electron-log');
 global.config = Helpers.createConfig();
 global.templates = new Templates();
 global.gui = new GUI();
@@ -49,6 +49,7 @@ class XenonTrade {
       return this.updateNinja();
     })
     .catch((error) => {
+      log.error("Error initializing app\n" +  error);
       alert("Error initializing app\n" +  error);
       return gui.window.close();
     });
@@ -131,16 +132,18 @@ class XenonTrade {
 
       ninjaAPI.update({league: config.get("league")})
       .then((result) => {
-        ninjaUpdateEntry.setTitle("Update successful");
+        ninjaUpdateEntry.setTitle("Updating poe.ninja was successful");
         ninjaUpdateEntry.setIcon("fa-check-circle green");
         ninjaUpdateEntry.setCloseable(true);
         ninjaUpdateEntry.enableAutoClose(10);
       })
       .catch((error) => {
-        ninjaUpdateEntry.setTitle("Update failed");
-        ninjaUpdateEntry.setText(error.message);
+        log.warn("Failed updating poe.ninja prices, " + error);
+        ninjaUpdateEntry.setTitle("Updating poe.ninja failed");
+        ninjaUpdateEntry.setText("Please check the log file for more information.");
         ninjaUpdateEntry.setCloseable(true);
-        ninjaUpdateEntry.setIcon("fa-exclamation-triangle yellow");
+        ninjaUpdateEntry.setIcon("fa-exclamation-circle red");
+        ninjaUpdateEntry.addLogfileButton();
       })
       .then(() => {
         gui.toggleUpdate();

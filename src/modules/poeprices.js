@@ -1,3 +1,4 @@
+const Base64 = require('js-base64').Base64;
 const request = require("request-promise-native");
 const _ = require("underscore");
 
@@ -13,17 +14,18 @@ class PoePrices {
   static request(itemText) {
     return new Promise(function(resolve, reject) {
       itemText = itemText.replace(/<<.*?>>|<.*?>/g, "");
-      var itemBase64 = Buffer.from(itemText).toString('base64');
-      var url = "https://www.poeprices.info/api?s=xenontrade&l=" + config.get("league") + "&i=" + itemBase64;
+      var encodedItemText = Base64.encodeURI(itemText);
+      var url = "https://www.poeprices.info/api?s=xenontrade&l=" + config.get("league") + "&i=d" + encodedItemText;
 
       request(url, {json: true})
       .then((response) => {
-        if(!PoePrices.hasAllKeys(response)) {
+        if(!PoePrices.hasAllKeys(response) || response.error !== 0) {
+          var requestObject = {request:{encodedItemText, itemText, league: config.get("league")},response};
+
+          log.warn("Request to poeprices.info was unsuccessful. Received an empty response.\nPlease post the following object into the corresponding issue on GitHub (https://github.com/klayveR/xenontrade/issues/9), but avoid spamming:\n" + JSON.stringify(requestObject, null, 4));
           reject(new Error("Request to <b>poeprices.info</b> was unsuccessful. Received an empty response."));
-        } else if(response.error !== 0) {
-          reject(new Error("Request to <b>poeprices.info</b> returned error code " + response.error + "."));
         } else {
-          resolve({itemBase64, price: response});
+          resolve({encodedItemText, price: response});
         }
       })
       .catch((error) => {

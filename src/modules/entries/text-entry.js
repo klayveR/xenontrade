@@ -1,4 +1,5 @@
 const Entry = require("../entry.js");
+const Helpers = require("../helpers.js");
 const _ = require("underscore");
 
 class TextEntry extends Entry {
@@ -90,6 +91,17 @@ class TextEntry extends Entry {
     var selector = $(".entry[data-id='" + this.id + "']").find(".icon").find("i");
     selector.removeClass();
     selector.addClass("fas " + icon);
+  }
+
+  addLogfileButton() {
+    if(this.added) {
+      $(".entry[data-id='" + this.id + "']").find(".text").append("<br /><i class='fas fa-arrow-right'></i> <span data-entry-link='openlog'>Check log file</span>");
+      var link = $(".entry[data-id='" + this.id + "']").find("[data-entry-link='openlog']");
+
+      link.click(function() {
+        Helpers.openLogFile();
+      });
+    }
   }
 }
 

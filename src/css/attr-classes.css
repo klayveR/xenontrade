@@ -1,8 +1,8 @@
-[data-link], [data-button], [data-update] {
+[data-link], [data-button], [data-entry-link] {
   cursor: pointer !important;
 }
 
-[data-update] {
+[data-entry-link] {
   font-weight: 700;
   font-size: 10px;
   text-transform: uppercase;
