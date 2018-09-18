@@ -127,19 +127,18 @@ class RareItemEntry extends PriceCheckEntry {
       });
 
       selector.addClass("active");
-      this._disableCommentBox(false);
+      this._toggleCommentBox(true);
       this.selectedFeedback = feedback;
     } else {
-      console.log("selected feedback is same");
       selector.removeClass("active");
-      this._disableCommentBox(true);
+      this._toggleCommentBox(false);
       this.selectedFeedback = "";
     }
   }
 
-  _disableCommentBox(disable) {
+  _toggleCommentBox(toggle) {
     var selector = $(".entry[data-id='" + this.id + "']").find("[data-comment]");
-    selector.toggle(disable);
+    selector.toggle(toggle);
 
     gui.updateWindowHeight();
   }
@@ -147,7 +146,7 @@ class RareItemEntry extends PriceCheckEntry {
   _sendFeedback() {
     if(["fair", "low", "high"].includes(this.selectedFeedback)) {
       var text = $(".entry[data-id='" + this.id + "']").find("[data-comment]").find("textarea").val();
-      this._disableCommentBox(true);
+      this._toggleCommentBox(false);
       this._removeFeedbackButtons();
 
       var postData = querystring.stringify({
