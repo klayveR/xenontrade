@@ -46,7 +46,7 @@ class RareItemEntry extends PriceCheckEntry {
 
   _buildReplacements() {
     var baseType = this.parser.getBaseType();
-    var url = "https://www.poeprices.info/api?l=" + config.get("league") + "&i=" + this.poePrices.itemBase64 + "&w=1";
+    var url = "https://www.poeprices.info/api?l=" + config.get("league") + "&i=" + this.poePrices.encodedItemText + "&w=1";
     var currencyIcon = "", currencyName = "";
 
     if(this.poePrices.price.currency === "chaos") {
@@ -153,7 +153,7 @@ class RareItemEntry extends PriceCheckEntry {
       var postData = querystring.stringify({
         selector: this.selectedFeedback,
         feedbacktxt: text,
-        qitem_txt: this.poePrices.itemBase64,
+        qitem_txt: this.poePrices.encodedItemText,
         source: "xenontrade",
         min: this.poePrices.price.min,
         max: this.poePrices.price.max,
