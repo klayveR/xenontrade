@@ -46,7 +46,8 @@ function createWindow() {
     backgroundThrottling: false,
     skipTaskbar: true,
     show: false,
-    transparent: true
+    transparent: true,
+    maximizable: false
   });
 
   win.setResizable(false);
