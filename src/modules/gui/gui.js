@@ -185,8 +185,10 @@ class GUI {
   * Called when window is focused
   */
   onFocus() {
+    var self = this;
+
     var timeout = setTimeout(function() {
-      if(config.get("focusPathOfExile") && !this.settingsMenuActive && !this.overrideFocus) {
+      if(config.get("focusPathOfExile") && !self.settingsMenuActive && !self.overrideFocus) {
         Helpers.setAlwaysOnTop();
         Helpers.focusGame();
       }

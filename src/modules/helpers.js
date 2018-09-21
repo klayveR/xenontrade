@@ -106,8 +106,6 @@ class Helpers {
   * Focuses the Path of Exile window based on the OS
   */
   static focusGame() {
-    var nirCmd = this.fixPathForAsarUnpack(path.join(__dirname, "../", "/resource/executables/nircmdc.exe"));
-
     if(os.platform() === "linux") {
       Helpers._focusGameOnLinux();
     } else if(os.platform() === "win32") {
