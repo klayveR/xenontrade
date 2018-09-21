@@ -54,7 +54,6 @@ function createWindow() {
   win.loadFile("./src/index.html");
   win.setVisibleOnAllWorkspaces(true);
   win.setFullScreenable(false);
-  win.setAlwaysOnTop(true);
 
   if(debug) {
     win.setSize(800, 600);
@@ -74,7 +73,6 @@ function createWindow() {
   // Emitted when the window is ready to be shown
   win.on('ready-to-show', () => {
     win.show();
-    win.setAlwaysOnTop(true);
   });
 }
 

@@ -27,6 +27,7 @@ class GUI {
     this.initializeWindowsTransparency();
     this.settings.initialize();
 
+    Helpers.setAlwaysOnTop();
     this.updateWindowHeight();
   }
 
