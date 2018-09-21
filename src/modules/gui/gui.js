@@ -46,7 +46,7 @@ class GUI {
     var self = this;
 
     $(".menu").find("[data-button='minimize']").click(function() {
-      self.window.minimize();
+      self.window.hide();
     });
 
     $(".menu").find("[data-button='close']").click(function() {
@@ -158,8 +158,13 @@ class GUI {
   * Shows the window and sets it on top again
   */
   show() {
-    if(this.window.isMinimized()) {
-      this.window.show();
+    if(!this.window.isVisible()) {
+      if(this.window.isMinimized()) {
+        this.window.restore();
+      } else {
+        this.window.showInactive();
+      }
+
       Helpers.setAlwaysOnTop();
       this.updateWindowHeight();
     }
@@ -170,7 +175,7 @@ class GUI {
   */
   minimize() {
     if(this.window.isVisible()) {
-      this.window.minimize();
+      this.window.hide();
     }
   }
 
