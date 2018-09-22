@@ -123,7 +123,7 @@ class XenonTrade {
   */
   updateNinja() {
     if(!ninjaAPI.isUpdating()) {
-      gui.toggleUpdate();
+      gui.toggleUpdateButtonColor();
 
       var ninjaUpdateEntry = new TextEntry("Updating poe.ninja prices...", {closeable: false});
       ninjaUpdateEntry.add();
@@ -144,7 +144,7 @@ class XenonTrade {
         ninjaUpdateEntry.addLogfileButton();
       })
       .then(() => {
-        gui.toggleUpdate();
+        gui.toggleUpdateButtonColor();
       });
     }
   }

@@ -22,9 +22,9 @@ class GUI {
   * Initializes essential parts of the GUI
   */
   initialize() {
-    this.initializeButtons();
-    this.initializeLock();
-    this.initializeWindowsTransparency();
+    this._initializeButtons();
+    this._initializeLock();
+    this._initializeWindowsTransparency();
     this.settings.initialize();
 
     Helpers.setAlwaysOnTop();
@@ -34,7 +34,7 @@ class GUI {
   /**
   * Initializes the lock setting from the config
   */
-  initializeLock() {
+  _initializeLock() {
     if(config.get("window.locked")) {
       this.toggleLock();
     }
@@ -43,11 +43,11 @@ class GUI {
   /**
   * Initializes the header buttons
   */
-  initializeButtons() {
+  _initializeButtons() {
     var self = this;
 
     $(".menu").find("[data-button='minimize']").click(function() {
-      self.window.hide();
+      self.hide();
     });
 
     $(".menu").find("[data-button='close']").click(function() {
@@ -74,7 +74,7 @@ class GUI {
   /**
   * TODO: Fix blocking transparent area below menu bar, if no entries available
   */
-  initializeWindowsTransparency() {
+  _initializeWindowsTransparency() {
     if(os.platform() !== "win32") {
       // If OS is not Windows, add background color to body to prevent white flash on new entry/close entry
       $("body").css("background-color", "#202630");
@@ -82,18 +82,39 @@ class GUI {
   }
 
   /**
-  * Closes all entries (if they're closable)
+  * Saves position to config and closes GUI
   */
-  closeAllEntries() {
-    for(var entryIndex in entries) {
-      var entry = entries[entryIndex];
+  close() {
+    var windowPosition = this.window.getPosition();
+    config.set("window.x", windowPosition[0]);
+    config.set("window.y", windowPosition[1]);
 
-      if(entry.isCloseable()) {
-        entry.close();
+    this.window.close();
+  }
+
+  /**
+  * Shows the window and sets it on top again
+  */
+  show() {
+    if(!this.window.isVisible()) {
+      if(this.window.isMinimized()) {
+        this.window.restore();
+      } else {
+        this.window.showInactive();
       }
-    }
 
-    this.updateWindowHeight();
+      Helpers.setAlwaysOnTop();
+      this.updateWindowHeight();
+    }
+  }
+
+  /**
+  * Hides the window
+  */
+  hide() {
+    if(this.window.isVisible()) {
+      this.window.hide();
+    }
   }
 
   /**
@@ -111,7 +132,7 @@ class GUI {
   /**
   * Toggles the header update icon color
   */
-  toggleUpdate() {
+  toggleUpdateButtonColor() {
     $("[data-button='update']").find("i").toggleClass("grey");
   }
 
@@ -145,39 +166,25 @@ class GUI {
   }
 
   /**
-  * Saves position to config and closes GUI
+  * Set the maximum height of the entries div
+  *
+  * @param {number} value Maximum height value
   */
-  close() {
-    var windowPosition = this.window.getPosition();
-    config.set("window.x", windowPosition[0]);
-    config.set("window.y", windowPosition[1]);
-
-    this.window.close();
+  setMaxHeight(value) {
+    $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
+    this.updateWindowHeight();
   }
 
   /**
-  * Shows the window and sets it on top again
+  * Set the zoom factor of the window
+  *
+  * @param {number} value Zoom factor value
   */
-  show() {
-    if(!this.window.isVisible()) {
-      if(this.window.isMinimized()) {
-        this.window.restore();
-      } else {
-        this.window.showInactive();
-      }
+  setZoomFactor(value) {
+    $(".container").css("zoom", value);
+    this.setMaxHeight(config.get("maxHeight"));
 
-      Helpers.setAlwaysOnTop();
-      this.updateWindowHeight();
-    }
-  }
-
-  /**
-  * Hides the window
-  */
-  minimize() {
-    if(this.window.isVisible()) {
-      this.window.hide();
-    }
+    this.updateWindowHeight();
   }
 
   /**
@@ -199,6 +206,34 @@ class GUI {
         Helpers.focusGame();
       }
     }, 20);
+  }
+
+  /**
+  * Returns `true` if the entries div has entries
+  *
+  * @returns {boolean}
+  */
+  hasEntries() {
+    if(!$.trim($(".entries").html())) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+  * Closes all entries (if they're closable)
+  */
+  closeAllEntries() {
+    for(var entryIndex in entries) {
+      var entry = entries[entryIndex];
+
+      if(entry.isCloseable()) {
+        entry.close();
+      }
+    }
+
+    this.updateWindowHeight();
   }
 
   /**

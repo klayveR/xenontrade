@@ -201,7 +201,7 @@ class AutoMinimize {
       if(config.get("autoMinimize")) { gui.show(); }
     } else {
       app.poeFocused = false;
-      if(config.get("autoMinimize")) { gui.minimize(); }
+      if(config.get("autoMinimize")) { gui.hide(); }
     }
   }
 }

@@ -15,8 +15,13 @@ class Settings {
     this._initializeMaxHeight();
     this._initializeZoomFactor();
     this._initializeSliders();
+    this._initializeVersionNumber();
+  }
 
-    // Show version
+  /**
+  * Shows the version number in the settings GUI
+  */
+  _initializeVersionNumber() {
     $(".settings").find(".rightText").html("v" + version);
   }
 
@@ -28,14 +33,14 @@ class Settings {
     var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
     sliderDiv.attr("slider-max", mainScreen.size.height);
 
-    this.changeMaxHeight(config.get("maxHeight"));
+    gui.setMaxHeight(config.get("maxHeight"));
   }
 
   /**
   * Initializes the maximum height CSS setting based on the config value
   */
   _initializeZoomFactor() {
-    this.changeZoomFactor(config.get("window.zoomFactor"));
+    gui.setZoomFactor(config.get("window.zoomFactor"));
   }
 
   /**
@@ -80,9 +85,9 @@ class Settings {
       config.set(configKey, value);
 
       if(configKey === "maxHeight") {
-        self.changeMaxHeight(value);
+        gui.setMaxHeight(value);
       } else if(configKey === "window.zoomFactor") {
-        self.changeZoomFactor(value);
+        gui.setZoomFactor(value);
       }
     });
 
@@ -139,7 +144,7 @@ class Settings {
   _initializeLeagues() {
     Helpers.getPathOfExileLeagues()
     .then((leagues) => {
-      this._initializeLeagueSettings(leagues);
+      this._initializeLeagueSelect(leagues);
     })
     .catch((error) => {
       log.warn("Error loading leagues, " + error);
@@ -154,7 +159,7 @@ class Settings {
   *
   * @param {Array} leagues Array of leagues
   */
-  _initializeLeagueSettings(leagues) {
+  _initializeLeagueSelect(leagues) {
     var self = this;
 
     // Add leagues as options to select
@@ -196,28 +201,6 @@ class Settings {
   changeLeagueSetting(league) {
     config.set("league", league);
     app.updateNinja();
-  }
-
-  /**
-  * Change the maximum height of the entries div
-  *
-  * @param {number} value Maximum height value
-  */
-  changeMaxHeight(value) {
-    $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
-    gui.updateWindowHeight();
-  }
-
-  /**
-  * Change the zoom factor of the window
-  *
-  * @param {number} value Zoom factor value
-  */
-  changeZoomFactor(value) {
-    $(".container").css("zoom", value);
-    this.changeMaxHeight(config.get("maxHeight"));
-
-    gui.updateWindowHeight();
   }
 }
 
