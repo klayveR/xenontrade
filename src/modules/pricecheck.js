@@ -23,7 +23,7 @@ class Pricecheck {
       } else if(itemType !== "Magic" && !ninjaAPI.isUpdating()) {
         Pricecheck._getNinjaPrice(parser);
       } else {
-        gui.flashErrorIcon();
+        GUI.flashErrorIcon();
       }
     }
   }
@@ -40,7 +40,7 @@ class Pricecheck {
         return Pricecheck._handleNinjaPrice(parser, itemArray[0]);
       })
       .catch((error) => {
-        return gui.flashErrorIcon();
+        return GUI.flashErrorIcon();
       });
     } else {
       new TextEntry("No data", "There's no data for " + config.get("league") + ". You should update before attempting to price check another item.", {icon: "fa-exclamation-triangle yellow", timeout: 10}).add();

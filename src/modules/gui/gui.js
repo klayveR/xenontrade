@@ -1,57 +1,87 @@
-const remote = require("electron").remote;
+const electron = require("electron");
+const { ipcRenderer } = electron;
+const screenElectron = electron.screen;
+const remote = electron.remote;
+const windowManager = remote.require('electron-window-manager');
 const os = require("os");
 
 const Helpers = require("../helpers.js");
-const Settings = require("./settings.js");
+const SettingsGUI = require("./settings.js");
 
 class GUI {
   /**
-  * Creates a new GUI object
-  *
-  * @constructor
+  * Getter for name of the GUI
   */
-  constructor() {
-    var self = this;
-    this.window = remote.getCurrentWindow();
-    this.settings = new Settings();
-    this.settingsMenuActive = false;
-    this.overrideFocus = false;
+  static get NAME() {
+    return "main";
   }
 
   /**
   * Initializes essential parts of the GUI
   */
-  initialize() {
-    this._initializeButtons();
-    this._initializeLock();
-    this._initializeWindowsTransparency();
-    this.settings.initialize();
+  static initialize() {
+    GUI._initializeButtons();
+    GUI._initializeLock();
+    GUI._initializeWindowsTransparency();
+    GUI._initializeWindowListeners();
+    GUI._initializeMaxHeight();
+    GUI._initializeZoomFactor();
 
     Helpers.setAlwaysOnTop();
-    this.updateWindowHeight();
+    GUI.updateWindowHeight();
+  }
+
+  /**
+  * Listens for events from other windows
+  */
+  static _initializeWindowListeners() {
+    // Reset menu settings button color on hide
+    windowManager.bridge.on('hide', function(event) {
+      if(event.window === "settings") {
+        GUI.toggleMenuButtonColor("settings", true);
+      }
+    });
+
+    // Set window always on top when ready
+    windowManager.bridge.on('ready', function(event) {
+      Helpers.setAlwaysOnTop(event.window);
+    });
+
+    // Update Ninja when the league is changed in settings
+    windowManager.bridge.on('league-change', function(event) {
+      app.updateNinja();
+    });
+
+    // Adjust window size based on scale factor when it's changed
+    windowManager.bridge.on('zoomfactor-change', function(event) {
+      GUI.setZoomFactor(event.value);
+    });
+
+    // Adjust max height when it's changed
+    windowManager.bridge.on('maxheight-change', function(event) {
+      GUI.setMaxHeight(event.value);
+    });
   }
 
   /**
   * Initializes the lock setting from the config
   */
-  _initializeLock() {
+  static _initializeLock() {
     if(config.get("window.locked")) {
-      this.toggleLock();
+      GUI.toggleLock();
     }
   }
 
   /**
   * Initializes the header buttons
   */
-  _initializeButtons() {
-    var self = this;
-
+  static _initializeButtons() {
     $(".menu").find("[data-button='minimize']").click(function() {
-      self.hide();
+      GUI.hide();
     });
 
     $(".menu").find("[data-button='close']").click(function() {
-      self.close();
+      GUI.close();
     });
 
     $(".menu").find("[data-button='update']").click(function() {
@@ -59,22 +89,22 @@ class GUI {
     });
 
     $(".menu").find("[data-button='settings']").click(function() {
-      self.toggleSettingsMenu();
+      GUI.toggleSettingsWindow();
     });
 
     $(".menu").find("[data-button='lock']").click(function() {
-      self.toggleLock();
+      GUI.toggleLock();
     });
 
     $(".menu").find("[data-button='close-all']").click(function() {
-      self.closeAllEntries();
+      GUI.closeAllEntries();
     });
   }
 
   /**
   * TODO: Fix blocking transparent area below menu bar, if no entries available
   */
-  _initializeWindowsTransparency() {
+  static _initializeWindowsTransparency() {
     if(os.platform() !== "win32") {
       // If OS is not Windows, add background color to body to prevent white flash on new entry/close entry
       $("body").css("background-color", "#202630");
@@ -82,45 +112,75 @@ class GUI {
   }
 
   /**
-  * Saves position to config and closes GUI
+  * Initializes the maximum height CSS setting based on the config value
   */
-  close() {
-    var windowPosition = this.window.getPosition();
+  static _initializeMaxHeight() {
+    var mainScreen = screenElectron.getPrimaryDisplay();
+    var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
+    sliderDiv.attr("slider-max", mainScreen.size.height);
+
+    GUI.setMaxHeight(config.get("maxHeight"));
+  }
+
+  /**
+  * Initializes the maximum height CSS setting based on the config value
+  */
+  static _initializeZoomFactor() {
+    GUI.setZoomFactor(config.get("window.zoomFactor"));
+  }
+
+  /**
+  * Saves position to config and closes all windows
+  */
+  static close() {
+    var windowPosition = windowManager.get(GUI.NAME).object.getPosition();
     config.set("window.x", windowPosition[0]);
     config.set("window.y", windowPosition[1]);
 
-    this.window.close();
+    windowManager.closeAll();
   }
 
   /**
   * Shows the window and sets it on top again
   */
-  show() {
-    if(!this.window.isVisible()) {
-      if(this.window.isMinimized()) {
-        this.window.restore();
+  static show() {
+    var win = windowManager.get(GUI.NAME).object;
+
+    if(!win.isVisible()) {
+      if(win.isMinimized()) {
+        win.restore();
       } else {
-        this.window.showInactive();
+        win.showInactive();
       }
 
       Helpers.setAlwaysOnTop();
-      this.updateWindowHeight();
+      GUI.updateWindowHeight();
     }
   }
 
   /**
   * Hides the window
+  *
+  * @param {boolean} [autoMinimize=false] Whether the function is called by auto minimize or not
   */
-  hide() {
-    if(this.window.isVisible()) {
-      this.window.hide();
+  static hide(autoMinimize = false) {
+    var win = windowManager.get(GUI.NAME).object;
+
+    if(win.isVisible()) {
+      win.hide();
+    }
+
+    // Hide settings window too if function was called by auto minimize
+    if(autoMinimize === true) {
+      var settingsWin = windowManager.get(SettingsGUI.NAME).object;
+      settingsWin.hide();
     }
   }
 
   /**
   * Toggles the header lock and saves to config
   */
-  toggleLock() {
+  static toggleLock() {
     $("[data-button='lock']").find("i").toggleClass("fa-unlock fa-lock");
     $(".container > .menu").toggleClass("draggable");
 
@@ -130,31 +190,46 @@ class GUI {
   }
 
   /**
-  * Toggles the header update icon color
+  * Toggles a menu buttons icon color
   */
-  toggleUpdateButtonColor() {
-    $("[data-button='update']").find("i").toggleClass("grey");
+  static toggleMenuButtonColor(button, state) {
+    var button = $("[data-button='" + button + "']").find("i");
+
+    if(typeof state === "undefined") {
+      button.toggleClass("grey");
+    } else {
+      button.toggleClass("grey", state);
+    }
   }
 
   /**
-  * Toggles between settings and entries
+  * Shows/hides the settings window
   */
-  toggleSettingsMenu() {
-    this.settingsMenuActive = !this.settingsMenuActive;
-    $("[data-button='settings']").find("i").toggleClass("grey");
+  static toggleSettingsWindow() {
+    var settingsWindow = windowManager.get("settings").object;
 
-    $(".entries").toggle();
-    $(".settings").toggle();
+    if(settingsWindow == null) {
+      GUI.toggleMenuButtonColor("settings", false);
+      SettingsGUI.create();
+    } else
+    if(!settingsWindow.isVisible()) {
+      GUI.toggleMenuButtonColor("settings", false);
 
-    this.updateWindowHeight();
+      if(settingsWindow.isMinimized()) {
+        settingsWindow.restore();
+      }
+
+      settingsWindow.show();
+    } else {
+      GUI.toggleMenuButtonColor("settings", true);
+      settingsWindow.hide();
+    }
   }
 
   /**
   * Updates the window height based on contents
   */
-  updateWindowHeight() {
-    var self = this;
-
+  static updateWindowHeight() {
     // There needs to be a slight delay before updating the window height
     // because in some cases the last entry can get cut off without a timeout
     // if the entries height is dynamically changed after appending
@@ -170,9 +245,9 @@ class GUI {
   *
   * @param {number} value Maximum height value
   */
-  setMaxHeight(value) {
+  static setMaxHeight(value) {
     $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
-    this.updateWindowHeight();
+    GUI.updateWindowHeight();
   }
 
   /**
@@ -180,30 +255,35 @@ class GUI {
   *
   * @param {number} value Zoom factor value
   */
-  setZoomFactor(value) {
+  static setZoomFactor(value) {
     $(".container").css("zoom", value);
-    this.setMaxHeight(config.get("maxHeight"));
+    GUI.setMaxHeight(config.get("maxHeight"));
 
-    this.updateWindowHeight();
+    GUI.updateWindowHeight();
   }
 
   /**
   * Scrolls to the bottom of the entries div
   */
-  scrollToBottom() {
+  static scrollToBottom() {
     $('.entries').scrollTop($('.entries')[0].scrollHeight);
   }
 
   /**
   * Called when window is focused
   */
-  onFocus() {
-    var self = this;
-
+  static onFocus() {
     var timeout = setTimeout(function() {
-      if(config.get("focusPathOfExile") && !self.settingsMenuActive && !self.overrideFocus) {
-        Helpers.setAlwaysOnTop();
+      var activeElement = $(document.activeElement);
+      var currentWindow = windowManager.getCurrent();
+
+      // If...
+      if(config.get("focusPathOfExile") // ... Always focus Path of Exile is enabled
+      && currentWindow.name === GUI.NAME // ... Current window is main GUI
+      && !windowManager.get(SettingsGUI.NAME).object.isVisible() // ... Settings GUI is not visible
+      && !activeElement.is("textarea")) { // ... Focused element is not a textarea
         Helpers.focusGame();
+        Helpers.setAlwaysOnTop();
       }
     }, 20);
   }
@@ -213,7 +293,7 @@ class GUI {
   *
   * @returns {boolean}
   */
-  hasEntries() {
+  static hasEntries() {
     if(!$.trim($(".entries").html())) {
       return true;
     }
@@ -224,7 +304,7 @@ class GUI {
   /**
   * Closes all entries (if they're closable)
   */
-  closeAllEntries() {
+  static closeAllEntries() {
     for(var entryIndex in entries) {
       var entry = entries[entryIndex];
 
@@ -233,13 +313,13 @@ class GUI {
       }
     }
 
-    this.updateWindowHeight();
+    GUI.updateWindowHeight();
   }
 
   /**
   * Flashes the error icon in the menu bar
   */
-  flashErrorIcon() {
+  static flashErrorIcon() {
     var statusButton = $(".menu").find("[data-button='status']");
     var statusIcon = statusButton.find("i");
 
@@ -253,9 +333,7 @@ class GUI {
   *
   * @param {Object} info Update information
   */
-  showUpdateAvailableEntry(info) {
-    var self = this;
-
+  static showUpdateAvailableEntry(info) {
     var updateEntry = new TextEntry("Update available", "A new version of XenonTrade (<span>v" + info.version + "</span>) is available.<br /><i class='fas fa-arrow-right'></i> <span data-entry-link='download'>Update now</span>", {icon: "fa-box blue"});
     updateEntry.setId("update-entry");
     updateEntry.add();
@@ -275,7 +353,7 @@ class GUI {
   *
   * @param {Object} info Update information
   */
-  showUpdateDownloadedEntry(info) {
+  static showUpdateDownloadedEntry(info) {
     if(entries.hasOwnProperty("update-entry")) {
       var updateEntry = entries["update-entry"];
       updateEntry.setTitle("Update downloaded");

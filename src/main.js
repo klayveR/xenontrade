@@ -25,7 +25,7 @@ function createWindow() {
     'appBase': "file://" + __dirname
   });
 
-  win = windowManager.open('main', 'XenonTrade', '/index.html', false, {
+  var mainWindow = windowManager.open('main', 'XenonTrade', '/index.html', false, {
     'x': config.get("window.x"),
     'y': config.get("window.y"),
     'width': 300 * config.get("window.zoomFactor"),
@@ -41,20 +41,22 @@ function createWindow() {
     'alwaysOnTop': true
   });
 
+  win = mainWindow.object;
+
   // Open dev tools when debug is enabled
   if(debug) {
-    win.object.setSize(800, 600);
-    win.object.webContents.openDevTools();
+    win.setSize(800, 600);
+    win.webContents.openDevTools();
   }
 
   // Emitted when the window is focused
-  win.object.on("focus", () => {
-    win.object.webContents.send('focus');
+  win.on("focus", () => {
+    win.webContents.send('focus');
   });
 
   // Emitted when the window is ready to be shown
-  win.object.on('ready-to-show', () => {
-    win.object.show();
+  win.on('ready-to-show', () => {
+    win.show();
   });
 }
 
@@ -66,7 +68,7 @@ function createTray() {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Show', click: function() {
-        win.object.show();
+        win.show();
       }
     },
     {
@@ -83,11 +85,11 @@ function createTray() {
 // Only allow one instance of XenonTrade
 let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   if(win) {
-    if(win.object.isMinimized()) {
-      win.object.restore();
+    if(win.isMinimized()) {
+      win.restore();
     }
 
-    win.object.focus();
+    win.focus();
   }
 });
 
@@ -116,12 +118,12 @@ app.on("window-all-closed", () => {
 
 // On update available, let main window know
 autoUpdater.on('update-available', (info) => {
-  win.object.webContents.send('update-available', info);
+  win.webContents.send('update-available', info);
 });
 
 // On update downloaded, let main window know
 autoUpdater.on('update-downloaded', (info) => {
-  win.object.webContents.send('update-downloaded', info);
+  win.webContents.send('update-downloaded', info);
 });
 
 // Download update when receiving download-update
@@ -138,14 +140,14 @@ ipcMain.on("install-update", (event, arg) => {
 ipcMain.on("resize", function (ev, width, height) {
   if(!debug) {
     // Save previous window position
-    let windowPosition = win.object.getPosition();
+    let windowPosition = win.getPosition();
 
     // Set new window size
-    win.object.setSize(Math.round(width), Math.round(height));
+    win.setSize(Math.round(width), Math.round(height));
 
     // Apply previous position again to fix up- and downwards resize on some Linux distros
     if(os.platform() === "linux") {
-      win.object.setPosition(windowPosition[0], windowPosition[1]);
+      win.setPosition(windowPosition[0], windowPosition[1]);
     }
   }
 });

@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link rel="stylesheet" href="css/attr-classes.css">
-  <link rel="stylesheet" href="css/nouislider.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -30,125 +29,9 @@
       </div>
     </div>
     <div class="entries"></div>
-    <div class="settings" style="display: none">
-      <div class="title">
-        <div class="left">
-          <div class="icon">
-            <i class="fas fa-wrench grey"></i>
-          </div>
-        </div>
-        <div class="middle">
-          General
-        </div>
-        <div class="rightText"></div>
-      </div>
-      <table style="width: 100%">
-        <tbody>
-          <tr>
-            <td colspan="3">
-              <label class="wrap">
-                <select class="select" id="leagueSelect"></select>
-              </label>
-            </td>
-          </tr>
-          <tr data-slider="window.zoomFactor">
-            <td class="label">Scale factor</td>
-            <td class="slider" style="width: 150px">
-              <div slider-min="0.5" slider-max="2.5" slider-step="0.1"></div>
-            </td>
-            <td class="slider-label"><span class="slider-value">1</span>x</td>
-          </tr>
-          <tr data-slider="maxHeight">
-            <td class="label">Max. height</td>
-            <td class="slider" style="width: 150px">
-              <div slider-min="100" slider-max="999" slider-step="1"></div>
-            </td>
-            <td class="slider-label"><span class="slider-value">0</span>px</td>
-          </tr>
-          <tr>
-            <td class="label" colspan="2">Automatically minimize</td>
-            <td class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr>
-            <td class="label" colspan="2">Always focus Path of Exile</td>
-            <td class="toggle" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr>
-            <td class="info" colspan="3">By enabling this setting, the app will always focus Path of Exile again after interacting with it.</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="title">
-        <div class="left">
-          <div class="icon">
-            <i class="fas fa-money-bill grey"></i>
-          </div>
-        </div>
-        <div class="middle">
-          Pricecheck
-        </div>
-        <div class="right toggle" data-toggle="pricecheck">
-          <i class="fas fa-toggle-off grey"></i>
-        </div>
-      </div>
-      <table></table>
-      <div class="title">
-        <div class="left">
-          <div class="icon">
-            <i class="fas fa-clock grey"></i>
-          </div>
-        </div>
-        <div class="middle">
-          Auto-close
-        </div>
-        <div class="right toggle" data-toggle="autoclose.enabled">
-          <i class="fas fa-toggle-off grey"></i>
-        </div>
-      </div>
-      <table style="width: 100%">
-        <tbody>
-          <tr data-slider="autoclose.timeouts.currency.value">
-            <td class="label">Currency</td>
-            <td class="slider-label"><span class="slider-value">0</span>s</td>
-            <td class="slider" style="width: 85%">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr data-slider="autoclose.timeouts.item.value">
-            <td class="label">Item</td>
-            <td class="slider-label"><span class="slider-value">0</span>s</td>
-            <td class="slider">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr data-slider="autoclose.timeouts.rare.value">
-            <td class="label">Rare</td>
-            <td class="slider-label"><span class="slider-value">0</span>s</td>
-            <td class="slider">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.timeouts.rare.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr data-slider="autoclose.threshold.value">
-            <td class="label">Threshold</td>
-            <td class="slider-label"><span class="slider-value">0</span>c</td>
-            <td class="slider">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr>
-            <td class="info" colspan="4">Use the threshold to disable auto close if the value of the item is higher than the threshold value.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 
   <script>window.$ = window.jQuery = require('jquery');</script>
-  <script type="text/javascript" src="lib/nouislider.min.js"></script>
   <script type="text/javascript" src="lib/jquery.peity.min.js"></script>
   <script type="text/javascript">
   $.fn.peity.defaults.line = {

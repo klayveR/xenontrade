@@ -124,17 +124,22 @@ class Helpers {
   }
 
   /**
-  * Focuses the game on Linux
+  * Sets a window on top
+  *
+  * @param {string} [windowName] Window manager name of the window. Defaults to the name of the main GUI
+  * @param {boolean} [alwaysOnTop=true] Whether to enable always or top or disable
   */
-  static setAlwaysOnTop() {
-    gui.window.setAlwaysOnTop(true);
+  static setAlwaysOnTop(windowName = GUI.NAME, alwaysOnTop = true) {
+    var win = windowManager.get(windowName).object;
+    win.setAlwaysOnTop(alwaysOnTop);
 
     // https://unix.stackexchange.com/a/180797
-    if(os.platform() === "linux") {
-      cp.exec("wmctrl -F -r 'XenonTrade' -b add,above")
-      .catch((error) => {
-        console.error("Tried to set XenonTrade always on top but failed, wmctrl may not be installed");
-      });
+    if(os.platform() === "linux" && alwaysOnTop) {
+      // Wait 50ms before executing, showing windows on Linux is slow and window needs to
+      // be visible in order for this command to work
+      setTimeout(function() {
+        cp.exec("wmctrl -F -r '" + win.getTitle() + "' -b add,above");
+      }, 50);
     }
   }
 

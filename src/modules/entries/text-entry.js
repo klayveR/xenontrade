@@ -1,5 +1,4 @@
 const Entry = require("../entry.js");
-const Helpers = require("../helpers.js");
 const _ = require("underscore");
 
 class TextEntry extends Entry {
@@ -79,7 +78,7 @@ class TextEntry extends Entry {
     $(".entry[data-id='" + this.id + "']").find(".text").html(text);
 
     this._collapseIfEmptyText();
-    gui.updateWindowHeight();
+    GUI.updateWindowHeight();
   }
 
   setTitle(title) {

@@ -147,7 +147,7 @@ class Entry {
       // Remove entry from global entries variable
       entries = _.omit(entries, this.id);
 
-      gui.updateWindowHeight();
+      GUI.updateWindowHeight();
     }
   }
 
@@ -169,8 +169,8 @@ class Entry {
       // Add entry to global entries variable
       entries[this.id] = this;
 
-      gui.updateWindowHeight();
-      gui.scrollToBottom();
+      GUI.updateWindowHeight();
+      GUI.scrollToBottom();
     }
   }
 
