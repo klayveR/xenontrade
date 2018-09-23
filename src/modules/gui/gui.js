@@ -22,7 +22,7 @@ class GUI {
     GUI._initializeButtons();
     GUI._initializeTransparency();
     GUI._initializeWindowListeners();
-    GUI._initializeConfigValues();
+    GUI._applyConfigValues();
 
     // Create the settings GUI
     SettingsGUI.create();
@@ -66,7 +66,7 @@ class GUI {
   /**
   * Gets the values from the config and applies them to the GUI
   */
-  static _initializeConfigValues() {
+  static _applyConfigValues() {
     if(config.get("window.locked")) {
       GUI.toggleLock();
     }
