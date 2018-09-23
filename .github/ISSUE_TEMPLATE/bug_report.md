@@ -4,25 +4,25 @@ about: Create a report to help us improve
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+### Expected behaviour
+Tell us what should happen.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+### Actual behaviour
+Tell us what happens instead. Provide a log message if available.
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+### To reproduce
+Tell us how we can reproduce this behaviour.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+### Your specifications
+ - Platform: *e.g. Windows 10*
+ - XenonTrade Version: *e.g. 0.3.9*
+ 
+### I have tried the following
+_Please remove this hint: The checkboxes below can be checked like this: [x]_
 
-**Desktop (please complete the following information):**
- - OS: [e.g. Windows 10]
- - XenonTrade Version: [e.g. 0.3.9]
+- [ ] Running XenonTrade as admin
+- [ ] Exclude XenonTrade in my antivirus program
+- [ ] Closed similar tools that might interfere with XenonTrade
 
-**Additional context**
-Add any other context about the problem here.
+### Additional context
+If there's anything else that could be relevant to this problem, please tell us here.
