@@ -38,12 +38,6 @@ class SettingsGUI {
 
     settingsWindow.open(null, true);
 
-    settingsWindow.onReady(true, function(window) {
-      settingsWindow.object.setAlwaysOnTop(true);
-      settingsWindow.object.show();
-      windowManager.bridge.emit('ready', {'window': SettingsGUI.NAME});
-    });
-
     settingsWindow.object.on("hide", function() {
       windowManager.bridge.emit('hide', {'window': SettingsGUI.NAME});
     });
@@ -69,7 +63,7 @@ class SettingsGUI {
   */
   static _initializeButtons() {
     $(".menu").find("[data-button='close']").click(function() {
-      windowManager.get(SettingsGUI.NAME).object.hide();
+      SettingsGUI.hide();
     });
   }
 
@@ -204,6 +198,29 @@ class SettingsGUI {
 
     // Select league from config
     $("#leagueSelect").find("option[value='" + config.get("league") + "']").attr("selected", "selected");
+  }
+
+  /**
+  * Shows settings window
+  */
+  static show() {
+    var win = windowManager.get(SettingsGUI.NAME).object;
+
+    if(win) {
+      win.setAlwaysOnTop(true);
+      win.show();
+    }
+  }
+
+  /**
+  * Hides settings window
+  */
+  static hide() {
+    var win = windowManager.get(SettingsGUI.NAME).object;
+
+    if(win) {
+      win.hide();
+    }
   }
 
   /**

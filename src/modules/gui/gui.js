@@ -27,6 +27,8 @@ class GUI {
     GUI._initializeMaxHeight();
     GUI._initializeZoomFactor();
 
+    SettingsGUI.create();
+
     Helpers.setAlwaysOnTop();
     GUI.updateWindowHeight();
   }
@@ -40,11 +42,6 @@ class GUI {
       if(event.window === "settings") {
         GUI.toggleMenuButtonColor("settings", true);
       }
-    });
-
-    // Set window always on top when ready
-    windowManager.bridge.on('ready', function(event) {
-      Helpers.setAlwaysOnTop(event.window);
     });
 
     // Update Ninja when the league is changed in settings
@@ -208,21 +205,19 @@ class GUI {
   static toggleSettingsWindow() {
     var settingsWindow = windowManager.get("settings").object;
 
-    if(settingsWindow == null) {
-      GUI.toggleMenuButtonColor("settings", false);
-      SettingsGUI.create();
-    } else
-    if(!settingsWindow.isVisible()) {
-      GUI.toggleMenuButtonColor("settings", false);
+    if(settingsWindow) {
+      if(!settingsWindow.isVisible()) {
+        GUI.toggleMenuButtonColor("settings", false);
 
-      if(settingsWindow.isMinimized()) {
-        settingsWindow.restore();
+        if(settingsWindow.isMinimized()) {
+          settingsWindow.restore();
+        }
+
+        SettingsGUI.show();
+      } else {
+        GUI.toggleMenuButtonColor("settings", true);
+        SettingsGUI.hide();
       }
-
-      settingsWindow.show();
-    } else {
-      GUI.toggleMenuButtonColor("settings", true);
-      settingsWindow.hide();
     }
   }
 
