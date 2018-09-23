@@ -1,6 +1,5 @@
 const electron = require("electron");
 const { ipcRenderer } = electron;
-const screenElectron = electron.screen;
 const remote = electron.remote;
 const windowManager = remote.require('electron-window-manager');
 const os = require("os");
@@ -21,12 +20,11 @@ class GUI {
   */
   static initialize() {
     GUI._initializeButtons();
-    GUI._initializeLock();
-    GUI._initializeWindowsTransparency();
+    GUI._initializeTransparency();
     GUI._initializeWindowListeners();
-    GUI._initializeMaxHeight();
-    GUI._initializeZoomFactor();
+    GUI._initializeConfigValues();
 
+    // Create the settings GUI
     SettingsGUI.create();
 
     Helpers.setAlwaysOnTop();
@@ -58,15 +56,23 @@ class GUI {
     windowManager.bridge.on('maxheight-change', function(event) {
       GUI.setMaxHeight(event.value);
     });
+
+    // Set always on top when shown
+    windowManager.bridge.on('show', function(event) {
+      Helpers.setAlwaysOnTop(event.window, true);
+    });
   }
 
   /**
-  * Initializes the lock setting from the config
+  * Gets the values from the config and applies them to the GUI
   */
-  static _initializeLock() {
+  static _initializeConfigValues() {
     if(config.get("window.locked")) {
       GUI.toggleLock();
     }
+
+    GUI.setMaxHeight(config.get("maxHeight"));
+    GUI.setZoomFactor(config.get("window.zoomFactor"));
   }
 
   /**
@@ -101,29 +107,11 @@ class GUI {
   /**
   * TODO: Fix blocking transparent area below menu bar, if no entries available
   */
-  static _initializeWindowsTransparency() {
+  static _initializeTransparency() {
     if(os.platform() !== "win32") {
       // If OS is not Windows, add background color to body to prevent white flash on new entry/close entry
       $("body").css("background-color", "#202630");
     }
-  }
-
-  /**
-  * Initializes the maximum height CSS setting based on the config value
-  */
-  static _initializeMaxHeight() {
-    var mainScreen = screenElectron.getPrimaryDisplay();
-    var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
-    sliderDiv.attr("slider-max", mainScreen.size.height);
-
-    GUI.setMaxHeight(config.get("maxHeight"));
-  }
-
-  /**
-  * Initializes the maximum height CSS setting based on the config value
-  */
-  static _initializeZoomFactor() {
-    GUI.setZoomFactor(config.get("window.zoomFactor"));
   }
 
   /**
@@ -241,7 +229,10 @@ class GUI {
   * @param {number} value Maximum height value
   */
   static setMaxHeight(value) {
-    $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
+    var zoomFactor = config.get("window.zoomFactor");
+    var height = value / zoomFactor;
+
+    $(".entries").css("max-height", height + "px");
     GUI.updateWindowHeight();
   }
 

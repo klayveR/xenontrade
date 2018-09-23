@@ -1,5 +1,6 @@
 const electron = require('electron');
 const remote = electron.remote;
+const screenElectron = electron.screen;
 const windowManager = remote.require('electron-window-manager');
 const { version } = require('../../../package.json');
 
@@ -8,7 +9,7 @@ const Config = require("electron-store");
 const Helpers = require("../helpers.js");
 const GUI = require("./gui.js");
 
-global.config = Helpers.createConfig();
+var config = Helpers.createConfig();
 
 class SettingsGUI {
   /**
@@ -23,8 +24,8 @@ class SettingsGUI {
   */
   static create() {
     var settingsWindow = windowManager.createNew(SettingsGUI.NAME, 'XenonTrade Settings', '/settings.html', false, {
-      'width': 300 * config.get("window.zoomFactor"),
-      'height': 387 * config.get("window.zoomFactor"),
+      'width': 300,
+      'height': 387,
       'position': 'center',
       'frame': false,
       'backgroundThrottling': false,
@@ -78,6 +79,8 @@ class SettingsGUI {
   * Iterates through each slider in the settings menu and calls _initializeSlider
   */
   static _initializeSliders() {
+    SettingsGUI._initializeMaxHeightSlider();
+
     $(".settings").find("[data-slider]").each(function (index, element) {
       SettingsGUI._initializeSlider($(this));
     });
@@ -126,6 +129,15 @@ class SettingsGUI {
         sliderLabel.html(parseFloat(values[0]));
       }
     });
+  }
+
+  /**
+  * Initializes the maximum height sliders maximum value
+  */
+  static _initializeMaxHeightSlider() {
+    var mainScreen = screenElectron.getPrimaryDisplay();
+    var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
+    sliderDiv.attr("slider-max", mainScreen.size.height);
   }
 
   /**
