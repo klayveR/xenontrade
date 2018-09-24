@@ -5,6 +5,7 @@ const windowManager = remote.require('electron-window-manager');
 const os = require("os");
 
 const Helpers = require("../helpers.js");
+const Pricecheck = require("../pricecheck.js");
 const SettingsGUI = require("./settings.js");
 
 class GUI {
@@ -46,7 +47,7 @@ class GUI {
 
     // Update Ninja when the league is changed in settings
     windowManager.bridge.on('league-change', function(event) {
-      app.updateNinja();
+      Pricecheck.updateNinja();
     });
 
     // Adjust window size based on scale factor when it's changed
@@ -90,7 +91,7 @@ class GUI {
     });
 
     $(".menu").find("[data-button='update']").click(function() {
-      app.updateNinja();
+      Pricecheck.updateNinja();
     });
 
     $(".menu").find("[data-button='settings']").click(function() {

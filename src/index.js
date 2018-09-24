@@ -53,12 +53,14 @@ class XenonTrade {
 
       // Check dependencies and update poe.ninja
       this.checkDependencies();
-      this.updateNinja();
+      Pricecheck.updateNinja();
       return;
     })
     .catch((error) => {
-      log.error("Error initializing app\n" +  error);
-      alert("Error initializing app\n" +  error);
+      var errorMsg = "Error initializing app\n" + JSON.stringify(error, null, 4);
+
+      log.error(errorMsg);
+      alert(errorMsg);
       windowManager.closeAll();
       return;
     });
@@ -124,37 +126,6 @@ class XenonTrade {
       .catch((error) => {
         var message = "This tool uses <strong>wmctrl</strong> to focus the Path of Exile window. It is recommended to install it for an optimal experience.";
         new TextEntry("Missing dependency", message, {icon: "fa-exclamation-triangle yellow"}).add();
-      });
-    }
-  }
-
-  /**
-  * Updates poe.ninja data
-  */
-  updateNinja() {
-    if(!ninjaAPI.isUpdating()) {
-      GUI.toggleMenuButtonColor("update", false);
-
-      var ninjaUpdateEntry = new TextEntry("Updating poe.ninja prices...", {closeable: false});
-      ninjaUpdateEntry.add();
-
-      ninjaAPI.update({league: config.get("league")})
-      .then((result) => {
-        ninjaUpdateEntry.setTitle("Updating poe.ninja was successful");
-        ninjaUpdateEntry.setIcon("fa-check-circle green");
-        ninjaUpdateEntry.setCloseable(true);
-        ninjaUpdateEntry.enableAutoClose(10);
-      })
-      .catch((error) => {
-        log.warn("Failed updating poe.ninja prices, " + error);
-        ninjaUpdateEntry.setTitle("Updating poe.ninja failed");
-        ninjaUpdateEntry.setText("Please check the log file for more information.");
-        ninjaUpdateEntry.setCloseable(true);
-        ninjaUpdateEntry.setIcon("fa-exclamation-circle red");
-        ninjaUpdateEntry.addLogfileButton();
-      })
-      .then(() => {
-        GUI.toggleMenuButtonColor("update", true);
       });
     }
   }

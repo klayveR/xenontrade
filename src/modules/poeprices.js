@@ -20,7 +20,7 @@ class PoePrices {
       var parameters = querystring.stringify({ i: Base64.encode(itemText), l: config.get("league"), s: "xenontrade" });
       var parsedParams = querystring.parse(parameters);
 
-      request("https://httpstat.us/504", {json: true})
+      request(url + parameters, {json: true})
       .then((response) => {
         if(!PoePrices.hasAllKeys(response) || response.error !== 0) {
           var requestObject = { request: { parameters: parsedParams, itemText }, response };
