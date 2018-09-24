@@ -38,6 +38,8 @@ class GUI {
     // Reset menu settings button color on hide
     windowManager.bridge.on('hide', function(event) {
       if(event.window === "settings") {
+        // Call onEntriesChange here, in case all entries where closed while settings window was open
+        GUI.onEntriesChange();
         GUI.toggleMenuButtonColor("settings", true);
       }
     });
@@ -127,9 +129,17 @@ class GUI {
 
   /**
   * Shows the window and sets it on top again
+  *
+  * @param {boolean} [automatic=false] Whether this function was called automatically and not by the user
   */
-  static show() {
+  static show(automatic = false) {
     var win = windowManager.get(GUI.NAME).object;
+
+    // If this function was called automatically, don't show if there are no entries
+    // and the hide menu option is enabled
+    if(automatic && config.get("hideMenu") && !GUI.hasEntries()) {
+      return;
+    }
 
     if(!win.isVisible()) {
       if(win.isMinimized()) {
@@ -146,19 +156,20 @@ class GUI {
   /**
   * Hides the window
   *
-  * @param {boolean} [autoMinimize=false] Whether the function is called by auto minimize or not
+  * @param {boolean} [automatic=false] Whether this function was called automatically and not by the user
   */
-  static hide(autoMinimize = false) {
+  static hide(automatic = false) {
     var settingsWin = windowManager.get(SettingsGUI.NAME).object;
     var win = windowManager.get(GUI.NAME).object;
 
-    // If settings window is visible, override auto minimize
-    if(autoMinimize === true && settingsWin.isVisible()) {
+    // If settings window is visible, override this
+    if(automatic === true && settingsWin.isVisible()) {
       return;
     }
 
-    if(win.isVisible()) {
-      win.hide();
+    win.hide();
+    if(settingsWin.isVisible()) {
+      settingsWin.hide();
     }
   }
 
@@ -275,16 +286,35 @@ class GUI {
   }
 
   /**
+  * Called when an entry is added or closed and hides the window if
+  * hide menu setting is enabled and no entries available
+  */
+  static onEntriesChange() {
+    var win = windowManager.get(GUI.NAME).object;
+
+    if(config.get("hideMenu")) {
+      var hasEntries = GUI.hasEntries();
+
+      if(!hasEntries && win.isVisible()) {
+        GUI.hide(true);
+      } else
+      if(hasEntries && !win.isVisible()) {
+        GUI.show(true);
+      }
+    }
+  }
+
+  /**
   * Returns `true` if the entries div has entries
   *
   * @returns {boolean}
   */
   static hasEntries() {
     if(!$.trim($(".entries").html())) {
-      return true;
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   /**

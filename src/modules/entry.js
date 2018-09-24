@@ -147,6 +147,7 @@ class Entry {
       // Remove entry from global entries variable
       entries = _.omit(entries, this.id);
 
+      GUI.onEntriesChange();
       GUI.updateWindowHeight();
     }
   }
@@ -160,7 +161,7 @@ class Entry {
       var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
       // If no entries available, set whole content of div, otherwise append
-      if (!$.trim($(".entries").html())) {
+      if(!GUI.hasEntries()) {
         $(".entries").html(template);
       } else {
         $(".entries > .entry:last").after(template);
@@ -169,6 +170,7 @@ class Entry {
       // Add entry to global entries variable
       entries[this.id] = this;
 
+      GUI.onEntriesChange();
       GUI.updateWindowHeight();
       GUI.scrollToBottom();
     }

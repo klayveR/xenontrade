@@ -198,7 +198,7 @@ class AutoMinimize {
       app.poeFocused = false;
     } else if(windowTitle === "Path of Exile") {
       app.poeFocused = true;
-      if(config.get("autoMinimize")) { GUI.show(); }
+      if(config.get("autoMinimize")) { GUI.show(true); }
     } else {
       app.poeFocused = false;
       if(config.get("autoMinimize")) { GUI.hide(true); }

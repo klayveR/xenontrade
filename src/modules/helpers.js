@@ -136,9 +136,14 @@ class Helpers {
     // https://unix.stackexchange.com/a/180797
     if(os.platform() === "linux" && alwaysOnTop) {
       // Wait 50ms before executing, showing windows on Linux is slow and window needs to
-      // be visible in order for this command to work
+      // be visible in order for this command to work, still check if visible to avoid errors
       setTimeout(function() {
-        cp.exec("wmctrl -F -r '" + win.getTitle() + "' -b add,above");
+        if(win.isVisible()) {
+          cp.exec("wmctrl -F -r '" + win.getTitle() + "' -b add,above")
+          .catch((error) => {
+            console.warn("Could not set '" + win.getTitle() + "' always on top.", error);
+          });
+        }
       }, 50);
     }
   }
@@ -240,6 +245,7 @@ class Helpers {
         league: "Delve",
         focusPathOfExile: false,
         autoMinimize: false,
+        hideMenu: false,
         pricecheck: true,
         maxHeight: 500,
         autoclose: {
@@ -286,6 +292,11 @@ class Helpers {
     // 0.3.4
     if(!config.has("window.zoomFactor")) {
       config.set("window.zoomFactor", 1);
+    }
+
+    // 0.4.0
+    if(!config.has("hideMenu")) {
+      config.set("hideMenu", false);
     }
 
     return config;
