@@ -194,14 +194,14 @@ class AutoMinimize {
   * Handles new window title
   */
   _handleWindowTitle(windowTitle) {
-    if(windowTitle === "XenonTrade") {
+    if(windowTitle === "XenonTrade" || windowTitle === "XenonTrade Settings") {
       app.poeFocused = false;
     } else if(windowTitle === "Path of Exile") {
       app.poeFocused = true;
-      if(config.get("autoMinimize")) { gui.show(); }
+      if(config.get("autoMinimize")) { GUI.show(true); }
     } else {
       app.poeFocused = false;
-      if(config.get("autoMinimize")) { gui.minimize(); }
+      if(config.get("autoMinimize")) { GUI.hide(true); }
     }
   }
 }

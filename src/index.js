@@ -1,24 +1,27 @@
 "use strict";
+
 const electron = require("electron");
+const remote = require("electron").remote;
 let { ipcRenderer } = electron;
 
+const windowManager = remote.require('electron-window-manager');
 const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 const os = require("os");
+const log = require('electron-log');
 
 const Config = require("electron-store");
+const Helpers = require("./modules/helpers.js");
 const NinjaAPI = require("poe-ninja-api-manager");
 const Templates = require("./modules/templates.js");
 const Pricecheck = require("./modules/pricecheck.js");
 const AutoMinimize = require("./modules/auto-minimize.js");
-const Helpers = require("./modules/helpers.js");
-const GUI = require("./modules/gui/gui.js");
 const TextEntry = require("./modules/entries/text-entry.js");
 
-global.log = require('electron-log');
+const GUI = require("./modules/gui/gui.js");
+
 global.config = Helpers.createConfig();
 global.templates = new Templates();
-global.gui = new GUI();
 global.ninjaAPI = new NinjaAPI();
 global.entries = {};
 
@@ -40,17 +43,24 @@ class XenonTrade {
   initialize() {
     templates.loadTemplates()
     .then(() => {
-      gui.initialize();
+      // Initialize GUIs
+      GUI.initialize();
+
+      // Initialize Others
       this.initializeAutoMinimize();
       this.initializeHotkeys();
       this.initializeIpcListeners();
+
+      // Check dependencies and update poe.ninja
       this.checkDependencies();
-      return this.updateNinja();
+      this.updateNinja();
+      return;
     })
     .catch((error) => {
       log.error("Error initializing app\n" +  error);
       alert("Error initializing app\n" +  error);
-      return gui.window.close();
+      windowManager.closeAll();
+      return;
     });
   }
 
@@ -61,15 +71,15 @@ class XenonTrade {
     var self = this;
 
     ipcRenderer.on("focus", function(event) {
-      gui.onFocus();
+      GUI.onFocus();
     });
 
     ipcRenderer.on("update-available", function(event, info) {
-      gui.showUpdateAvailableEntry(info);
+      GUI.showUpdateAvailableEntry(info);
     });
 
     ipcRenderer.on("update-downloaded", function(event, info) {
-      gui.showUpdateDownloadedEntry(info);
+      GUI.showUpdateDownloadedEntry(info);
     });
   }
 
@@ -123,7 +133,7 @@ class XenonTrade {
   */
   updateNinja() {
     if(!ninjaAPI.isUpdating()) {
-      gui.toggleUpdate();
+      GUI.toggleMenuButtonColor("update", false);
 
       var ninjaUpdateEntry = new TextEntry("Updating poe.ninja prices...", {closeable: false});
       ninjaUpdateEntry.add();
@@ -144,7 +154,7 @@ class XenonTrade {
         ninjaUpdateEntry.addLogfileButton();
       })
       .then(() => {
-        gui.toggleUpdate();
+        GUI.toggleMenuButtonColor("update", true);
       });
     }
   }

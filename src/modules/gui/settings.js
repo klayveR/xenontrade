@@ -1,51 +1,102 @@
 const electron = require('electron');
-var screenElectron = electron.screen;
-
+const remote = electron.remote;
+const screenElectron = electron.screen;
+const windowManager = remote.require('electron-window-manager');
 const { version } = require('../../../package.json');
-const Helpers = require("../helpers.js");
-const TextEntry = require("../entries/text-entry.js");
 
-class Settings {
+const log = require('electron-log');
+const Config = require("electron-store");
+const Helpers = require("../helpers.js");
+const GUI = require("./gui.js");
+
+var config = Helpers.createConfig();
+
+class SettingsGUI {
+  /**
+  * Getter for name of the Settings GUI
+  */
+  static get NAME() {
+    return "settings";
+  }
+
+  /**
+  * Creates the settings window
+  */
+  static create() {
+    var settingsWindow = windowManager.createNew(SettingsGUI.NAME, 'XenonTrade Settings', '/settings.html', false, {
+      'width': 800,
+      'height': 600,
+      'position': 'center',
+      'frame': false,
+      'backgroundThrottling': false,
+      'skipTaskbar': true,
+      'show': false,
+      'maximizable': false,
+      'resizable': false,
+      'fullscreenable': false,
+      'alwaysOnTop': true
+    });
+
+    settingsWindow.open(null, true);
+
+    settingsWindow.object.on("hide", function() {
+      windowManager.bridge.emit('hide', {'window': SettingsGUI.NAME});
+    });
+
+    settingsWindow.object.on("show", function() {
+      windowManager.bridge.emit('show', {'window': SettingsGUI.NAME});
+    });
+  }
+
   /**
   * Initializes settings
   */
-  initialize() {
-    this._initializeToggles();
-    this._initializeLeagues();
-    this._initializeMaxHeight();
-    this._initializeZoomFactor();
-    this._initializeSliders();
-
-    // Show version
-    $(".settings").find(".rightText").html("v" + version);
+  static initialize() {
+    SettingsGUI._initializeButtons();
+    SettingsGUI._initializeToggles();
+    SettingsGUI._initializeLeagues();
+    SettingsGUI._initializeSliders();
+    SettingsGUI._initializeVersionNumber();
+    SettingsGUI._initializeNavigation();
   }
 
   /**
-  * Initializes the maximum height CSS setting based on the config value
+  * Initializes the navigation
   */
-  _initializeMaxHeight() {
-    var mainScreen = screenElectron.getPrimaryDisplay();
-    var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
-    sliderDiv.attr("slider-max", mainScreen.size.height);
+  static _initializeNavigation() {
+    $(".sidebar").find(".link").each(function() {
+      var settings = $(this).attr("data-settings");
 
-    this.changeMaxHeight(config.get("maxHeight"));
+      $(this).click(function() {
+        SettingsGUI.switchSettings($(this));
+      })
+    });
   }
 
   /**
-  * Initializes the maximum height CSS setting based on the config value
+  * Initializes the header buttons
   */
-  _initializeZoomFactor() {
-    this.changeZoomFactor(config.get("window.zoomFactor"));
+  static _initializeButtons() {
+    $(".header").find("[data-button='close']").click(function() {
+      SettingsGUI.hide();
+    });
+  }
+
+  /**
+  * Shows the version number in the settings GUI
+  */
+  static _initializeVersionNumber() {
+    $(".sidebar").find(".version").html("v" + version);
   }
 
   /**
   * Iterates through each slider in the settings menu and calls _initializeSlider
   */
-  _initializeSliders() {
-    var self = this;
+  static _initializeSliders() {
+    SettingsGUI._initializeMaxHeightSlider();
 
     $(".settings").find("[data-slider]").each(function (index, element) {
-      self._initializeSlider($(this));
+      SettingsGUI._initializeSlider($(this));
     });
   }
 
@@ -54,11 +105,10 @@ class Settings {
   *
   * @param {jQuery} $selector Slider div
   */
-  _initializeSlider(selector) {
-    var self = this;
+  static _initializeSlider(selector) {
     var configKey = selector.attr("data-slider");
     var sliderSelector = selector.find("div");
-    var sliderLabel = selector.find(".slider-value");
+    var sliderLabel = selector.parent().find(".slider-value").find(".value");
     var slider = sliderSelector[0];
     var step = parseFloat(sliderSelector.attr("slider-step"));
 
@@ -80,9 +130,9 @@ class Settings {
       config.set(configKey, value);
 
       if(configKey === "maxHeight") {
-        self.changeMaxHeight(value);
+        windowManager.bridge.emit('maxheight-change', {'value': value});
       } else if(configKey === "window.zoomFactor") {
-        self.changeZoomFactor(value);
+        windowManager.bridge.emit('zoomfactor-change', {'value': value});
       }
     });
 
@@ -96,14 +146,21 @@ class Settings {
   }
 
   /**
+  * Initializes the maximum height sliders maximum value
+  */
+  static _initializeMaxHeightSlider() {
+    var mainScreen = screenElectron.getPrimaryDisplay();
+    var sliderDiv = $("[data-slider='maxHeight']").find("[slider-max]");
+    sliderDiv.attr("slider-max", mainScreen.size.height);
+  }
+
+  /**
   * Initializes all toggle buttons and states in the settings menu
   */
-  _initializeToggles() {
-    var self = this;
-
+  static _initializeToggles() {
     $(".settings").find("[data-toggle]").each(function (index, element) {
-      self._initializeToggleState($(this));
-      self._initializeToggleButton($(this));
+      SettingsGUI._initializeToggleState($(this));
+      SettingsGUI._initializeToggleButton($(this));
     });
   }
 
@@ -112,10 +169,10 @@ class Settings {
   *
   * @param {jQuery} $selector Toggle button
   */
-  _initializeToggleState(selector) {
+  static _initializeToggleState(selector) {
     var toggle = selector.attr("data-toggle");
     if(config.get(toggle)) {
-      $(".settings").find("[data-toggle='" + toggle + "'] > i").removeClass("fa-toggle-off grey").addClass("fa-toggle-on");
+      $(".settings").find("[data-toggle='" + toggle + "'] > i").removeClass("fa-toggle-off grey").addClass("fa-toggle-on green");
     }
   }
 
@@ -124,29 +181,40 @@ class Settings {
   *
   * @param {jQuery} $selector Toggle button
   */
-  _initializeToggleButton(selector) {
-    var self = this;
-
+  static _initializeToggleButton(selector) {
     var toggle = selector.attr("data-toggle");
     selector.click(function() {
-      self.toggleSetting(toggle);
+      SettingsGUI.toggleSetting(toggle);
     });
   }
 
   /**
   * Loads leagues, adds them to the settings menu if successful, error entry if not
   */
-  _initializeLeagues() {
+  static _initializeLeagues() {
     Helpers.getPathOfExileLeagues()
     .then((leagues) => {
-      this._initializeLeagueSettings(leagues);
+      SettingsGUI._initializeLeagueSelect(leagues);
     })
     .catch((error) => {
-      log.warn("Error loading leagues, " + error);
-      var entry = new TextEntry("Error loading leagues", "Please check the log file for more information.", {icon: "fa-exclamation-circle red"});
-      entry.add();
-      entry.addLogfileButton();
+      SettingsGUI._handleLeagueGetError(error);
     });
+  }
+
+  /**
+  * Called when an error occured while fetching league data from GGG API
+  */
+  static _handleLeagueGetError(error) {
+    log.warn("Error fetching leagues, " + error);
+    $("#league").find(".description").after("<div class='banner red-bg'><i class='fas fa-exclamation-circle'></i> An error occured while fetching leagues from the Path of Exile API, please check the log file for more information. The league selection has been populated with the default leagues.</div>");
+
+    var leagues = [
+      "Standard",
+      "Hardcore",
+      "Delve",
+      "Hardcore Delve"
+    ]
+    SettingsGUI._initializeLeagueSelect(leagues);
   }
 
   /**
@@ -154,9 +222,7 @@ class Settings {
   *
   * @param {Array} leagues Array of leagues
   */
-  _initializeLeagueSettings(leagues) {
-    var self = this;
-
+  static _initializeLeagueSelect(leagues) {
     // Add leagues as options to select
     $.each(leagues, function (i, league) {
       $("#leagueSelect").append($("<option>", {
@@ -168,11 +234,67 @@ class Settings {
     // Select option change listener
     $("#leagueSelect").change(function() {
       var league = $("#leagueSelect").val();
-      self.changeLeagueSetting(league);
+      SettingsGUI.changeLeagueSetting(league);
     });
 
+    var configLeague = config.get("league");
+
+    // Add an additional option if league from config doesn't exist in league array
+    if(!leagues.includes(configLeague)) {
+      $("#leagueSelect").append($("<option>", {
+        value: configLeague,
+        text : configLeague
+      }));
+    }
+
     // Select league from config
-    $("#leagueSelect").find("option[value='" + config.get("league") + "']").attr("selected", "selected");
+    $("#leagueSelect").find("option[value='" + configLeague + "']").attr("selected", "selected");
+  }
+
+  /**
+  * Switches to another settings page
+  *
+  * @param {jQuery} linkSelector jQuery selector of the link that has been clicked
+  */
+  static switchSettings(linkSelector) {
+    // Clear all active css classes from links
+    $(".sidebar").find(".link").each(function() {
+      $(this).removeClass("active");
+    });
+
+    // Hide all settings pages
+    $(".settings").find("[data-settings]").each(function() {
+      $(this).hide();
+    });
+
+    // Add active css class to clicked link
+    linkSelector.addClass("active");
+
+    // Show corresponding settings page
+    $(".settings").find("[data-settings='" + linkSelector.attr("data-settings") + "']").show();
+  }
+
+  /**
+  * Shows settings window
+  */
+  static show() {
+    var win = windowManager.get(SettingsGUI.NAME).object;
+
+    if(win) {
+      win.setAlwaysOnTop(true);
+      win.show();
+    }
+  }
+
+  /**
+  * Hides settings window
+  */
+  static hide() {
+    var win = windowManager.get(SettingsGUI.NAME).object;
+
+    if(win) {
+      win.hide();
+    }
   }
 
   /**
@@ -180,12 +302,12 @@ class Settings {
   *
   * @param {string} toggle Name of toggle
   */
-  toggleSetting(toggle) {
+  static toggleSetting(toggle) {
     var enabled = !config.get(toggle);
     config.set(toggle, enabled);
 
     // Change settings icon accordingly
-    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey");
+    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey green");
   }
 
   /**
@@ -193,32 +315,10 @@ class Settings {
   *
   * @param {string} league League name that should be saved to config
   */
-  changeLeagueSetting(league) {
+  static changeLeagueSetting(league) {
     config.set("league", league);
-    app.updateNinja();
-  }
-
-  /**
-  * Change the maximum height of the entries div
-  *
-  * @param {number} value Maximum height value
-  */
-  changeMaxHeight(value) {
-    $(".entries").css("max-height", (value / config.get("window.zoomFactor")) + "px");
-    gui.updateWindowHeight();
-  }
-
-  /**
-  * Change the zoom factor of the window
-  *
-  * @param {number} value Zoom factor value
-  */
-  changeZoomFactor(value) {
-    $(".container").css("zoom", value);
-    this.changeMaxHeight(config.get("maxHeight"));
-
-    gui.updateWindowHeight();
+    windowManager.bridge.emit('league-change', {'league': league});
   }
 }
 
-module.exports = Settings;
+module.exports = SettingsGUI;

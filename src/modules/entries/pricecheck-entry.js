@@ -47,7 +47,7 @@ class PriceCheckEntry extends Entry {
     icon.toggleClass("grey");
 
     $(".entry[data-id='" + this.id + "']").find("[data-" + toggle + "]").toggle();
-    gui.updateWindowHeight();
+    GUI.updateWindowHeight();
   }
 
   /**
@@ -57,7 +57,7 @@ class PriceCheckEntry extends Entry {
     var trend = $(".entry[data-id='" + this.id + "']").find(".trend");
 
     trend.peity("line");
-    gui.updateWindowHeight();
+    GUI.updateWindowHeight();
   }
 
   /**

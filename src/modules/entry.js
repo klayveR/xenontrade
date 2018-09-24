@@ -95,7 +95,6 @@ class Entry {
       var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
       button.click(function() {
-        button.hide();
         self.cancelAutoClose();
       });
     }
@@ -105,7 +104,10 @@ class Entry {
   * Stops auto close timeout
   */
   cancelAutoClose() {
+    var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
+
     if(this.timeout != null) {
+      button.hide();
       clearInterval(this.timeout);
     }
   }
@@ -147,7 +149,8 @@ class Entry {
       // Remove entry from global entries variable
       entries = _.omit(entries, this.id);
 
-      gui.updateWindowHeight();
+      GUI.onEntriesChange();
+      GUI.updateWindowHeight();
     }
   }
 
@@ -160,7 +163,7 @@ class Entry {
       var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
       // If no entries available, set whole content of div, otherwise append
-      if (!$.trim($(".entries").html())) {
+      if(!GUI.hasEntries()) {
         $(".entries").html(template);
       } else {
         $(".entries > .entry:last").after(template);
@@ -169,8 +172,9 @@ class Entry {
       // Add entry to global entries variable
       entries[this.id] = this;
 
-      gui.updateWindowHeight();
-      gui.scrollToBottom();
+      GUI.onEntriesChange();
+      GUI.updateWindowHeight();
+      GUI.scrollToBottom();
     }
   }
 

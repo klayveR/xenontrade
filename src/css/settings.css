@@ -1,0 +1,208 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    cursor: default;
+}
+
+i {
+  vertical-align: middle;
+}
+
+.header {
+  width: 100%;
+  display: block;
+  background: #171c23;
+  font-size: 13px;
+  text-align: right;
+  padding: 0px 0px 3px 0px;
+}
+
+.header .button {
+  margin-right: 3px;
+  -webkit-app-region: no-drag;
+}
+
+.sidebar {
+  position: relative;
+  font-family: "Roboto", sans-serif;
+  width: 25%;
+  height: 100%;
+  float: left;
+  background: #202630;
+}
+
+.link {
+  border-bottom: 1px solid #272f3d;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.link .label {
+  color: #e6eaf2;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.link i {
+  line-height: 25px;
+  float: right;
+  margin-right: 5px;
+  color: #748199;
+}
+
+.version {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: #424b5b;
+  padding: 10px 0px;
+  font-size: 12px;
+  font-weight: 700;
+  bottom: 0;
+  margin-bottom: 20px;
+}
+
+.active {
+  background-color: #272f3d !important;
+  cursor: default !important;
+}
+
+.settings {
+  overflow: auto;
+  width: 75%;
+  height: 100%;
+  float: left;
+  background: #272f3d;
+}
+
+.settings::-webkit-scrollbar {
+  width: 5px;
+}
+
+.settings::-webkit-scrollbar-track {
+  background: #272f3d;
+}
+
+.settings::-webkit-scrollbar-thumb {
+  background: #404c60;
+}
+
+.content {
+  color: #e6eaf2;
+  font-family: "Roboto", sans-serif;
+  padding: 0px 20px 20px 20px;
+  margin-bottom: 20px;
+}
+
+.content .title {
+  text-transform: uppercase;
+  font-size: 22px;
+  margin: 25px -20px 25px -20px;
+  padding: 5px 20px;
+  background-color: #303b4c;
+}
+
+.content .option {
+  border-bottom: 1px solid #303b4c;
+  padding-bottom: 15px;
+  margin-top: 15px;
+}
+
+.content .last-option {
+  border: 0 !important;
+}
+
+.content .option .label {
+  font-size: 16px;
+  padding-bottom: 3px;
+}
+
+.content .option .banner {
+  border-radius: 3px;
+  background-color: #202630;
+  padding: 0px 3px;
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.content .option .description {
+  font-size: 12px;
+  color: #748199;
+  display: block;
+}
+
+.content .option .description strong {
+  background-color: #202630;
+  padding: 0px 5px;
+  font-weight: normal;
+}
+
+.content .option .toggle {
+  float: right;
+  cursor: pointer;
+  font-size: 28px;
+  margin-left: 10px;
+}
+
+.content .option .toggle i {
+  vertical-align: top !important;
+}
+
+.content .option .slider {
+  margin-top: 10px;
+}
+
+.content .option .slider-value {
+  border-radius: 3px;
+  background-color: #202630;
+  padding: 0px 3px;
+}
+
+.content .option .slider-value .value {
+  font-size: 15px;
+}
+
+.content .option .slider-value .unit {
+  color: #748199;
+  font-size: 13px;
+}
+
+.content .option label.wrap {
+  margin: 5px 0px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: block;
+}
+
+.content .option select {
+  color: #e6eaf2;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #303a4c;
+  padding: 7px;
+  font-size: 11px;
+  border: 0;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.content .option label.wrap:after {
+  content:"\f150";
+  font-family: "Font Awesome\ 5 Free";
+  color: #748199;
+  position: absolute;
+  right: 0;
+  top: 5px;
+  z-index: 1;
+  width: 20px;
+  pointer-events: none;
+}

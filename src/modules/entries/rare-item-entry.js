@@ -89,14 +89,8 @@ class RareItemEntry extends PriceCheckEntry {
     var self = this;
     var textarea = $(".entry[data-id='" + this.id + "']").find("[data-comment]").find("textarea");
 
-    // Override the onFocus option in GUI when textarea focused
-    textarea.focusin(function() {
-      gui.overrideFocus = true;
-    });
-
     textarea.focusout(function() {
-      gui.overrideFocus = false;
-      gui.onFocus();
+      GUI.onFocus();
     });
 
     // Send feedback button
@@ -121,6 +115,11 @@ class RareItemEntry extends PriceCheckEntry {
   _feedbackButtonClick(selector) {
     var feedback = selector.attr("data-feedback")
 
+    // Cancel auto-close if feedback button is pressed
+    if(this.timeout != null) {
+      this.cancelAutoClose();
+    }
+
     if(feedback !== this.selectedFeedback) {
       $(".entry[data-id='" + this.id + "']").find("[data-feedback]").each(function() {
         $(this).removeClass("active");
@@ -140,7 +139,7 @@ class RareItemEntry extends PriceCheckEntry {
     var selector = $(".entry[data-id='" + this.id + "']").find("[data-comment]");
     selector.toggle(toggle);
 
-    gui.updateWindowHeight();
+    GUI.updateWindowHeight();
   }
 
   _sendFeedback() {
