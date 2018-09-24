@@ -95,7 +95,6 @@ class Entry {
       var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
 
       button.click(function() {
-        button.hide();
         self.cancelAutoClose();
       });
     }
@@ -105,7 +104,10 @@ class Entry {
   * Stops auto close timeout
   */
   cancelAutoClose() {
+    var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
+
     if(this.timeout != null) {
+      button.hide();
       clearInterval(this.timeout);
     }
   }

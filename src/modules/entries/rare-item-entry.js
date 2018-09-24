@@ -115,6 +115,11 @@ class RareItemEntry extends PriceCheckEntry {
   _feedbackButtonClick(selector) {
     var feedback = selector.attr("data-feedback")
 
+    // Cancel auto-close if feedback button is pressed
+    if(this.timeout != null) {
+      this.cancelAutoClose();
+    }
+
     if(feedback !== this.selectedFeedback) {
       $(".entry[data-id='" + this.id + "']").find("[data-feedback]").each(function() {
         $(this).removeClass("active");
