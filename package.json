@@ -55,11 +55,11 @@
   },
   "cmake-js": {
     "runtime": "electron",
-    "runtimeVersion": "2.0.8"
+    "runtimeVersion": "2.0.10"
   },
   "iohook": {
     "targets": [
-      "node-59",
+      "node-57",
       "electron-57"
     ],
     "platforms": [
@@ -100,7 +100,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^2.0.8",
+    "electron": "^2.0.10",
     "electron-builder": "^20.28.3"
   }
 }
