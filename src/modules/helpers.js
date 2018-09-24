@@ -309,9 +309,9 @@ class Helpers {
     var logfile = "";
 
     if(os.platform() === "linux") {
-      logfile = path.join(process.env.HOME, "/.config/XenonTrade/log.log");
+      logfile = path.join(os.homedir(), "/.config/XenonTrade/log.log");
     } else {
-      logfile = path.join(process.env.HOME, "/AppData/Roaming/XenonTrade/log.log");
+      logfile = path.join(os.homedir(), "/AppData/Roaming/XenonTrade/log.log");
     }
 
     shell.openItem(logfile);
