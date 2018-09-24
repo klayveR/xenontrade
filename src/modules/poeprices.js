@@ -16,23 +16,24 @@ class PoePrices {
     return new Promise(function(resolve, reject) {
       itemText = itemText.replace(/<<.*?>>|<.*?>/g, "");
 
-      var url = "https://www.poeprices.info/api?";
+      var url = "https://www.poepricess.info/api?";
       var parameters = querystring.stringify({ i: Base64.encode(itemText), l: config.get("league"), s: "xenontrade" });
       var parsedParams = querystring.parse(parameters);
 
-      request(url + parameters, {json: true})
+      request("https://httpstat.us/504", {json: true})
       .then((response) => {
         if(!PoePrices.hasAllKeys(response) || response.error !== 0) {
           var requestObject = { request: { parameters: parsedParams, itemText }, response };
 
-          log.warn("Request to poeprices.info was unsuccessful. Received an empty response.\nPlease post the following object into the corresponding issue on GitHub (https://github.com/klayveR/xenontrade/issues/9), but avoid spamming:\n" + JSON.stringify(requestObject, null, 4));
-          reject(new Error("Request to <b>poeprices.info</b> was unsuccessful. Received an empty response."));
+          log.warn("Request to poeprices.info failed. Received an empty response.\n" + JSON.stringify(requestObject, null, 4));
+          reject(new Error("Request to <b>poeprices.info</b> failed. Received an empty response."));
         } else {
           resolve({encodedItemText: parsedParams.i, price: response});
         }
       })
       .catch((error) => {
-        reject(error);
+        log.warn("Request to poeprices.info failed.\n" + JSON.stringify(error, null, 4));
+        reject(new Error("Request to <b>poeprices.info</b> failed. " + error.error));
       });
     });
   }
