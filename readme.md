@@ -5,9 +5,9 @@
 
 Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started! See the [Help](https://github.com/klayveR/xenontrade/wiki/Help) wiki if you're having problems.
 
-Items | Currency | Settings
-:---:|:---:|:---:
-![](https://i.imgur.com/r8EYb6S.png) | ![](https://i.imgur.com/RHTxgRS.png) | ![](https://i.imgur.com/CspoxDg.png?1)
+Items | Currency
+:---:|:---:
+![](https://i.imgur.com/r8EYb6S.png) | ![](https://i.imgur.com/RHTxgRS.png)
 
 ## Wiki
 
@@ -16,12 +16,11 @@ Check out the wiki to learn more about this app!
 - [Build it yourself](https://github.com/klayveR/xenontrade/wiki/Build-it-yourself)
 - [Button functions](https://github.com/klayveR/xenontrade/wiki/Button-functions)
 - [Item variant support](https://github.com/klayveR/xenontrade/wiki/Item-variant-support)
-- [Planned features and known bugs](https://github.com/klayveR/xenontrade/wiki/Planned-features-and-known-bugs)
 
 ## Features
 - XenonTrade is an overlay you can drag anywhere, on top of the game, on your second monitor, wherever you want it to be
-- When Path of Exile is not in focus, the overlay is able to automatically minimize and restore when Path of Exile is focused again
-- The app automatically loads the currently active main non-SSF leagues
+- Automatically minimizes when Path of Exile is not in focus or only the menu bar is showing
+- Supports higher resolutions (e.g. 4k) thanks to the scale factor setting
 
 ### Price check
 - Press `CTRL+C` while hovering over an item to price check it
