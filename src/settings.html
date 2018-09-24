@@ -8,135 +8,151 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link rel="stylesheet" href="css/attr-classes.css">
   <link rel="stylesheet" href="css/nouislider.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/settings.css">
 </head>
 <body>
-  <div class="container">
-    <div class="menu draggable">
-      <div class="row">
-        <div class="left"></div>
-        <div class="middle"></div>
-        <div class="right">
-          <div class="button" data-button="close"><i class="fas fa-window-close grey"></i></div>
-        </div>
+  <body>
+      <div class="header draggable">
+        <div class="button" data-button="close"><i class="fas fa-window-close grey"></i></div>
       </div>
-    </div>
-    <div class="settings">
-      <div class="title">
-        <div class="left">
-          <div class="icon">
-            <i class="fas fa-wrench grey"></i>
+      <div class="sidebar">
+        <div class="link active" data-settings="general">
+          <span class="label"><i class="fas fa-cog"></i> General</span>
+        </div>
+        <div class="link" data-settings="price-check">
+          <span class="label"><i class="fas fa-money-bill"></i> Price check</span>
+        </div>
+        <div class="link" data-settings="auto-close">
+          <span class="label"><i class="fas fa-clock"></i> Auto-close</span>
+        </div>
+        <div class="version"></div>
+      </div>
+      <div class="settings">
+        <div class="content">
+          <div data-settings="general">
+            <div class="option">
+              <div class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Automatically hide XenonTrade
+              </div>
+              <div class="description">
+                Automatically hides XenonTrade when Path of Exile is not in focus.<br />Disabled while settings window is visible.
+              </div>
+            </div>
+            <div class="option">
+              <div class="toggle" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Always focus Path of Exile
+              </div>
+              <div class="description">
+                Focuses Path of Exile after every interaction with XenonTrade.<br />Disabled while settings window is visible.
+              </div>
+            </div>
+            <div class="option">
+              <div class="label">
+                Scale factor
+                <span class="slider-value"><span class="value"></span><span class="unit">x</span></span>
+              </div>
+              <div class="description">
+                Increases or decreases the size of the main window. This is especially useful for higher resolutions.
+              </div>
+              <div class="slider" data-slider="window.zoomFactor">
+                <div slider-min="0.5" slider-max="2.5" slider-step="0.1"></div>
+              </div>
+            </div>
+            <div class="option last-option">
+              <div class="label">
+                Maximum window height
+                <span class="slider-value"><span class="value"></span><span class="unit">px</span></span>
+              </div>
+              <div class="description">
+                Sets the maximum height of the main window.
+              </div>
+              <div class="slider" data-slider="maxHeight">
+                <div slider-min="100" slider-max="999" slider-step="1"></div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="middle">
-          General
-        </div>
-        <div class="rightText"></div>
-      </div>
-      <table style="width: 100%">
-        <tbody>
-          <tr>
-            <td colspan="3">
+          <div data-settings="price-check" style="display: none">
+            <div class="option">
+              <div class="toggle" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Enable
+              </div>
+              <div class="description">
+                Shows the price of an item in the main window when <strong>CTRL+C</strong> is pressed while hovering over an item in Path of Exile.
+              </div>
+            </div>
+            <div id="league" class="option last-option">
+              <div class="label">
+                League
+              </div>
+              <div class="description">
+                Please select the league you're playing in. Price data will be fetched for this league. Price data will automatically be updated when you change this setting.
+              </div>
               <label class="wrap">
                 <select class="select" id="leagueSelect"></select>
               </label>
-            </td>
-          </tr>
-          <tr data-slider="window.zoomFactor">
-            <td class="label">Scale factor</td>
-            <td class="slider" style="width: 150px">
-              <div slider-min="0.5" slider-max="2.5" slider-step="0.1"></div>
-            </td>
-            <td class="slider-label"><span class="slider-value">1</span>x</td>
-          </tr>
-          <tr data-slider="maxHeight">
-            <td class="label">Max. height</td>
-            <td class="slider" style="width: 150px">
-              <div slider-min="100" slider-max="999" slider-step="1"></div>
-            </td>
-            <td class="slider-label"><span class="slider-value">0</span>px</td>
-          </tr>
-          <tr>
-            <td class="label" colspan="2">Automatically minimize</td>
-            <td class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr>
-            <td class="label" colspan="2">Always focus Path of Exile</td>
-            <td class="toggle" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr>
-            <td class="info" colspan="3">By enabling this setting, the app will always focus Path of Exile again after interacting with it.</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="title">
-        <div class="left">
-          <div class="icon">
-            <i class="fas fa-money-bill grey"></i>
+            </div>
+          </div>
+          <div data-settings="auto-close" style="display: none">
+            <div class="option">
+              <div class="toggle" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Enable
+              </div>
+              <div class="description">
+                Price checks will be automatically closed after a set amount of time. Times have to be set and enabled individually in the timers section.
+              </div>
+            </div>
+            <div class="option last-option">
+              <div class="toggle" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Enable value threshold
+                <span class="slider-value"><span class="value"></span> <span class="unit">Chaos Orb</span></span>
+              </div>
+              <div class="description">Overrides auto-close when an items value is equal to or higher than the set threshold value. Items worth more than one Exalted Orb and rare items priced in Exalted Orbs will always override auto-close.</div>
+              <div class="slider" data-slider="autoclose.threshold.value">
+                <div slider-min="1" slider-max="200" slider-step="1"></div>
+              </div>
+            </div>
+            <div class="title">
+              Timers
+            </div>
+            <div class="option">
+              <div class="toggle" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Currency
+                <span class="slider-value"><span class="value"></span> <span class="unit">seconds</span></span>
+              </div>
+              <div class="slider" data-slider="autoclose.timeouts.currency.value">
+                <div slider-min="1" slider-max="99" slider-step="1"></div>
+              </div>
+            </div>
+            <div class="option">
+              <div class="toggle" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Item
+                <span class="slider-value"><span class="value"></span> <span class="unit">seconds</span></span>
+              </div>
+              <div class="slider" data-slider="autoclose.timeouts.item.value">
+                <div slider-min="1" slider-max="99" slider-step="1"></div>
+              </div>
+            </div>
+            <div class="option last-option">
+              <div class="toggle" data-toggle="autoclose.timeouts.rare.enabled"><i class="fas fa-toggle-off grey"></i></div>
+              <div class="label">
+                Rare item
+                <span class="slider-value"><span class="value"></span> <span class="unit">seconds</span></span>
+              </div>
+              <div class="slider" data-slider="autoclose.timeouts.rare.value">
+                <div slider-min="1" slider-max="99" slider-step="1"></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="middle">
-          Pricecheck
-        </div>
-        <div class="right toggle" data-toggle="pricecheck">
-          <i class="fas fa-toggle-off grey"></i>
-        </div>
       </div>
-      <table></table>
-      <div class="title">
-        <div class="left">
-          <div class="icon">
-            <i class="fas fa-clock grey"></i>
-          </div>
-        </div>
-        <div class="middle">
-          Auto-close
-        </div>
-        <div class="right toggle" data-toggle="autoclose.enabled">
-          <i class="fas fa-toggle-off grey"></i>
-        </div>
-      </div>
-      <table style="width: 100%">
-        <tbody>
-          <tr data-slider="autoclose.timeouts.currency.value">
-            <td class="label">Currency</td>
-            <td class="slider-label"><span class="slider-value">0</span>s</td>
-            <td class="slider" style="width: 85%">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr data-slider="autoclose.timeouts.item.value">
-            <td class="label">Item</td>
-            <td class="slider-label"><span class="slider-value">0</span>s</td>
-            <td class="slider">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr data-slider="autoclose.timeouts.rare.value">
-            <td class="label">Rare</td>
-            <td class="slider-label"><span class="slider-value">0</span>s</td>
-            <td class="slider">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.timeouts.rare.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr data-slider="autoclose.threshold.value">
-            <td class="label">Threshold</td>
-            <td class="slider-label"><span class="slider-value">0</span>c</td>
-            <td class="slider">
-              <div slider-min="1" slider-max="99" slider-step="1"></div>
-            </td>
-            <td class="toggle" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></td>
-          </tr>
-          <tr>
-            <td class="info" colspan="4">Use the threshold to disable auto close if the value of the item is higher than the threshold value.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  </body>
 
   <script>window.$ = window.jQuery = require('jquery');</script>
   <script type="text/javascript" src="lib/nouislider.min.js"></script>

@@ -149,16 +149,16 @@ class GUI {
   * @param {boolean} [autoMinimize=false] Whether the function is called by auto minimize or not
   */
   static hide(autoMinimize = false) {
+    var settingsWin = windowManager.get(SettingsGUI.NAME).object;
     var win = windowManager.get(GUI.NAME).object;
+
+    // If settings window is visible, override auto minimize
+    if(autoMinimize === true && settingsWin.isVisible()) {
+      return;
+    }
 
     if(win.isVisible()) {
       win.hide();
-    }
-
-    // Hide settings window too if function was called by auto minimize
-    if(autoMinimize === true) {
-      var settingsWin = windowManager.get(SettingsGUI.NAME).object;
-      settingsWin.hide();
     }
   }
 

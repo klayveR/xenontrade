@@ -24,8 +24,8 @@ class SettingsGUI {
   */
   static create() {
     var settingsWindow = windowManager.createNew(SettingsGUI.NAME, 'XenonTrade Settings', '/settings.html', false, {
-      'width': 300,
-      'height': 387,
+      'width': 800,
+      'height': 600,
       'position': 'center',
       'frame': false,
       'backgroundThrottling': false,
@@ -57,13 +57,27 @@ class SettingsGUI {
     SettingsGUI._initializeLeagues();
     SettingsGUI._initializeSliders();
     SettingsGUI._initializeVersionNumber();
+    SettingsGUI._initializeNavigation();
+  }
+
+  /**
+  * Initializes the navigation
+  */
+  static _initializeNavigation() {
+    $(".sidebar").find(".link").each(function() {
+      var settings = $(this).attr("data-settings");
+
+      $(this).click(function() {
+        SettingsGUI.switchSettings($(this));
+      })
+    });
   }
 
   /**
   * Initializes the header buttons
   */
   static _initializeButtons() {
-    $(".menu").find("[data-button='close']").click(function() {
+    $(".header").find("[data-button='close']").click(function() {
       SettingsGUI.hide();
     });
   }
@@ -72,7 +86,7 @@ class SettingsGUI {
   * Shows the version number in the settings GUI
   */
   static _initializeVersionNumber() {
-    $(".settings").find(".rightText").html("v" + version);
+    $(".sidebar").find(".version").html("v" + version);
   }
 
   /**
@@ -94,7 +108,7 @@ class SettingsGUI {
   static _initializeSlider(selector) {
     var configKey = selector.attr("data-slider");
     var sliderSelector = selector.find("div");
-    var sliderLabel = selector.find(".slider-value");
+    var sliderLabel = selector.parent().find(".slider-value").find(".value");
     var slider = sliderSelector[0];
     var step = parseFloat(sliderSelector.attr("slider-step"));
 
@@ -158,7 +172,7 @@ class SettingsGUI {
   static _initializeToggleState(selector) {
     var toggle = selector.attr("data-toggle");
     if(config.get(toggle)) {
-      $(".settings").find("[data-toggle='" + toggle + "'] > i").removeClass("fa-toggle-off grey").addClass("fa-toggle-on");
+      $(".settings").find("[data-toggle='" + toggle + "'] > i").removeClass("fa-toggle-off grey").addClass("fa-toggle-on green");
     }
   }
 
@@ -183,9 +197,24 @@ class SettingsGUI {
       SettingsGUI._initializeLeagueSelect(leagues);
     })
     .catch((error) => {
-      log.warn("Error loading leagues, " + error);
-      alert("Error loading leagues", "Please check the log file for more information.");
+      SettingsGUI._handleLeagueGetError(error);
     });
+  }
+
+  /**
+  * Called when an error occured while fetching league data from GGG API
+  */
+  static _handleLeagueGetError(error) {
+    log.warn("Error fetching leagues, " + error);
+    $("#league").find(".description").after("<div class='banner red-bg'><i class='fas fa-exclamation-circle'></i> An error occured while fetching leagues from the Path of Exile API, please check the log file for more information. The league selection has been populated with the default leagues.</div>");
+
+    var leagues = [
+      "Standard",
+      "Hardcore",
+      "Delve",
+      "Hardcore Delve"
+    ]
+    SettingsGUI._initializeLeagueSelect(leagues);
   }
 
   /**
@@ -208,8 +237,41 @@ class SettingsGUI {
       SettingsGUI.changeLeagueSetting(league);
     });
 
+    var configLeague = config.get("league");
+
+    // Add an additional option if league from config doesn't exist in league array
+    if(!leagues.includes(configLeague)) {
+      $("#leagueSelect").append($("<option>", {
+        value: configLeague,
+        text : configLeague
+      }));
+    }
+
     // Select league from config
-    $("#leagueSelect").find("option[value='" + config.get("league") + "']").attr("selected", "selected");
+    $("#leagueSelect").find("option[value='" + configLeague + "']").attr("selected", "selected");
+  }
+
+  /**
+  * Switches to another settings page
+  *
+  * @param {jQuery} linkSelector jQuery selector of the link that has been clicked
+  */
+  static switchSettings(linkSelector) {
+    // Clear all active css classes from links
+    $(".sidebar").find(".link").each(function() {
+      $(this).removeClass("active");
+    });
+
+    // Hide all settings pages
+    $(".settings").find("[data-settings]").each(function() {
+      $(this).hide();
+    });
+
+    // Add active css class to clicked link
+    linkSelector.addClass("active");
+
+    // Show corresponding settings page
+    $(".settings").find("[data-settings='" + linkSelector.attr("data-settings") + "']").show();
   }
 
   /**
@@ -245,7 +307,7 @@ class SettingsGUI {
     config.set(toggle, enabled);
 
     // Change settings icon accordingly
-    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey");
+    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey green");
   }
 
   /**

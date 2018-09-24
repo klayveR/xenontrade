@@ -7,7 +7,7 @@ const Helpers = require("./modules/helpers.js");
 const path = require("path");
 const os = require("os");
 
-let win;
+let win, tray;
 let config = Helpers.createConfig();
 let debug = false;
 
@@ -63,7 +63,7 @@ function createWindow() {
 // Create XenonTrade Tray
 function createTray() {
   let iconPath = path.join(__dirname, '../', 'build/icon_512.png');
-  let tray = new Tray(iconPath);
+  tray = new Tray(iconPath);
 
   const contextMenu = Menu.buildFromTemplate([
     {
