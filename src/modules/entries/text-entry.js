@@ -20,6 +20,7 @@ class TextEntry extends Entry {
 
     var defaultOptions = {
       icon: "fa-info-circle grey",
+      titleInfo: "",
       closeable: true,
       timeout: 0
     };
@@ -58,6 +59,7 @@ class TextEntry extends Entry {
     }
     return [
       { find: "title", replace: this.title },
+      { find: "title-info", replace: this.options.titleInfo },
       { find: "icon", replace: this.options.icon },
       { find: "text", replace: text }
     ];
@@ -83,7 +85,12 @@ class TextEntry extends Entry {
 
   setTitle(title) {
     this.title = title;
-    $(".entry[data-id='" + this.id + "']").find(".middle").html(title);
+    $(".entry[data-id='" + this.id + "']").find(".title-label").html(title);
+  }
+
+  setTitleInfo(titleInfo) {
+    this.options.titleInfo = titleInfo;
+    $(".entry[data-id='" + this.id + "']").find(".title-info").html(titleInfo);
   }
 
   setIcon(icon) {

@@ -93,19 +93,21 @@ class Pricecheck {
     if(!ninjaAPI.isUpdating()) {
       GUI.toggleMenuButtonColor("update", false);
 
-      var ninjaUpdateEntry = new TextEntry("Updating poe.ninja prices...", {closeable: false});
+      var ninjaUpdateEntry = new TextEntry("Updating price data...");
       ninjaUpdateEntry.add();
+      ninjaUpdateEntry.setCloseable(false);
+      ninjaUpdateEntry.setTitleInfo(config.get("league"));
 
       ninjaAPI.update({league: config.get("league")})
       .then((result) => {
-        ninjaUpdateEntry.setTitle("Updating poe.ninja was successful");
+        ninjaUpdateEntry.setTitle("Update successful!");
         ninjaUpdateEntry.setIcon("fa-check-circle green");
         ninjaUpdateEntry.setCloseable(true);
         ninjaUpdateEntry.enableAutoClose(10);
       })
       .catch((error) => {
         log.warn("Failed updating poe.ninja prices, " + error);
-        ninjaUpdateEntry.setTitle("Updating poe.ninja failed");
+        ninjaUpdateEntry.setTitle("Update failed!");
         ninjaUpdateEntry.setText("Please check the log file for more information.");
         ninjaUpdateEntry.setCloseable(true);
         ninjaUpdateEntry.setIcon("fa-exclamation-circle red");
