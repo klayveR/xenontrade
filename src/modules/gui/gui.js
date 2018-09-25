@@ -335,13 +335,16 @@ class GUI {
 
   /**
   * Flashes the error icon in the menu bar
+  *
+  * @param {string} icon Font awesome icon class
   */
-  static flashErrorIcon() {
+  static flashIcon(icon = "fas fa-exclamation-circle red") {
     var statusButton = $(".menu").find("[data-button='status']");
     var statusIcon = statusButton.find("i");
 
+    statusButton.stop(true, true);
     statusIcon.removeClass();
-    statusIcon.addClass("fas fa-exclamation-circle red");
+    statusIcon.addClass(icon);
     statusButton.show().delay(1000).fadeOut("slow");
   }
 
@@ -355,9 +358,10 @@ class GUI {
     updateEntry.setId("update-entry");
     updateEntry.add();
 
+    GUI.flashIcon("fas fa-box blue");
+
     $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-entry-link='download']").click(function() {
       ipcRenderer.send("download-update");
-      $(".menu").find("[data-button='download']").show();
 
       updateEntry.setTitle("Downloading <span>v" + info.version + "</span>...");
       updateEntry.setText("");
@@ -377,7 +381,7 @@ class GUI {
       updateEntry.setText("XenonTrade <span>v" + info.version + "</span> has been downloaded. It will be automatically installed after closing XenonTrade.<br /><i class='fas fa-arrow-right'></i> <span data-entry-link='install'>Install now</span>");
       updateEntry.setCloseable();
 
-      $(".menu").find("[data-button='download']").hide();
+      GUI.flashIcon("fas fa-download blue");
 
       $(".entry[data-id='" + updateEntry.getId() + "']").find("[data-entry-link='install']").click(function() {
         ipcRenderer.send("install-update");
