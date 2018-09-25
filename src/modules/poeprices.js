@@ -16,7 +16,7 @@ class PoePrices {
     return new Promise(function(resolve, reject) {
       itemText = itemText.replace(/<<.*?>>|<.*?>/g, "");
 
-      var url = "https://www.poepricess.info/api?";
+      var url = "https://www.poeprices.info/api?";
       var parameters = querystring.stringify({ i: Base64.encode(itemText), l: config.get("league"), s: "xenontrade" });
       var parsedParams = querystring.parse(parameters);
 
