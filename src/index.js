@@ -131,7 +131,7 @@ class XenonTrade {
         GUI.setPlayerJoinedStatus(player.name, false);
       });
 
-      /*var m = {
+      var m = {
         direction: "To",
         message: 'Hi, I would like to buy your Widowmaker Boot Blade listed for 12 alteration in Standard (stash tab "Sale I"; position: left 1, top 1)',
         player: {name: "Klayverooo"}
@@ -163,7 +163,7 @@ class XenonTrade {
 
       setTimeout(function() {
         GUI.setPlayerJoinedStatus("TestCharacter", true);
-      }, 2000);*/
+      }, 2000);
     } else {
       log.debug("Logfile at " + logfile + " doesn't exist");
     }

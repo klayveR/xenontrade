@@ -115,7 +115,7 @@ class PathOfExile {
     var intervalCount = 0;
     var interval = setInterval(function() {
       // Send chat message if PoE is focused
-      if(app.poeFocused) {
+      if(app.poeFocused && clipboard.readText() === message) {
         clearInterval(interval);
         robot.setKeyboardDelay(0);
         robot.keyToggle("enter", "down");
@@ -131,7 +131,7 @@ class PathOfExile {
         }
 
         // Restore clipboard content
-        setTimeout(function() {
+        var timeout = setTimeout(function() {
           clipboard.writeText(previousClipboard);
         }, 100);
       }
