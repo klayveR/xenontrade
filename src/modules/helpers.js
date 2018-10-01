@@ -180,12 +180,6 @@ class Helpers {
       location = path.join(os.homedir(), "/AppData/Roaming/XenonTrade/", file);
     }
 
-    // Create file if it doesn't exist
-    fs.writeFile(location, "", { flag: 'wx' })
-    .catch((error) => {
-      log.debug("File " + location + " already exists", error);
-    });
-
     shell.openItem(location);
   }
 }
