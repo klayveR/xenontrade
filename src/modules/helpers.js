@@ -180,6 +180,11 @@ class Helpers {
       logfile = path.join(os.homedir(), "/AppData/Roaming/XenonTrade/log.log");
     }
 
+    fs.writeFile(logfile, "", { flag: 'wx' })
+    .catch((error) => {
+      log.error("Failed to open logfile", error);
+    });
+
     shell.openItem(logfile);
   }
 }

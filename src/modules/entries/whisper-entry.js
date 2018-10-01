@@ -40,7 +40,7 @@ class WhisperEntry extends Entry {
     var replacements = [
       { find: "player-name", replace: message.player.name },
       { find: "league", replace: tradeInfo.league },
-      { find: "trade", replace: tradeInfo.fullTrade },
+      { find: "trade", replace: tradeInfo.trade },
       { find: "pay-amount", replace: tradeInfo.pay.amount },
       { find: "pay-name", replace: tradeInfo.pay.name },
       { find: "pay-icon", replace: Icons.findIconByName(tradeInfo.pay.name) },
@@ -122,7 +122,7 @@ class WhisperEntry extends Entry {
       }
 
       // Replace placeholders in message
-      var text = "@%player-name% " + buttons[button];
+      let text = "@%player-name% " + buttons[button];
       text = Entry.getReplacedString(text, this.replacements);
 
       // Add button
