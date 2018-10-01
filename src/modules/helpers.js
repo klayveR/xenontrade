@@ -171,21 +171,19 @@ class Helpers {
   /**
   * Opens the logfile folder and selects the log file
   */
-  static openLogFile() {
-    var logfile = "";
+  static openFile(file) {
+    var path = "";
 
     if(os.platform() === "linux") {
-      logfile = path.join(os.homedir(), "/.config/XenonTrade/log.log");
+      path = path.join(os.homedir(), "/.config/XenonTrade/" + file);
     } else {
-      logfile = path.join(os.homedir(), "/AppData/Roaming/XenonTrade/log.log");
+      path = path.join(os.homedir(), "/AppData/Roaming/XenonTrade/" + file);
     }
 
-    fs.writeFile(logfile, "", { flag: 'wx' })
-    .catch((error) => {
-      log.error("Failed to open logfile", error);
-    });
+    // Create file if it doesn't exist
+    fs.writeFile(path, "", { flag: 'wx' });
 
-    shell.openItem(logfile);
+    shell.openItem(path);
   }
 }
 

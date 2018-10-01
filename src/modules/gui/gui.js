@@ -96,7 +96,7 @@ class GUI {
     });
 
     $(".menu").find("[data-button='logfile']").click(function() {
-      Helpers.openLogFile();
+      Helpers.openFile("config.json");
     });
 
     $(".menu").find("[data-button='settings']").click(function() {

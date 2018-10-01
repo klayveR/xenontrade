@@ -106,7 +106,7 @@ class TextEntry extends Entry {
       var link = this.getJQueryObject().find("[data-entry-link='openlog']");
 
       link.click(function() {
-        Helpers.openLogFile();
+        Helpers.openFile("log.log");
       });
     }
   }
