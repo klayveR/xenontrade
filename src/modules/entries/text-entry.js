@@ -4,6 +4,7 @@ const _ = require("underscore");
 class TextEntry extends Entry {
   /**
   * Creates a new TextEntry object
+  * // TODO: JSDocs
   *
   * @constructor
   */
@@ -66,7 +67,7 @@ class TextEntry extends Entry {
   }
 
   _collapseIfEmptyText() {
-    var selector = $(".entry[data-id='" + this.id + "']").find(".text");
+    var selector = this.getJQueryObject().find(".text");
 
     if(typeof this.text === "undefined" || this.text === "") {
       selector.addClass("empty");
@@ -77,7 +78,7 @@ class TextEntry extends Entry {
 
   setText(text) {
     this.text = text;
-    $(".entry[data-id='" + this.id + "']").find(".text").html(text);
+    this.getJQueryObject().find(".text").html(text);
 
     this._collapseIfEmptyText();
     GUI.updateWindowHeight();
@@ -85,24 +86,24 @@ class TextEntry extends Entry {
 
   setTitle(title) {
     this.title = title;
-    $(".entry[data-id='" + this.id + "']").find(".title-label").html(title);
+    this.getJQueryObject().find(".title-label").html(title);
   }
 
   setTitleInfo(titleInfo) {
     this.options.titleInfo = titleInfo;
-    $(".entry[data-id='" + this.id + "']").find(".title-info").html(titleInfo);
+    this.getJQueryObject().find(".title-info").html(titleInfo);
   }
 
   setIcon(icon) {
-    var selector = $(".entry[data-id='" + this.id + "']").find(".icon").find("i");
+    var selector = this.getJQueryObject().find(".icon").find("i");
     selector.removeClass();
     selector.addClass("fas " + icon);
   }
 
   addLogfileButton() {
     if(this.added) {
-      $(".entry[data-id='" + this.id + "']").find(".text").append("<br /><i class='fas fa-arrow-right'></i> <span data-entry-link='openlog'>Check log file</span>");
-      var link = $(".entry[data-id='" + this.id + "']").find("[data-entry-link='openlog']");
+      this.getJQueryObject().find(".text").append("<br /><i class='fas fa-arrow-right'></i> <span data-entry-link='openlog'>Check log file</span>");
+      var link = this.getJQueryObject().find("[data-entry-link='openlog']");
 
       link.click(function() {
         Helpers.openLogFile();

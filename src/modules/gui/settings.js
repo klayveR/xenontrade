@@ -6,6 +6,7 @@ const { version } = require('../../../package.json');
 
 const log = require('electron-log');
 const Config = require("electron-store");
+const PathOfExile = require("../poe.js");
 const Helpers = require("../helpers.js");
 const GUI = require("./gui.js");
 
@@ -192,7 +193,7 @@ class SettingsGUI {
   * Loads leagues, adds them to the settings menu if successful, error entry if not
   */
   static _initializeLeagues() {
-    Helpers.getPathOfExileLeagues()
+    PathOfExile.getLeagues()
     .then((leagues) => {
       SettingsGUI._initializeLeagueSelect(leagues);
     })

@@ -1,0 +1,80 @@
+{
+  "defaults": {
+    "league": "Delve",
+    "focusPathOfExile": false,
+    "autoMinimize": false,
+    "hideMenu": false,
+    "pricecheck": true,
+    "maxHeight": 500,
+    "whisperhelper": {
+      "logfile": "",
+      "enabled": true,
+      "buttons": {
+        "in": {
+          "Thanks": "Thank you!",
+          "Sold": "Sorry, %item% has already been sold.",
+          "Wait": "Give me a second",
+          "Interested": "Are you still interested in %trade%?"
+        },
+        "out": {
+          "Thanks": "Thank you!"
+        }
+      }
+    },
+    "autoclose": {
+      "enabled": true,
+      "threshold": {
+        "enabled": false,
+        "value": 20
+      },
+      "timeouts": {
+        "currency": {
+          "enabled": false,
+          "value": 10
+        },
+        "item": {
+          "enabled": false,
+          "value": 10
+        },
+        "rare": {
+          "enabled": false,
+          "value": 20
+        }
+      }
+    },
+    "window": {
+      "x": 0,
+      "y": 0,
+      "locked": false,
+      "poll": 1000,
+      "zoomFactor": 1
+    }
+  },
+  "changes": {
+    "0.1.2": {
+      "add": [
+        "window.poll"
+      ]
+    },
+    "0.2.0": {
+      "add": [
+        "autoclose.timeouts.rare"
+      ]
+    },
+    "0.3.4": {
+      "add": [
+        "window.zoomFactor"
+      ]
+    },
+    "0.4.0": {
+      "add": [
+        "hideMenu"
+      ]
+    },
+    "0.4.1": {
+      "add": [
+        "whisperhelper"
+      ]
+    }
+  }
+}

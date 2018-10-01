@@ -47,7 +47,7 @@ class Entry {
     if(this.added) {
       var self = this;
 
-      $(".entry[data-id='" + this.id + "']").find("[data-link]").each(function() {
+      this.getJQueryObject().find("[data-link]").each(function() {
         var link = $(this).attr("data-link");
         $(this).show();
 
@@ -64,14 +64,15 @@ class Entry {
   * @param {number} seconds Initial countdown value
   */
   enableAutoClose(seconds) {
-    if(this.added) {
+    if(this.added && this.timeout == null) {
       var self = this;
-      var timeoutContainer = $(".entry[data-id='" + this.id + "']").find(".timeout");
+      var timeoutContainer = this.getJQueryObject().find(".timeout");
 
       if(seconds > 0) {
         this._enableCancelAutoCloseButton();
         timeoutContainer.html(seconds);
         timeoutContainer.show();
+        this.updateMiddleWidth();
 
         this.timeout = setInterval(function() {
           seconds--;
@@ -87,12 +88,32 @@ class Entry {
   }
 
   /**
+  * Enables a timer that counts up
+  */
+  enableTimer() {
+    if(this.added && this.timeout == null) {
+      var self = this;
+      var time = moment();
+      var timeoutContainer = this.getJQueryObject().find(".timer");
+
+      timeoutContainer.html(time.fromNow());
+      timeoutContainer.show();
+      this.updateMiddleWidth();
+
+      this.timeout = setInterval(function() {
+        timeoutContainer.html(time.fromNow());
+        self.updateMiddleWidth();
+      }, 1000);
+    }
+  }
+
+  /**
   * Enables button that autocloses entry
   */
   _enableCancelAutoCloseButton() {
     if(this.added) {
       var self = this;
-      var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
+      var button = this.getJQueryObject().find(".timeout");
 
       button.click(function() {
         self.cancelAutoClose();
@@ -104,7 +125,7 @@ class Entry {
   * Stops auto close timeout
   */
   cancelAutoClose() {
-    var button = $(".entry[data-id='" + this.id + "']").find(".timeout");
+    var button = this.getJQueryObject().find(".timeout");
 
     if(this.timeout != null) {
       button.hide();
@@ -120,7 +141,7 @@ class Entry {
   setCloseable(closeable = true) {
     if(this.added) {
       var self = this;
-      var button = $(".entry[data-id='" + this.id + "']").find("[data-button='close']");
+      var button = this.getJQueryObject().find("[data-button='close']");
 
       if(closeable) {
         this.closeable = true;
@@ -135,6 +156,8 @@ class Entry {
 
         button.unbind();
       }
+
+      this.updateMiddleWidth();
     }
   }
 
@@ -144,7 +167,7 @@ class Entry {
   close() {
     if(this.added) {
       this.added = false;
-      $(".entry[data-id='" + this.id + "']").remove();
+      this.getJQueryObject().remove();
 
       // Remove entry from global entries variable
       entries = _.omit(entries, this.id);
@@ -160,7 +183,7 @@ class Entry {
   add() {
     if(!this.added) {
       this.added = true;
-      var template = this._getReplacedTemplate(this.template, this.replacements, "%");
+      var template = Entry.getReplacedString(this.template, this.replacements, "%");
 
       // If no entries available, set whole content of div, otherwise append
       if(!GUI.hasEntries()) {
@@ -168,6 +191,8 @@ class Entry {
       } else {
         $(".entries > .entry:last").after(template);
       }
+
+      this.updateMiddleWidth();
 
       // Add entry to global entries variable
       entries[this.id] = this;
@@ -179,14 +204,39 @@ class Entry {
   }
 
   /**
-  * Replaces replacements in template and returns it
+  * Updates the width of the middle element to properly apply ellipsis if text is too long
+  */
+  updateMiddleWidth() {
+    if(this.added) {
+      var title = this.getJQueryObject().find(".title");
+      var middle = title.find(".middle");
+      var middlePadding = middle.outerWidth(true) - middle.width();
+      var middleWidth = title.width() - middlePadding;
+
+      // Wait 50ms to make sure every document change has been applied
+      // Should probably be done in a more elegant way
+      setTimeout(function() {
+        title.children('div').each(function () {
+          if(!$(this).hasClass("middle")) {
+            middleWidth -= $(this).outerWidth(true);
+          }
+        }).promise()
+        .done( function() {
+          middle.css("max-width", middleWidth);
+        });
+      }, 50);
+    }
+  }
+
+  /**
+  * Replaces replacements in string and returns it
   *
-  * @param {string} template `.html` format template
+  * @param {string} string String
   * @param {Array} replacements An array of objects containing the properties find and replace
   * @param {string} [delimiter] Boundary delimiter for the find property
   * @return {Object}
   */
-  _getReplacedTemplate(template, replacements, delimiter = "%") {
+  static getReplacedString(string, replacements, delimiter = "%") {
     for(var i = 0; i < replacements.length; i++) {
       if(replacements[i].hasOwnProperty("replace") && replacements[i].hasOwnProperty("find")) {
         // Format if value is float
@@ -194,13 +244,13 @@ class Entry {
           replacements[i].replace = +parseFloat(replacements[i].replace).toFixed(2);
         }
 
-        if(typeof template !== "undefined") {
-          template = template.replace(new RegExp(delimiter + replacements[i].find + delimiter, "g"), replacements[i].replace);
+        if(typeof string !== "undefined") {
+          string = string.replace(new RegExp(delimiter + replacements[i].find + delimiter, "g"), replacements[i].replace);
         }
       }
     }
 
-    return template;
+    return string;
   }
 
   /**
@@ -221,10 +271,19 @@ class Entry {
       entries = _.omit(entries, this.id);
       entries[id] = this;
 
-      $(".entry[data-id='" + this.id + "']").attr("data-id", id);
+      this.getJQueryObject().attr("data-id", id);
     }
 
     this.id = id;
+  }
+
+  /**
+  * Returns the jQuery selector of this entry
+  *
+  * @return {jQuery}
+  */
+  getJQueryObject() {
+    return $(".entry[data-id='" + this.id + "']");
   }
 
   /**

@@ -1,0 +1,70 @@
+<div class="entry" data-id="%entry-id%">
+  <div class="title">
+    <div class="left"></div>
+    <div data-player-name="%player-name%" class="middle grey">
+      %player-name%
+    </div>
+    <div class="trade">
+      <i class="fas fa-arrow-right"></i>
+      <span class="value">%pay-amount%</span>
+      <img class="icon left-margin" src="%pay-icon%">
+    </div>
+    <div class="right">
+      <div class="timer grey">0</div>
+      <div class="button" data-button="trade" data-command="/tradewith %player-name%" style="display: none">
+        <i class="fas fa-exchange-alt grey"></i>
+      </div>
+      <div class="button" data-button="hideout" data-command="/hideout %player-name%" style="display: none">
+        <i class="fas fa-home green"></i>
+      </div>
+      <div class="button" data-button="invite" data-command="/invite %player-name%" style="display: none">
+        <i class="fas fa-plus-square green"></i>
+      </div>
+      <div class="button" data-button="kick" data-command="/kick %player-name%" style="display: none">
+        <i class="fas fa-minus-square red"></i>
+      </div>
+      <div class="button" data-button="leave" data-command="/kick %user-name%" style="display: none">
+        <i class="fas fa-minus-square red"></i>
+      </div>
+      <div class="button" data-button="close" style="display: none">
+        <i class="fas fa-window-close grey"></i>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="trade" style="/*--icon-url: url('%receive-icon%')*/">
+      <div class="item">%receive-amount% %receive-name% <img class="icon left-margin" src="%receive-icon%"></div>
+      <table class="explanation-table" style="margin: 0px; padding: 0px;display:none">
+        <tbody>
+          <tr table-league style="display: none">
+            <td class='percentage grey'>
+              League
+            </td>
+            <td class='mod'>
+              %league%
+            </td>
+          </tr>
+          <tr table-stash style="display: none">
+            <td class='percentage grey'>
+              Stash
+            </td>
+            <td class='mod'>
+              %stash% (Top: %stash-top%, Left: %stash-left%)
+            </td>
+          </tr>
+          <tr table-ratio style="display: none">
+            <td class='percentage grey'>
+              Ratio
+            </td>
+            <td class='mod'>
+              %ratio%
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="feedback">
+      <div class="row chat-buttons" style="height:20px;"></div>
+    </div>
+  </div>
+</div>

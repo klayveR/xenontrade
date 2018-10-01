@@ -20,6 +20,7 @@ class PriceCheckEntry extends Entry {
   setCloseable(closeable) { super.setCloseable(closeable); }
   close() { super.close(); }
   getId() { return super.getId(); }
+  getJQueryObject() { return super.getJQueryObject(); }
   add() { super.add(); }
   enableExternalLinks() { super.enableExternalLinks(); }
   isCloseable() { return super.isCloseable(); }
@@ -29,10 +30,11 @@ class PriceCheckEntry extends Entry {
   */
   enableToggle(toggle) {
     var self = this;
-    var button = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']");
+    var button = this.getJQueryObject().find("[data-button='" + toggle + "']");
     button.show();
 
-    $(".entry[data-id='" + this.id + "']").find(".left").show();
+    this.getJQueryObject().find(".left").show();
+    super.updateMiddleWidth();
 
     button.click(function() {
       self._toggle(toggle);
@@ -43,10 +45,10 @@ class PriceCheckEntry extends Entry {
   * Toggles a toggle on this entry
   */
   _toggle(toggle) {
-    var icon = $(".entry[data-id='" + this.id + "']").find("[data-button='" + toggle + "']").find("i");
+    var icon = this.getJQueryObject().find("[data-button='" + toggle + "']").find("i");
     icon.toggleClass("grey");
 
-    $(".entry[data-id='" + this.id + "']").find("[data-" + toggle + "]").toggle();
+    this.getJQueryObject().find("[data-" + toggle + "]").toggle();
     GUI.updateWindowHeight();
   }
 
@@ -54,7 +56,7 @@ class PriceCheckEntry extends Entry {
   * Visualizes every trend on this entry
   */
   visualizeTrend() {
-    var trend = $(".entry[data-id='" + this.id + "']").find(".trend");
+    var trend = this.getJQueryObject().find(".trend");
 
     trend.peity("line");
     GUI.updateWindowHeight();

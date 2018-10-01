@@ -1,12 +1,12 @@
 const PriceCheckEntry = require("./pricecheck-entry.js");
-const CurrencyIcons = require("../../resource/icons/currencyIcons");
-const BaseTypeIcons = require("../../resource/icons/baseTypeIcons");
+const Icons = require("../gui/icons.js");
 const querystring = require("querystring");
 const https = require("https");
 
 class RareItemEntry extends PriceCheckEntry {
   /**
   * Creates a new RareItemEntry object
+  * // TODO: JSDocs
   *
   * @constructor
   * @param {Object} poePrices poeprices.info result, including item text in base 64
@@ -55,10 +55,11 @@ class RareItemEntry extends PriceCheckEntry {
       currencyName = "Exalted Orb";
     }
 
-    currencyIcon = CurrencyIcons[currencyName];
+    currencyIcon = Icons.getIconByName(currencyName);
 
     var replacements = [
       { find: "item-name", replace: this.parser.getName() },
+      { find: "item-icon", replace: Icons.getIconByName(baseType) },
       { find: "item-baseType", replace: baseType },
       { find: "item-value-min", replace: this.poePrices.price.min },
       { find: "item-value-max", replace: this.poePrices.price.max },
@@ -66,10 +67,6 @@ class RareItemEntry extends PriceCheckEntry {
       { find: "currency-icon", replace: currencyIcon },
       { find: "link", replace: url}
     ];
-
-    if(BaseTypeIcons.hasOwnProperty(baseType)) {
-      replacements.push({ find: "item-icon", replace: BaseTypeIcons[baseType] });
-    }
 
     return replacements;
   }
@@ -79,7 +76,7 @@ class RareItemEntry extends PriceCheckEntry {
       var mod = this.poePrices.price.pred_explanation[modIndex];
       var percentage = (mod[1] * 100).toFixed(2);
 
-      $(".entry[data-id='" + this.id + "']").find("tbody:last-child").append(
+      this.getJQueryObject().find("tbody:last-child").append(
         "<tr><td class='percentage grey'>" + percentage + "%</td><td class='mod'>" + mod[0] + "</td></tr>"
       );
     }
@@ -87,19 +84,19 @@ class RareItemEntry extends PriceCheckEntry {
 
   _enableFeedbackElements() {
     var self = this;
-    var textarea = $(".entry[data-id='" + this.id + "']").find("[data-comment]").find("textarea");
+    var textarea = this.getJQueryObject().find("[data-comment]").find("textarea");
 
     textarea.focusout(function() {
       GUI.onFocus();
     });
 
     // Send feedback button
-    $(".entry[data-id='" + this.id + "']").find("[data-feedback-send]").click(function() {
+    this.getJQueryObject().find("[data-feedback-send]").click(function() {
       self._sendFeedback();
     });
 
     // Feedback buttons (fair, high, low)
-    $(".entry[data-id='" + this.id + "']").find("[data-feedback]").each(function() {
+    this.getJQueryObject().find("[data-feedback]").each(function() {
       $(this).click(function() {
         self._feedbackButtonClick($(this));
       });
@@ -107,7 +104,7 @@ class RareItemEntry extends PriceCheckEntry {
   }
 
   _removeFeedbackButtons() {
-    $(".entry[data-id='" + this.id + "']").find("[data-feedback]").each(function() {
+    this.getJQueryObject().find("[data-feedback]").each(function() {
       $(this).remove();
     });
   }
@@ -121,7 +118,7 @@ class RareItemEntry extends PriceCheckEntry {
     }
 
     if(feedback !== this.selectedFeedback) {
-      $(".entry[data-id='" + this.id + "']").find("[data-feedback]").each(function() {
+      this.getJQueryObject().find("[data-feedback]").each(function() {
         $(this).removeClass("active");
       });
 
@@ -136,7 +133,7 @@ class RareItemEntry extends PriceCheckEntry {
   }
 
   _toggleCommentBox(toggle) {
-    var selector = $(".entry[data-id='" + this.id + "']").find("[data-comment]");
+    var selector = this.getJQueryObject().find("[data-comment]");
     selector.toggle(toggle);
 
     GUI.updateWindowHeight();
@@ -144,7 +141,7 @@ class RareItemEntry extends PriceCheckEntry {
 
   _sendFeedback() {
     if(["fair", "low", "high"].includes(this.selectedFeedback)) {
-      var text = $(".entry[data-id='" + this.id + "']").find("[data-comment]").find("textarea").val();
+      var text = this.getJQueryObject().find("[data-comment]").find("textarea").val();
       this._toggleCommentBox(false);
       this._removeFeedbackButtons();
 
@@ -170,7 +167,7 @@ class RareItemEntry extends PriceCheckEntry {
         }
       };
 
-      var infoText = $(".entry[data-id='" + this.id + "']").find("[data-feedback-info]");
+      var infoText = this.getJQueryObject().find("[data-feedback-info]");
       infoText.html("Sending feedback...");
 
       var req = https.request(options, (res) => {

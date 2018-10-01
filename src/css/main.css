@@ -62,7 +62,7 @@ i {
 }
 
 .entries::-webkit-scrollbar-track {
-  background: #272f3d;
+  background: #2c3544;
 }
 
 .entries::-webkit-scrollbar-thumb {
@@ -74,8 +74,9 @@ i {
 }
 
 .title {
+  min-height: 14px;
   width: 100%;
-  background-color: #272f3d;
+  background-color: #2c3544;
   font-size: 12px;
   padding: 2px 0px 2px 0px;
 }
@@ -88,8 +89,6 @@ i {
 
 .title .middle {
   font-family: "Roboto", sans-serif;
-  width: 210px;
-  display: inline-block;
   vertical-align: middle;
   text-align: left !important;
   font-weight: 700;
@@ -97,9 +96,28 @@ i {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  float: left;
+}
+
+.title .trade {
+  float: left;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  margin: 0px 5px;
+}
+
+.title .trade i {
+  margin: 0px 5px;
+}
+
+.title .trade img.icon {
+  height: 15px;
+  width: auto;
+  vertical-align: middle;
 }
 
 .title .right {
+  width: auto;
   text-align: right !important;
   padding: 0px 3px 0px 3px;
   float: right;
@@ -122,11 +140,19 @@ i {
   text-align: left !important;
   background-color: #748199;
   font-size: 10px;
-  color: #272f3d;
+  color: #2c3544;
   font-weight: 700;
   padding: 0px 2px;
   user-select: none;
   cursor: pointer;
+}
+
+.title .timer {
+  font-family: "Roboto", sans-serif;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0px 2px;
 }
 
 .entry .content {
@@ -205,6 +231,30 @@ i {
   padding: 2px 5px;
 }
 
+.entry .content .trade {
+  padding: 5px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  background-color: #202630;
+  position: relative;
+}
+
+.entry .content .trade::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.2;
+    background: var(--icon-url);
+    background-position: right center;
+    background-size: 40px auto;
+    background-repeat: no-repeat;
+}
+
 .entry .explanation {
   text-align: center;
 }
@@ -245,14 +295,17 @@ i {
 }
 
 .entry .feedback .info {
-  background-color: #272f3d;
+  background-color: #2c3544;
   color: #748199;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .entry .feedback .textarea {
   padding: 4px 5px 2px 5px;
-  background-color: #272f3d;
+  background-color: #2c3544;
 }
 
 .entry .feedback textarea {
@@ -270,15 +323,23 @@ i {
 }
 
 .entry .feedback .option {
-  width: 30px;
-  background-color: #323c4e;
+  background-color: #272f3d;
+  border-top: 1px solid #202630;
   border-left: 1px solid #202630;
   text-align: center;
   cursor: pointer;
 }
 
+.entry .feedback .no-border-left {
+  border-left: 0px;
+}
+
+.entry .feedback .option i {
+  cursor: pointer;
+}
+
 .entry .feedback .option:hover, .entry .feedback .active {
-  background-color: #46546d !important;
+  background-color: #353f51 !important;
 }
 
 .settings {

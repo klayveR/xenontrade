@@ -8,18 +8,23 @@ const windowManager = remote.require('electron-window-manager');
 const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 const os = require("os");
+const fs = require("promise-fs");
 const log = require('electron-log');
 
 const Config = require("electron-store");
 const Helpers = require("./modules/helpers.js");
+const PathOfExileLog = require("poe-log-monitor");
 const NinjaAPI = require("poe-ninja-api-manager");
 const Templates = require("./modules/templates.js");
+const Whisper = require("./modules/whisper.js");
 const Pricecheck = require("./modules/pricecheck.js");
 const AutoMinimize = require("./modules/auto-minimize.js");
 const TextEntry = require("./modules/entries/text-entry.js");
+const WhisperEntry = require("./modules/entries/whisper-entry.js");
 
 const GUI = require("./modules/gui/gui.js");
 
+global.poeLog = null;
 global.config = Helpers.createConfig();
 global.templates = new Templates();
 global.ninjaAPI = new NinjaAPI();
@@ -50,17 +55,16 @@ class XenonTrade {
       this.initializeAutoMinimize();
       this.initializeHotkeys();
       this.initializeIpcListeners();
+      this.initializePoeLogMonitor();
 
       // Check dependencies and update poe.ninja
       this.checkDependencies();
-      Pricecheck.updateNinja();
+      //Pricecheck.updateNinja();
       return;
     })
     .catch((error) => {
-      var errorMsg = "Error initializing app\n" + JSON.stringify(error, null, 4);
-
-      log.error(errorMsg);
-      alert(errorMsg);
+      log.error(error);
+      alert("Error initializing app. Please check the log file for more information.");
       windowManager.closeAll();
       return;
     });
@@ -96,6 +100,73 @@ class XenonTrade {
     .then(() => {
       self.autoMinimize.start();
     });
+  }
+
+  /**
+  * Initializes listeners for Path of Exile log file
+  */
+  initializePoeLogMonitor() {
+    var logfile = config.get("whisperhelper.logfile");
+
+    if (fs.existsSync(logfile)) {
+      log.debug("Logfile at " + logfile + " exists");
+      poeLog = new PathOfExileLog({
+        logfile: config.get("whisperhelper.logfile")
+      });
+
+      poeLog.on("whisper", (message) => {
+        var whisper = new Whisper(message);
+
+        if(config.get("whisperhelper.enabled") && whisper.isTradeMessage()) {
+          var entry = new WhisperEntry(whisper);
+          entry.add();
+        }
+      });
+
+      poeLog.on("areaJoin", (player) => {
+        GUI.setPlayerJoinedStatus(player.name, true);
+      });
+
+      poeLog.on("areaLeave", (player) => {
+        GUI.setPlayerJoinedStatus(player.name, false);
+      });
+
+      /*var m = {
+        direction: "To",
+        message: 'Hi, I would like to buy your Widowmaker Boot Blade listed for 12 alteration in Standard (stash tab "Sale I"; position: left 1, top 1)',
+        player: {name: "Klayverooo"}
+      }
+
+      var w = new Whisper(m);
+      var e = new WhisperEntry(w);
+      e.add();
+
+      m = {
+        direction: "From",
+        message: 'Hi, I would like to buy your Shavronne\'s Wrappings Occultist\'s Vestment listed for 14213 chaos in Standard (stash tab "Sale I"; position: left 1, top 1)',
+        player: {name: "Klayverooo"}
+      }
+
+      w = new Whisper(m);
+      e = new WhisperEntry(w);
+      e.add();
+
+      m = {
+        direction: "From",
+        message: '"Hi, I\'d like to buy your 10 chaos for my 17 fusing in Standard.',
+        player: {name: "Klayverooo"}
+      }
+
+      w = new Whisper(m);
+      e = new WhisperEntry(w);
+      e.add();
+
+      setTimeout(function() {
+        GUI.setPlayerJoinedStatus("TestCharacter", true);
+      }, 2000);*/
+    } else {
+      log.debug("Logfile at " + logfile + " doesn't exist");
+    }
   }
 
   /**

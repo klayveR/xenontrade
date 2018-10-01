@@ -1,0 +1,157 @@
+{
+  "Scroll of Wisdom": [
+    "wisdom"
+  ],
+  "Portal Scroll": [
+    "portal"
+  ],
+  "Orb of Augmentation": [
+    "augmentation"
+  ],
+  "Orb of Transmutation": [
+    "transmutation",
+    "transmute",
+    "trans"
+  ],
+  "Armourer's Scrap": [
+    "armourer's"
+  ],
+  "Blacksmith's Whetstone": [
+    "whetstone"
+  ],
+  "Glassblower's Bauble": [
+    "bauble"
+  ],
+  "Orb of Alteration": [
+    "alt",
+    "alteration"
+  ],
+  "Jeweller's Orb": [
+    "jewel",
+    "jeweller",
+    "jew"
+  ],
+  "Orb of Chance": [
+    "chance"
+  ],
+  "Cartographer's Chisel": [
+    "chis",
+    "chisel",
+    "cartographer"
+  ],
+  "Orb of Fusing": [
+    "fus",
+    "fuse",
+    "fusing"
+  ],
+  "Orb of Alchemy": [
+    "alc",
+    "alch",
+    "alchemy"
+  ],
+  "Orb of Scouring": [
+    "scour",
+    "scouring"
+  ],
+  "Blessed Orb": [
+    "blessed"
+  ],
+  "Chaos Orb": [
+    "chaos"
+  ],
+  "Orb of Regret": [
+    "regret"
+  ],
+  "Regal Orb": [
+    "regal"
+  ],
+  "Gemcutter's Prism": [
+    "gcp",
+    "gemcutter"
+  ],
+  "Divine Orb": [
+    "divine"
+  ],
+  "Exalted Orb": [
+    "ex",
+    "exa",
+    "exalt",
+    "exalted"
+  ],
+  "Eternal Orb": [
+    "eternal"
+  ],
+  "Mirror of Kalandra": [
+    "mirror"
+  ],
+  "Perandus Coin": [
+    "perandus",
+    "coin"
+  ],
+  "Silver Coin": [
+    "silver"
+  ],
+  "Vaal Orb": [
+    "vaal"
+  ],
+  "Offering to the Goddess": [
+    "offering"
+  ],
+  "Master Cartographer's Sextant": [
+    "master sextant"
+  ],
+  "Journeyman Cartographer's Sextant": [
+    "journeyman sextant"
+  ],
+  "Apprentice Cartographer's Sextant": [
+    "apprentice sextant"
+  ],
+  "Fragment of the Chimera": [
+    "chimera"
+  ],
+  "Fragment of the Minotaur": [
+    "minotaur"
+  ],
+  "Fragment of the Hydra": [
+    "hydra"
+  ],
+  "Fragment of the Phoenix": [
+    "phoenix"
+  ],
+  "Mortal Ignorance": [
+    "ignorance"
+  ],
+  "Mortal Rage": [
+    "rage"
+  ],
+  "Mortal Hope": [
+    "hope"
+  ],
+  "Mortal Grief": [
+    "grief"
+  ],
+  "Sacrifice at Midnight": [
+    "midnight"
+  ],
+  "Sacrifice at Noon": [
+    "noon"
+  ],
+  "Sacrifice at Dusk": [
+    "dusk"
+  ],
+  "Sacrifice at Dawn": [
+    "dawn"
+  ],
+  "Eber's Key": [
+    "eber's"
+  ],
+  "Yriel's Key": [
+    "yriel's"
+  ],
+  "Volkuur's Key": [
+    "volkuur's"
+  ],
+  "Inya's Key": [
+    "inya's"
+  ]
+}

@@ -1,9 +1,10 @@
 const PriceCheckEntry = require("./pricecheck-entry.js");
-const CurrencyIcons = require("../../resource/icons/currencyIcons");
+const Icons = require("../gui/icons.js");
 
 class ItemEntry extends PriceCheckEntry {
   /**
   * Creates a new ItemEntry object
+  * // TODO: JSDocs
   *
   * @constructor
   */
@@ -66,8 +67,8 @@ class ItemEntry extends PriceCheckEntry {
       { find: "item-icon", replace: this.item.icon },
       { find: "item-value-chaos", replace: this.item.chaosValue },
       { find: "item-value-exalted", replace: this.item.exaltedValue },
-      { find: "chaos-icon", replace: CurrencyIcons["Chaos Orb"] },
-      { find: "exalted-icon", replace: CurrencyIcons["Exalted Orb"] },
+      { find: "chaos-icon", replace: Icons.getIconByName("Chaos Orb") },
+      { find: "exalted-icon", replace: Icons.getIconByName("Exalted Orb") },
       { find: "conf-color", replace: confidence },
       { find: "trend", replace: trend }
     ];

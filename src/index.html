@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +16,7 @@
           <div class="button" data-button="settings"><i class="fas fa-cog grey"></i></div>
           <div class="button" data-button="update"><i class="fas fa-sync-alt grey"></i></div>
           <div class="button" data-button="close-all"><i class="fas fa-times-circle grey"></i></div>
+          <div class="button" data-button="logfile"><i class="fas fa-file-signature grey"></i></div>
           <div class="button" data-button="status" style="display: none"><i class="fas fa-exclamation-circle red"></i></div>
         </div>
         <div class="middle"></div>
@@ -32,6 +32,7 @@
 
   <script>window.$ = window.jQuery = require('jquery');</script>
   <script type="text/javascript" src="lib/jquery.peity.min.js"></script>
+  <script type="text/javascript" src="lib/moment.min.js"></script>
   <script type="text/javascript">
   $.fn.peity.defaults.line = {
     delimiter: ",",
@@ -43,6 +44,25 @@
     strokeWidth: 1,
     width: 35
   }
+
+  moment.updateLocale('en', {
+    relativeTime : {
+      future: "in %s",
+      past:   "%s",
+      s  : '%ds',
+      ss : '%ds',
+      m:  "1m",
+      mm: "%dm",
+      h:  "1h",
+      hh: "%dh",
+      d:  "1d",
+      dd: "%dd",
+      M:  "1m",
+      MM: "%dm",
+      y:  "1y",
+      yy: "%dy"
+    }
+  });
   </script>
 
   <script type="text/javascript" src="index.js"></script>

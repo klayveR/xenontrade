@@ -1,10 +1,13 @@
+const DefaultConfig = require("../resource/defaultConfig");
 const Config = require("electron-store");
+const dotProp = require('dot-prop');
 const cp = require("child-process-es6-promise");
 const os = require("os");
 const path = require("path");
 const request = require("request-promise-native");
 const ffi = require("ffi");
-const {shell} = require("electron");
+const {shell, clipboard} = require("electron");
+const robot = require("robotjs");
 
 class Helpers {
   /**
@@ -103,27 +106,6 @@ class Helpers {
   }
 
   /**
-  * Focuses the Path of Exile window based on the OS
-  */
-  static focusGame() {
-    if(os.platform() === "linux") {
-      Helpers._focusGameOnLinux();
-    } else if(os.platform() === "win32") {
-      Helpers._focusGameOnWindows();
-    }
-  }
-
-  /**
-  * Focuses the game on Linux
-  */
-  static _focusGameOnLinux() {
-    cp.exec("wmctrl -F -a 'Path of Exile'")
-    .catch((error) => {
-      console.error("Tried to focus Path of Exile but failed, either wmctrl is not installed or Path of Exile is not running");
-    });
-  }
-
-  /**
   * Sets a window on top
   *
   * @param {string} [windowName] Window manager name of the window. Defaults to the name of the main GUI
@@ -137,7 +119,7 @@ class Helpers {
     if(os.platform() === "linux" && alwaysOnTop) {
       // Wait 50ms before executing, showing windows on Linux is slow and window needs to
       // be visible in order for this command to work, still check if visible to avoid errors
-      setTimeout(function() {
+      var timeout = setTimeout(function() {
         if(win.isVisible()) {
           cp.exec("wmctrl -F -r '" + win.getTitle() + "' -b add,above")
           .catch((error) => {
@@ -149,154 +131,38 @@ class Helpers {
   }
 
   /**
-  * Focuses the game on Windows
-  */
-  static _focusGameOnWindows() {
-    var user32 = new ffi.Library('user32', {
-      'GetTopWindow': ['long', ['long']],
-      'FindWindowA': ['long', ['string', 'string']],
-      'SetActiveWindow': ['long', ['long']],
-      'SetForegroundWindow': ['bool', ['long']],
-      'BringWindowToTop': ['bool', ['long']],
-      'ShowWindow': ['bool', ['long', 'int']],
-      'SwitchToThisWindow': ['void', ['long', 'bool']],
-      'GetForegroundWindow': ['long', []],
-      'AttachThreadInput': ['bool', ['int', 'long', 'bool']],
-      'GetWindowThreadProcessId': ['int', ['long', 'int']],
-      'SetWindowPos': ['bool', ['long', 'long', 'int', 'int', 'int', 'int', 'uint']],
-      'SetFocus': ['long', ['long']]
-    });
-
-    var kernel32 = new ffi.Library('Kernel32.dll', {
-      'GetCurrentThreadId': ['int', []]
-    });
-
-    var winToSetOnTop = user32.FindWindowA(null, "Path of Exile")
-    var foregroundHWnd = user32.GetForegroundWindow()
-    var currentThreadId = kernel32.GetCurrentThreadId()
-    var windowThreadProcessId = user32.GetWindowThreadProcessId(foregroundHWnd, null)
-    var showWindow = user32.ShowWindow(winToSetOnTop, 9)
-    var setWindowPos1 = user32.SetWindowPos(winToSetOnTop, -1, 0, 0, 0, 0, 3)
-    var setWindowPos2 = user32.SetWindowPos(winToSetOnTop, -2, 0, 0, 0, 0, 3)
-    var setForegroundWindow = user32.SetForegroundWindow(winToSetOnTop)
-    var attachThreadInput = user32.AttachThreadInput(windowThreadProcessId, currentThreadId, 0)
-    var setFocus = user32.SetFocus(winToSetOnTop)
-    var setActiveWindow = user32.SetActiveWindow(winToSetOnTop)
-  }
-
-  /**
-  * Gets Path of Exile leagues that are non-SSF from GGG API and returns the names
-  *
-  * @returns {Promise}
-  * @fulfil {Array} - An array containing every main non-SSF league
-  * @reject {Error} - The `error.message` contains information about why the promise was rejected
-  */
-  static getPathOfExileLeagues() {
-    return new Promise(function(resolve, reject) {
-      request("http://api.pathofexile.com/leagues?type=main", {json: true, headers: {'Connection': 'keep-alive'}})
-      .then((body) => {
-        var leagues = [];
-        var leaguesCount = 0;
-        // Iterate through each league
-        for(var i = 0; i < body.length; i++) {
-          var league = body[i];
-          var ssf = false;
-          leaguesCount++;
-
-          if(!Helpers._isSoloLeague(league)) { leagues.push(league.id); }
-
-          // When done with every league
-          if(leaguesCount === body.length) {
-            resolve(leagues);
-          }
-        }
-      })
-      .catch((error) => {
-        reject(error);
-      });
-    });
-  }
-
-  /**
-  * Returns `true` if the league rules have a solo rules
-  *
-  * @return {boolean}
-  */
-  static _isSoloLeague(league) {
-    if(league.rules.length > 0) {
-      for(var j = 0; j < league.rules.length; j++) {
-        if(league.rules[j].name === "Solo") {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /**
   * Creates the config and returns it
   *
   * @return {Config}
   */
   static createConfig() {
     var config = new Config({
-      defaults: {
-        league: "Delve",
-        focusPathOfExile: false,
-        autoMinimize: false,
-        hideMenu: false,
-        pricecheck: true,
-        maxHeight: 500,
-        autoclose: {
-          enabled: true,
-          threshold: {
-            enabled: false,
-            value: 20
-          },
-          timeouts: {
-            currency: {
-              enabled: false,
-              value: 10
-            },
-            item: {
-              enabled: false,
-              value: 10
-            },
-            rare: {
-              enabled: false,
-              value: 20
-            }
-          }
-        },
-        window: {
-          x: 0,
-          y: 0,
-          locked: false,
-          poll: 1000,
-          zoomFactor: 1
-        }
-      }
+      "defaults": DefaultConfig.defaults
     });
 
-    // 0.1.2
-    if(!config.has("window.poll")) {
-      config.set("window.poll", 1000);
-    }
+    // Version config changes
+    for(var version in DefaultConfig.changes) {
+      var changes = DefaultConfig.changes[version];
 
-    // 0.2.0
-    if(!config.has("autoclose.timeouts.rare")) {
-      config.set("autoclose.timeouts.rare", {enabled: false, value: 20});
-    }
+      // Added properties
+      for(var index in changes.add) {
+        var key = changes.add[index];
 
-    // 0.3.4
-    if(!config.has("window.zoomFactor")) {
-      config.set("window.zoomFactor", 1);
-    }
+        if(!config.has(key)) {
+          var defaultProp = dotProp.get(DefaultConfig.defaults, key);
+          config.set(key, defaultProp);
+        }
+      }
 
-    // 0.4.0
-    if(!config.has("hideMenu")) {
-      config.set("hideMenu", false);
+      // Changed property keys
+      for(var oldKey in changes.migrate) {
+        var newKey = changes.migrate[oldKey];
+
+        if(!config.has(newKey) && config.has(oldKey)) {
+          config.set(newKey, config.get(oldKey));
+          config.delete(oldKey);
+        }
+      }
     }
 
     return config;

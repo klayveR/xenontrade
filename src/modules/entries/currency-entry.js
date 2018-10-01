@@ -1,9 +1,10 @@
 const PriceCheckEntry = require("./pricecheck-entry.js");
-const CurrencyIcons = require("../../resource/icons/currencyIcons");
+const Icons = require("../gui/icons.js");
 
 class CurrencyEntry extends PriceCheckEntry {
   /**
   * Creates a new CurrencyEntry object
+  * // TODO: JSDocs
   *
   * @constructor
   */
@@ -37,7 +38,6 @@ class CurrencyEntry extends PriceCheckEntry {
 
   _buildReplacements() {
     var stackSize = this.parser.getStackSize();
-    var currencyDetails = ninjaAPI.getCurrencyDetails(this.item.currencyTypeName);
 
     var pay = {
       trend: this._formatTrendData(this.item.paySparkLine),
@@ -69,7 +69,7 @@ class CurrencyEntry extends PriceCheckEntry {
 
     return [
       { find: "currency-name", replace: this.item.currencyTypeName },
-      { find: "currency-icon", replace: currencyDetails.icon },
+      { find: "currency-icon", replace: Icons.getIconByName(this.item.currencyTypeName) },
       { find: "receive", replace: receive.value },
       { find: "pay", replace: pay.value },
       { find: "stacksize", replace: stackSize },
@@ -77,7 +77,7 @@ class CurrencyEntry extends PriceCheckEntry {
       { find: "calculated-pay", replace: pay.calculated },
       { find: "conf-receive-color", replace: receive.confidence },
       { find: "conf-pay-color", replace: pay.confidence },
-      { find: "chaos-icon", replace: CurrencyIcons["Chaos Orb"] },
+      { find: "chaos-icon", replace: Icons.getIconByName("Chaos Orb") },
       { find: "pay-trend", replace: pay.trend },
       { find: "receive-trend", replace: receive.trend }
     ];

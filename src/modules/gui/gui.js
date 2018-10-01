@@ -4,6 +4,7 @@ const remote = electron.remote;
 const windowManager = remote.require('electron-window-manager');
 const os = require("os");
 
+const PathOfExile = require("../poe.js");
 const Helpers = require("../helpers.js");
 const Pricecheck = require("../pricecheck.js");
 const SettingsGUI = require("./settings.js");
@@ -92,6 +93,10 @@ class GUI {
 
     $(".menu").find("[data-button='update']").click(function() {
       Pricecheck.updateNinja();
+    });
+
+    $(".menu").find("[data-button='logfile']").click(function() {
+      Helpers.openLogFile();
     });
 
     $(".menu").find("[data-button='settings']").click(function() {
@@ -280,7 +285,7 @@ class GUI {
       && currentWindow.name === GUI.NAME // ... Current window is main GUI
       && !windowManager.get(SettingsGUI.NAME).object.isVisible() // ... Settings GUI is not visible
       && !activeElement.is("textarea")) { // ... Focused element is not a textarea
-        Helpers.focusGame();
+        PathOfExile.focus();
         Helpers.setAlwaysOnTop();
       }
     }, 20);
@@ -316,6 +321,19 @@ class GUI {
     }
 
     return true;
+  }
+
+  /**
+  * Sets the player status icon color for a specific player name on all entries
+  */
+  static setPlayerJoinedStatus(playerName, joined) {
+    var indicator = $(".entry").find("[data-player-name='" + playerName + "']");
+
+    if(joined) {
+      indicator.removeClass("grey").addClass("green");
+    } else {
+      indicator.removeClass("green").addClass("grey");
+    }
   }
 
   /**
