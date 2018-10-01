@@ -172,18 +172,21 @@ class Helpers {
   * Opens the logfile folder and selects the log file
   */
   static openFile(file) {
-    var path = "";
+    var location = "";
 
     if(os.platform() === "linux") {
-      path = path.join(os.homedir(), "/.config/XenonTrade/" + file);
+      location = path.join(os.homedir(), "/.config/XenonTrade/", file);
     } else {
-      path = path.join(os.homedir(), "/AppData/Roaming/XenonTrade/" + file);
+      location = path.join(os.homedir(), "/AppData/Roaming/XenonTrade/", file);
     }
 
     // Create file if it doesn't exist
-    fs.writeFile(path, "", { flag: 'wx' });
+    fs.writeFile(location, "", { flag: 'wx' })
+    .catch((error) => {
+      log.debug("File " + location + " already exists", error);
+    });
 
-    shell.openItem(path);
+    shell.openItem(location);
   }
 }
 
