@@ -91,7 +91,7 @@ class Whisper {
       for(var abbrIndex in CurrencyAbbreviations[currency]) {
         var abbr = CurrencyAbbreviations[currency][abbrIndex];
 
-        if(abbr.toLowerCase() === currencyName.toLowerCase()) {
+        if(currencyName.toLowerCase().includes(abbr.toLowerCase())) {
           return currency;
         }
       }
