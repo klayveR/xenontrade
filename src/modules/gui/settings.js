@@ -40,7 +40,7 @@ class SettingsGUI {
     });
 
     settingsWindow.open(null, true);
-    settingsWindow.object.webContents.openDevTools();
+    // settingsWindow.object.webContents.openDevTools();
 
     settingsWindow.object.on("hide", function() {
       windowManager.bridge.emit('hide', {'window': SettingsGUI.NAME});

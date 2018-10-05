@@ -107,6 +107,7 @@ class XenonTrade {
     if (config.get("tradehelper.enabled") && fs.existsSync(logfile) && logfile.includes("Client.txt")) {
       // Remove old listeners
       if(poeLog != null) {
+        poeLog.pause();
         poeLog.removeAllListeners();
       }
 
