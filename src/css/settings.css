@@ -130,6 +130,7 @@ i {
 .content .table .row .cell {
   display: table-cell;
   padding: 0px 5px;
+  vertical-align: middle;
 }
 
 .content .table .row .table-header {
@@ -243,7 +244,7 @@ i {
   pointer-events: none;
 }
 
-.content input {
+.content input[type=text] {
   width: 100%;
   border: 0;
   background-color: #303a4c;
@@ -256,7 +257,7 @@ i {
   box-sizing: border-box;
 }
 
-.content input::placeholder {
+.content input[type=text]::placeholder {
   color: #748199;
 }
 

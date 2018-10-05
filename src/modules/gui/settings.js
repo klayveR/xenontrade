@@ -40,7 +40,7 @@ class SettingsGUI {
     });
 
     settingsWindow.open(null, true);
-    // settingsWindow.object.webContents.openDevTools();
+    settingsWindow.object.webContents.openDevTools();
 
     settingsWindow.object.on("hide", function() {
       windowManager.bridge.emit('hide', {'window': SettingsGUI.NAME});
@@ -91,7 +91,7 @@ class SettingsGUI {
 
     $(".content").find("[data-button='add-chat-button']").click(function() {
       var direction = $(this).attr("data-direction");
-      self.addChatButton({direction, label: "", message: ""});
+      self.addChatButton({direction, label: "", message: "", close: false});
     });
   }
 
@@ -180,7 +180,7 @@ class SettingsGUI {
       }
 
       // Change config value on click
-      $(this).click(function() {
+      $(this).off("click").on("click", function() {
         SettingsGUI.toggleSetting(toggle);
       });
     });
@@ -232,12 +232,13 @@ class SettingsGUI {
 
     // Insert new row with inputs
     var container = $(".settings").find("[data-trade-buttons='" + button.direction + "']");
-    var html = '<div class="row" data-row="' + id + '"><div class="cell chat-button-label"><input placeholder="Button label" data-text-input="tradehelper.buttons.' + id + '.label" type="text" value="' + button.label + '"></div><div class="cell chat-button-message"><input placeholder="Message" data-text-input="tradehelper.buttons.' + id + '.message" type="text" value="' + button.message + '"></div><div class="cell" data-button="remove"><i class="fas fa-minus-square grey"></i></div></div>';
+    var html = '<div class="row" data-row="' + id + '"><div class="cell chat-button-label"><input placeholder="Button label" data-text-input="tradehelper.buttons.' + id + '.label" type="text" value="' + button.label + '"></div><div class="cell chat-button-message"><input placeholder="Message" data-text-input="tradehelper.buttons.' + id + '.message" type="text" value="' + button.message + '"></div><div class="cell" data-button="remove"><i class="fas fa-minus-square grey"></i></div><div class="cell center" data-toggle="tradehelper.buttons.' + id + '.close"><i class="fas fa-toggle-off grey"></i></div></div>';
     container.find(".row:last").after(html);
 
     // Initialize new text inputs
     // TODO: Initialize single input instead of all again
     this._initializeTextInputs();
+    this._initializeToggles();
 
     // Initialize the remove button click listener, remove row on click#
     var row = container.find("[data-row='" + id + "']");

@@ -1,4 +1,4 @@
-[data-link], [data-button], [data-entry-link] {
+[data-link], [data-button], [data-entry-link], [data-toggle] {
   cursor: pointer !important;
 }
 
@@ -43,6 +43,10 @@
 
 .draggable {
   -webkit-app-region: drag;
+}
+
+.small {
+  font-size: 10px !important;
 }
 
 .white {

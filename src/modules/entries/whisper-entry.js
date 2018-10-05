@@ -114,6 +114,7 @@ class WhisperEntry extends Entry {
 
     // For each button in config
     for(var index in buttons) {
+      var self = this;
       var button = buttons[index];
 
       // Add only buttons that match the direction of the whisper and are not empty
@@ -143,6 +144,11 @@ class WhisperEntry extends Entry {
         container.find("[data-button='" + index + "']").css("width", (100 / Object.keys(buttons).length) + "%")
         container.find("[data-button='" + index + "']").click(function() {
           PathOfExile.chat(text);
+
+          // Close entry if the button is set to close entry
+          if(button.close) {
+            self.close();
+          }
         });
       }
     }

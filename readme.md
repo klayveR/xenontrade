@@ -4,7 +4,7 @@
 
 Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started! If you're facing a problem, take a look at the [Help](https://github.com/klayveR/xenontrade/wiki/Help) wiki.
 
-Price Check | Trade Helper
+Price check | Trade helper
 :---:|:---:
 ![](https://i.imgur.com/R4MO5Ju.png) | ![](https://i.imgur.com/bewwuVQ.png)
 
@@ -37,7 +37,7 @@ Check out the wiki to learn more about this app!
 	- To override the auto-close feature for valuable items you can set a value threshold
 	- Auto-close can be cancelled by clicking on the countdown timer
 
-### Whisper helper
+### Trade helper
 - Manage incoming and outgoing trades in the overlay
 - Convenient buttons for party management, starting the trade and visiting the trade partners hideout
 - Customization options

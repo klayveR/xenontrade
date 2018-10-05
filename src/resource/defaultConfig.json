@@ -14,27 +14,32 @@
         "1": {
           "direction": "From",
           "label": "Thanks",
-          "message": "Thank you!"
+          "message": "Thank you!",
+          "close": false
         },
         "2": {
           "direction": "From",
           "label": "Sold",
-          "message": "Sorry, %trade% is no longer available."
+          "message": "Sorry, %trade% is no longer available.",
+          "close": true
         },
         "3": {
           "direction": "From",
           "label": "Wait",
-          "message": "Give me a second"
+          "message": "Give me a second",
+          "close": false
         },
         "4": {
           "direction": "From",
           "label": "Interested",
-          "message": "Are you still interested in %trade%?"
+          "message": "Are you still interested in %trade%?",
+          "close": false
         },
         "5": {
           "direction": "To",
           "label": "Thanks",
-          "message": "Thank you!"
+          "message": "Thank you!",
+          "close": false
         }
       }
     },
