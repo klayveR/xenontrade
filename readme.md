@@ -1,7 +1,8 @@
+
 # ![](https://i.imgur.com/wVnDg8C.png) XenonTrade
 **XenonTrade is a Path of Exile trading overlay**, initially developed specifically for Linux users. While Path of Exiles performance on Linux has drastically increased in the past few months, there are barely any trading companions available for Linux. And thus, this app was created.
 
-Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started! See the [Help](https://github.com/klayveR/xenontrade/wiki/Help) wiki if you're having problems.
+Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started! If you're facing a problem, take a look at the [Help](https://github.com/klayveR/xenontrade/wiki/Help) wiki.
 
 Price Check | Trade Helper
 :---:|:---:
