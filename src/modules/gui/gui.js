@@ -9,6 +9,8 @@ const Helpers = require("../helpers.js");
 const Pricecheck = require("../pricecheck.js");
 const SettingsGUI = require("./settings.js");
 
+global.entries = {};
+
 class GUI {
   /**
   * Getter for name of the GUI
@@ -43,6 +45,7 @@ class GUI {
         // Call onEntriesChange here, in case all entries where closed while settings window was open
         GUI.onEntriesChange();
         GUI.toggleMenuButtonColor("settings", true);
+        app.initializePoeLogMonitor();
       }
     });
 
@@ -93,10 +96,6 @@ class GUI {
 
     $(".menu").find("[data-button='update']").click(function() {
       Pricecheck.updateNinja();
-    });
-
-    $(".menu").find("[data-button='logfile']").click(function() {
-      Helpers.openFile("config.json");
     });
 
     $(".menu").find("[data-button='settings']").click(function() {

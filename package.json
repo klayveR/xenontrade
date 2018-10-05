@@ -1,7 +1,7 @@
 {
   "name": "XenonTrade",
-  "version": "0.4.1",
-  "description": "Path of Exile trading app for price checking and whisper management",
+  "version": "0.5.0",
+  "description": "Path of Exile trading app for price checking and trade whisper management",
   "main": "src/main.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",

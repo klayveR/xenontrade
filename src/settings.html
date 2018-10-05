@@ -12,169 +12,270 @@
 </head>
 <body>
   <body>
-      <div class="header draggable">
-        <div class="button" data-button="close"><i class="fas fa-window-close grey"></i></div>
+    <div class="header draggable">
+      <div class="button" data-button="close"><i class="fas fa-window-close grey"></i></div>
+    </div>
+    <div class="sidebar">
+      <div class="link active" data-settings="general">
+        <span class="label"><i class="fas fa-cog"></i> General</span>
       </div>
-      <div class="sidebar">
-        <div class="link active" data-settings="general">
-          <span class="label"><i class="fas fa-cog"></i> General</span>
-        </div>
-        <div class="link" data-settings="price-check">
-          <span class="label"><i class="fas fa-money-bill"></i> Price check</span>
-        </div>
-        <div class="link" data-settings="auto-close">
-          <span class="label"><i class="fas fa-clock"></i> Auto-close</span>
-        </div>
-        <div class="version"></div>
+      <div class="link" data-settings="character">
+        <span class="label"><i class="fas fa-user-circle"></i> Character</span>
       </div>
-      <div class="settings">
+      <div class="link" data-settings="trade-helper">
+        <span class="label"><i class="fas fa-exchange-alt"></i> Trade Helper</span>
+      </div>
+      <div class="link" data-settings="price-check">
+        <span class="label"><i class="fas fa-money-bill"></i> Price check</span>
+      </div>
+      <div class="link" data-settings="auto-close">
+        <span class="label"><i class="fas fa-clock"></i> Auto-close</span>
+      </div>
+      <div class="version"></div>
+    </div>
+    <div class="settings" data-settings="general">
+      <div class="content">
+        <div class="option">
+          <div class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></div>
+          <div class="label">
+            Automatically hide
+          </div>
+          <div class="description">
+            Automatically hides XenonTrade when Path of Exile is not in focus.<br />Disabled while settings window is visible.
+          </div>
+        </div>
+        <div class="option">
+          <div class="toggle" data-toggle="hideMenu"><i class="fas fa-toggle-off grey"></i></div>
+          <div class="label">
+            Hide menu bar
+          </div>
+          <div class="description">
+            Automatically hides XenonTrade when only the menu bar is visible.<br />Disabled while settings window is visible.
+            <div class="banner">
+              <i class="fas fa-info-circle"></i> Price checks may show up slightly delayed with this setting enabled.
+            </div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="toggle" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></div>
+          <div class="label">
+            Always focus Path of Exile
+          </div>
+          <div class="description">
+            Focuses Path of Exile after every interaction with XenonTrade.<br />Disabled while settings window is visible.
+          </div>
+        </div>
+        <div class="option">
+          <div class="label">
+            Scale factor
+            <span class="option-value"><span class="value"></span><span class="unit">x</span></span>
+          </div>
+          <div class="description">
+            Increases or decreases the size of the main window. This is especially useful for higher resolutions.
+          </div>
+          <div class="slider" data-slider="window.zoomFactor">
+            <div slider-min="0.5" slider-max="2.5" slider-step="0.1"></div>
+          </div>
+        </div>
+        <div class="option last-option">
+          <div class="label">
+            Maximum window height
+            <span class="option-value"><span class="value"></span><span class="unit">px</span></span>
+          </div>
+          <div class="description">
+            Sets the maximum height of the main window.
+          </div>
+          <div class="slider" data-slider="maxHeight">
+            <div slider-min="100" slider-max="999" slider-step="1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="settings" data-settings="character" style="display:none">
+      <div class="content">
+        <div class="option">
+          <div class="label">
+            Character Name
+          </div>
+          <div class="description">
+            Name of the character you're currently playing.
+          </div>
+          <input type="text" data-text-input="characterName" placeholder="Character name...">
+        </div>
+        <div id="league" class="option last-option">
+          <div class="label">
+            League
+          </div>
+          <div class="description">
+            League you're playing in. Price data will be fetched for this league and automatically updated when you change this setting.
+          </div>
+          <label class="wrap">
+            <select class="select" id="leagueSelect"></select>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="settings" data-settings="trade-helper" style="display:none">
+      <div class="content">
+        <div class="option">
+          <div class="toggle" data-toggle="tradehelper.enabled"><i class="fas fa-toggle-off grey"></i></div>
+          <div class="label">
+            Enable
+            <span class="banner green-bg">
+              New
+            </span>
+          </div>
+          <div class="description">
+            Manage incoming and outgoing trade whispers easily.
+          </div>
+        </div>
+        <div class="option last-option">
+          <div class="label">
+            Log file
+          </div>
+          <div class="description">
+            Path to the Path of Exile <strong>Client.txt</strong> log file. This file should be located in the <strong>logs</strong> folder of your Path of Exile installation.
+          </div>
+          <div class="file-select" data-file-select="tradehelper.logfile">
+            <span class="value"></span>
+            <div class="select-button"><i class="fas fa-folder-open grey"></i></div>
+          </div>
+        </div>
+        <div class="title">
+          Trade buttons
+        </div>
+        <div class="option">
+          <div data-trade-buttons="From" class="table">
+            <div class="row">
+              <div class="cell table-header">
+                Incoming
+              </div>
+              <div class="cell"></div>
+              <div class="cell">
+                <i data-button="add-chat-button" data-direction="From" class="fas fa-plus-square"></i>
+              </div>
+            </div>
+          </div>
+          <div data-trade-buttons="To" class="table">
+            <div class="row">
+              <div class="cell table-header top-padding-10">
+                Outgoing
+              </div>
+              <div class="cell"></div>
+              <div class="cell">
+                <i data-button="add-chat-button" data-direction="To" class="fas fa-plus-square"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="description">
+            The following placeholders can be used in a message. Placeholders must be surrounded by <strong>%</strong>.
+            <p>
+              <strong>player-name</strong>
+              <strong>trade</strong>
+              <strong>league</strong>
+              <strong>stash</strong>
+              <strong>stash-top</strong>
+              <strong>stash-left</strong>
+              <strong>receive-name</strong>
+              <strong>receive-amount</strong>
+              <strong>pay-name</strong>
+              <strong>pay-amount</strong>
+              <strong>ratio</strong>
+            </p>
+            </div>
+          </div>
+          <div class="option last-option">
+            <div class="description">
+              Font Awesome icons can be used as button labels. You can get the icon names from the Font Awesome website. Font Awesome icons must be prefixed by <strong>fa-</strong>. Examples:
+              <p>
+                <strong>fa-thumbs-up</strong>
+                <strong>fa-clock</strong>
+                <strong>fa-question-circle</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="settings" data-settings="price-check" style="display:none">
         <div class="content">
-          <div data-settings="general">
-            <div class="option">
-              <div class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Automatically hide
-              </div>
-              <div class="description">
-                Automatically hides XenonTrade when Path of Exile is not in focus.<br />Disabled while settings window is visible.
-              </div>
+          <div class="option last-option">
+            <div class="toggle" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></div>
+            <div class="label">
+              Enable
             </div>
-            <div class="option">
-              <div class="toggle" data-toggle="hideMenu"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Hide menu bar
-                <span class="banner green-bg">
-                  New
-                </span>
-              </div>
-              <div class="description">
-                Automatically hides XenonTrade when only the menu bar is visible.<br />Disabled while settings window is visible.
-                <div class="banner">
-                  <i class="fas fa-info-circle"></i> Price checks may show up slightly delayed with this setting enabled.
-                </div>
-              </div>
-            </div>
-            <div class="option">
-              <div class="toggle" data-toggle="focusPathOfExile"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Always focus Path of Exile
-              </div>
-              <div class="description">
-                Focuses Path of Exile after every interaction with XenonTrade.<br />Disabled while settings window is visible.
-              </div>
-            </div>
-            <div class="option">
-              <div class="label">
-                Scale factor
-                <span class="slider-value"><span class="value"></span><span class="unit">x</span></span>
-              </div>
-              <div class="description">
-                Increases or decreases the size of the main window. This is especially useful for higher resolutions.
-              </div>
-              <div class="slider" data-slider="window.zoomFactor">
-                <div slider-min="0.5" slider-max="2.5" slider-step="0.1"></div>
-              </div>
-            </div>
-            <div class="option last-option">
-              <div class="label">
-                Maximum window height
-                <span class="slider-value"><span class="value"></span><span class="unit">px</span></span>
-              </div>
-              <div class="description">
-                Sets the maximum height of the main window.
-              </div>
-              <div class="slider" data-slider="maxHeight">
-                <div slider-min="100" slider-max="999" slider-step="1"></div>
-              </div>
-            </div>
-          </div>
-          <div data-settings="price-check" style="display: none">
-            <div class="option">
-              <div class="toggle" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Enable
-              </div>
-              <div class="description">
-                Shows the price of an item in the main window when <strong>CTRL+C</strong> is pressed while hovering over an item in Path of Exile.
-              </div>
-            </div>
-            <div id="league" class="option last-option">
-              <div class="label">
-                League
-              </div>
-              <div class="description">
-                Please select the league you're playing in. Price data will be fetched for this league. Price data will automatically be updated when you change this setting.
-              </div>
-              <label class="wrap">
-                <select class="select" id="leagueSelect"></select>
-              </label>
-            </div>
-          </div>
-          <div data-settings="auto-close" style="display: none">
-            <div class="option">
-              <div class="toggle" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Enable
-              </div>
-              <div class="description">
-                Price checks will be automatically closed after a set amount of time. Times have to be set and enabled individually in the timers section.
-              </div>
-            </div>
-            <div class="option last-option">
-              <div class="toggle" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Threshold
-                <span class="slider-value"><span class="value"></span> <span class="unit">Chaos Orb</span></span>
-              </div>
-              <div class="description">Overrides auto-close when an items value is equal to or higher than the set threshold value. Items worth more than one Exalted Orb and rare items priced in Exalted Orbs will always override auto-close.</div>
-              <div class="slider" data-slider="autoclose.threshold.value">
-                <div slider-min="1" slider-max="200" slider-step="1"></div>
-              </div>
-            </div>
-            <div class="title">
-              Timers
-            </div>
-            <div class="option">
-              <div class="toggle" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Currency
-                <span class="slider-value"><span class="value"></span> <span class="unit">seconds</span></span>
-              </div>
-              <div class="slider" data-slider="autoclose.timeouts.currency.value">
-                <div slider-min="1" slider-max="99" slider-step="1"></div>
-              </div>
-            </div>
-            <div class="option">
-              <div class="toggle" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Item
-                <span class="slider-value"><span class="value"></span> <span class="unit">seconds</span></span>
-              </div>
-              <div class="slider" data-slider="autoclose.timeouts.item.value">
-                <div slider-min="1" slider-max="99" slider-step="1"></div>
-              </div>
-            </div>
-            <div class="option last-option">
-              <div class="toggle" data-toggle="autoclose.timeouts.rare.enabled"><i class="fas fa-toggle-off grey"></i></div>
-              <div class="label">
-                Rare item
-                <span class="slider-value"><span class="value"></span> <span class="unit">seconds</span></span>
-              </div>
-              <div class="slider" data-slider="autoclose.timeouts.rare.value">
-                <div slider-min="1" slider-max="99" slider-step="1"></div>
-              </div>
+            <div class="description">
+              Shows the price of an item in the main window when <strong>CTRL+C</strong> is pressed while hovering over an item in Path of Exile.
             </div>
           </div>
         </div>
       </div>
+      <div class="settings" data-settings="auto-close" style="display:none">
+        <div class="content">
+          <div class="option">
+            <div class="toggle" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></div>
+            <div class="label">
+              Enable
+            </div>
+            <div class="description">
+              Price checks will be automatically closed after a set amount of time. Times have to be set and enabled individually in the timers section.
+            </div>
+          </div>
+          <div class="option last-option">
+            <div class="toggle" data-toggle="autoclose.threshold.enabled"><i class="fas fa-toggle-off grey"></i></div>
+            <div class="label">
+              Threshold
+              <span class="option-value"><span class="value"></span> <span class="unit">Chaos Orb</span></span>
+            </div>
+            <div class="description">Overrides auto-close when an items value is equal to or higher than the set threshold value. Items worth more than one Exalted Orb and rare items priced in Exalted Orbs will always override auto-close.</div>
+            <div class="slider" data-slider="autoclose.threshold.value">
+              <div slider-min="1" slider-max="200" slider-step="1"></div>
+            </div>
+          </div>
+          <div class="title">
+            Timers
+          </div>
+          <div class="option">
+            <div class="toggle" data-toggle="autoclose.timeouts.currency.enabled"><i class="fas fa-toggle-off grey"></i></div>
+            <div class="label">
+              Currency
+              <span class="option-value"><span class="value"></span> <span class="unit">seconds</span></span>
+            </div>
+            <div class="slider" data-slider="autoclose.timeouts.currency.value">
+              <div slider-min="1" slider-max="99" slider-step="1"></div>
+            </div>
+          </div>
+          <div class="option">
+            <div class="toggle" data-toggle="autoclose.timeouts.item.enabled"><i class="fas fa-toggle-off grey"></i></div>
+            <div class="label">
+              Item
+              <span class="option-value"><span class="value"></span> <span class="unit">seconds</span></span>
+            </div>
+            <div class="slider" data-slider="autoclose.timeouts.item.value">
+              <div slider-min="1" slider-max="99" slider-step="1"></div>
+            </div>
+          </div>
+          <div class="option last-option">
+            <div class="toggle" data-toggle="autoclose.timeouts.rare.enabled"><i class="fas fa-toggle-off grey"></i></div>
+            <div class="label">
+              Rare item
+              <span class="option-value"><span class="value"></span> <span class="unit">seconds</span></span>
+            </div>
+            <div class="slider" data-slider="autoclose.timeouts.rare.value">
+              <div slider-min="1" slider-max="99" slider-step="1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script type="text/javascript" src="lib/nouislider.min.js"></script>
+
+    <script type="text/javascript">
+    const SettingsGUI = require("./modules/gui/settings.js");
+    SettingsGUI.initialize();
+    </script>
   </body>
-
-  <script>window.$ = window.jQuery = require('jquery');</script>
-  <script type="text/javascript" src="lib/nouislider.min.js"></script>
-
-  <script type="text/javascript">
-  const SettingsGUI = require("./modules/gui/settings.js");
-  SettingsGUI.initialize();
-  </script>
-</body>
-</html>
+  </html>

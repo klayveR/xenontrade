@@ -1,4 +1,5 @@
 const electron = require('electron');
+const { dialog } = electron.remote
 const remote = electron.remote;
 const screenElectron = electron.screen;
 const windowManager = remote.require('electron-window-manager');
@@ -39,6 +40,7 @@ class SettingsGUI {
     });
 
     settingsWindow.open(null, true);
+    // settingsWindow.object.webContents.openDevTools();
 
     settingsWindow.object.on("hide", function() {
       windowManager.bridge.emit('hide', {'window': SettingsGUI.NAME});
@@ -56,7 +58,10 @@ class SettingsGUI {
     SettingsGUI._initializeButtons();
     SettingsGUI._initializeToggles();
     SettingsGUI._initializeLeagues();
+    SettingsGUI._initializeChatButtons();
     SettingsGUI._initializeSliders();
+    SettingsGUI._initializeFileSelects();
+    SettingsGUI._initializeTextInputs();
     SettingsGUI._initializeVersionNumber();
     SettingsGUI._initializeNavigation();
   }
@@ -69,7 +74,7 @@ class SettingsGUI {
       var settings = $(this).attr("data-settings");
 
       $(this).click(function() {
-        SettingsGUI.switchSettings($(this));
+        SettingsGUI.switchSettingsPage($(this));
       })
     });
   }
@@ -78,8 +83,15 @@ class SettingsGUI {
   * Initializes the header buttons
   */
   static _initializeButtons() {
+    var self = this;
+
     $(".header").find("[data-button='close']").click(function() {
       SettingsGUI.hide();
+    });
+
+    $(".content").find("[data-button='add-chat-button']").click(function() {
+      var direction = $(this).attr("data-direction");
+      self.addChatButton({direction, label: "", message: ""});
     });
   }
 
@@ -109,7 +121,7 @@ class SettingsGUI {
   static _initializeSlider(selector) {
     var configKey = selector.attr("data-slider");
     var sliderSelector = selector.find("div");
-    var sliderLabel = selector.parent().find(".slider-value").find(".value");
+    var sliderLabel = selector.parent().find(".option-value").find(".value");
     var slider = sliderSelector[0];
     var step = parseFloat(sliderSelector.attr("slider-step"));
 
@@ -159,33 +171,105 @@ class SettingsGUI {
   * Initializes all toggle buttons and states in the settings menu
   */
   static _initializeToggles() {
-    $(".settings").find("[data-toggle]").each(function (index, element) {
-      SettingsGUI._initializeToggleState($(this));
-      SettingsGUI._initializeToggleButton($(this));
+    $(".settings").find("[data-toggle]").each(function() {
+      var toggle = $(this).attr("data-toggle");
+
+      // Set value to config value
+      if(config.get(toggle)) {
+        $(".settings").find("[data-toggle='" + toggle + "'] > i").removeClass("fa-toggle-off grey").addClass("fa-toggle-on green");
+      }
+
+      // Change config value on click
+      $(this).click(function() {
+        SettingsGUI.toggleSetting(toggle);
+      });
     });
   }
 
   /**
-  * Sets the state of a toggle based on the config value
-  *
-  * @param {jQuery} $selector Toggle button
+  * Initializes text inputs
   */
-  static _initializeToggleState(selector) {
-    var toggle = selector.attr("data-toggle");
-    if(config.get(toggle)) {
-      $(".settings").find("[data-toggle='" + toggle + "'] > i").removeClass("fa-toggle-off grey").addClass("fa-toggle-on green");
+  static _initializeTextInputs() {
+    $(".settings").find("[data-text-input]").each(function() {
+      var configKey = $(this).attr("data-text-input");
+
+      // Set value to config value
+      $(this).val(config.get(configKey));
+
+      // Change config value on input change
+      $(this).off("change").on("change", function() {
+        // Set new config value
+        config.set(configKey, $(this).val());
+      });
+    });
+  }
+
+  /**
+  * Initializes all chat buttons in the trade helper menu
+  */
+  static _initializeChatButtons() {
+    var buttons = config.get("tradehelper.buttons");
+
+    // For each button in config
+    for(var id in buttons) {
+      var button = buttons[id];
+
+      this.addChatButton(button, id);
     }
   }
 
   /**
-  * Enables a toggle button
+  * Adds a button to the trade helper menu button list
   *
-  * @param {jQuery} $selector Toggle button
+  * @param {Object} button A button object containing direction, label and message
+  * @param {string} [id] ID of the button. A random ID is generated if not set
   */
-  static _initializeToggleButton(selector) {
-    var toggle = selector.attr("data-toggle");
-    selector.click(function() {
-      SettingsGUI.toggleSetting(toggle);
+  static addChatButton(button, id = Helpers.generateRandomId()) {
+    // Add to config if button is new
+    if(!config.has("tradehelper.buttons." + id)) {
+      config.set("tradehelper.buttons." + id, button);
+    }
+
+    // Insert new row with inputs
+    var container = $(".settings").find("[data-trade-buttons='" + button.direction + "']");
+    var html = '<div class="row" data-row="' + id + '"><div class="cell chat-button-label"><input placeholder="Button label" data-text-input="tradehelper.buttons.' + id + '.label" type="text" value="' + button.label + '"></div><div class="cell chat-button-message"><input placeholder="Message" data-text-input="tradehelper.buttons.' + id + '.message" type="text" value="' + button.message + '"></div><div class="cell" data-button="remove"><i class="fas fa-minus-square grey"></i></div></div>';
+    container.find(".row:last").after(html);
+
+    // Initialize new text inputs
+    // TODO: Initialize single input instead of all again
+    this._initializeTextInputs();
+
+    // Initialize the remove button click listener, remove row on click#
+    var row = container.find("[data-row='" + id + "']");
+    var removeButton = row.find("[data-button='remove']");
+    removeButton.click(function() {
+      config.delete("tradehelper.buttons." + id);
+      row.remove();
+    });
+  }
+
+  /**
+  * Initializes all file select buttons and states in the settings menu
+  */
+  static _initializeFileSelects() {
+    $(".settings").find("[data-file-select]").each(function() {
+      var configKey = $(this).attr("data-file-select");
+      var valueElement = $(this).parent().find(".file-select").find(".value");
+
+      // Click on button
+      $(this).find(".select-button").click(function() {
+        dialog.showOpenDialog({
+          properties: ["openFile"],
+          defaultPath: config.get(configKey)
+        }, function(filePaths) {
+          // Save new path to config
+          config.set(configKey, filePaths[0]);
+          valueElement.html(filePaths[0]);
+        });
+      });
+
+      // Initialize config value
+      valueElement.html(config.get(configKey));
     });
   }
 
@@ -253,18 +337,41 @@ class SettingsGUI {
   }
 
   /**
+  * Changes the league in config and update poe.ninja
+  *
+  * @param {string} league League name that should be saved to config
+  */
+  static changeLeagueSetting(league) {
+    config.set("league", league);
+    windowManager.bridge.emit('league-change', {'league': league});
+  }
+
+  /**
+  * Toggles a setting in the config and the settings icon
+  *
+  * @param {string} toggle Name of toggle
+  */
+  static toggleSetting(toggle) {
+    var enabled = !config.get(toggle);
+    config.set(toggle, enabled);
+
+    // Change settings icon accordingly
+    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey green");
+  }
+
+  /**
   * Switches to another settings page
   *
   * @param {jQuery} linkSelector jQuery selector of the link that has been clicked
   */
-  static switchSettings(linkSelector) {
+  static switchSettingsPage(linkSelector) {
     // Clear all active css classes from links
     $(".sidebar").find(".link").each(function() {
       $(this).removeClass("active");
     });
 
     // Hide all settings pages
-    $(".settings").find("[data-settings]").each(function() {
+    $(".settings[data-settings]").each(function() {
       $(this).hide();
     });
 
@@ -272,7 +379,7 @@ class SettingsGUI {
     linkSelector.addClass("active");
 
     // Show corresponding settings page
-    $(".settings").find("[data-settings='" + linkSelector.attr("data-settings") + "']").show();
+    $(".settings[data-settings='" + linkSelector.attr("data-settings") + "']").show();
   }
 
   /**
@@ -296,29 +403,6 @@ class SettingsGUI {
     if(win) {
       win.hide();
     }
-  }
-
-  /**
-  * Toggles a setting in the config and the settings icon
-  *
-  * @param {string} toggle Name of toggle
-  */
-  static toggleSetting(toggle) {
-    var enabled = !config.get(toggle);
-    config.set(toggle, enabled);
-
-    // Change settings icon accordingly
-    $(".settings").find("[data-toggle='" + toggle + "'] > i").toggleClass("fa-toggle-off fa-toggle-on grey green");
-  }
-
-  /**
-  * Changes the league in config and update poe.ninja
-  *
-  * @param {string} league League name that should be saved to config
-  */
-  static changeLeagueSetting(league) {
-    config.set("league", league);
-    windowManager.bridge.emit('league-change', {'league': league});
   }
 }
 

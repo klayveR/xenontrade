@@ -1,10 +1,9 @@
 "use strict";
 
 const electron = require("electron");
-const remote = require("electron").remote;
 let { ipcRenderer } = electron;
 
-const windowManager = remote.require('electron-window-manager');
+const windowManager = electron.remote.require('electron-window-manager');
 const ioHook = require("iohook");
 const clipboardy = require("clipboardy");
 const os = require("os");
@@ -28,7 +27,6 @@ global.poeLog = null;
 global.config = Helpers.createConfig();
 global.templates = new Templates();
 global.ninjaAPI = new NinjaAPI();
-global.entries = {};
 
 class XenonTrade {
   /**
@@ -59,7 +57,7 @@ class XenonTrade {
 
       // Check dependencies and update poe.ninja
       this.checkDependencies();
-      //Pricecheck.updateNinja();
+      Pricecheck.updateNinja();
       return;
     })
     .catch((error) => {
@@ -105,21 +103,20 @@ class XenonTrade {
   /**
   * Initializes listeners for Path of Exile log file
   */
-  initializePoeLogMonitor() {
-    var logfile = config.get("whisperhelper.logfile");
+  initializePoeLogMonitor(logfile = config.get("tradehelper.logfile")) {
+    if (config.get("tradehelper.enabled") && fs.existsSync(logfile) && logfile.includes("Client.txt")) {
+      // Remove old listeners
+      if(poeLog != null) {
+        poeLog.removeAllListeners();
+      }
 
-    if (fs.existsSync(logfile)) {
-      log.debug("Logfile at " + logfile + " exists");
-      poeLog = new PathOfExileLog({
-        logfile: config.get("whisperhelper.logfile")
-      });
+      poeLog = new PathOfExileLog({ logfile: logfile });
 
       poeLog.on("whisper", (message) => {
         var whisper = new Whisper(message);
 
-        if(config.get("whisperhelper.enabled") && whisper.isTradeMessage()) {
-          var entry = new WhisperEntry(whisper);
-          entry.add();
+        if(whisper.isTradeMessage()) {
+          new WhisperEntry(whisper).add();
         }
       });
 
@@ -130,42 +127,9 @@ class XenonTrade {
       poeLog.on("areaLeave", (player) => {
         GUI.setPlayerJoinedStatus(player.name, false);
       });
-
-      var m = {
-        direction: "To",
-        message: 'Hi, I would like to buy your Widowmaker Boot Blade listed for 12 alteration in Standard (stash tab "Sale I"; position: left 1, top 1)',
-        player: {name: "Klayverooo"}
-      }
-
-      var w = new Whisper(m);
-      var e = new WhisperEntry(w);
-      e.add();
-
-      m = {
-        direction: "From",
-        message: 'Hi, I would like to buy your Shavronne\'s Wrappings Occultist\'s Vestment listed for 14213 chaos in Standard (stash tab "Sale I"; position: left 1, top 1)',
-        player: {name: "Klayverooo"}
-      }
-
-      w = new Whisper(m);
-      e = new WhisperEntry(w);
-      e.add();
-
-      m = {
-        direction: "From",
-        message: '"Hi, I\'d like to buy your 10 chaos for my 17 fusing in Standard.',
-        player: {name: "Klayverooo"}
-      }
-
-      w = new Whisper(m);
-      e = new WhisperEntry(w);
-      e.add();
-
-      setTimeout(function() {
-        GUI.setPlayerJoinedStatus("TestCharacter", true);
-      }, 2000);
     } else {
-      log.debug("Logfile at " + logfile + " doesn't exist");
+      var message = "The path to your <strong>Client.txt</strong> log file is invalid. The trade helper needs the correct path to properly receive whisper messages.";
+      new TextEntry("Invalid log file path", message, {icon: "fa-exclamation-triangle yellow"}).add();
     }
   }
 

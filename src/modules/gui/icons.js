@@ -49,10 +49,13 @@ class Icons {
   }
 
   static _find(name, icons) {
+
+
     for(var item in icons) {
       var icon = icons[item];
+      var pattern = new RegExp("\\b" + item + "\\b", "gi");
 
-      if(name.includes(item)) {
+      if(pattern.test(name)) {
         return icon;
       }
     }

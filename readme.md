@@ -1,13 +1,11 @@
-
-
 # ![](https://i.imgur.com/wVnDg8C.png) XenonTrade
-**XenonTrade is a Path of Exile trading overlay**, initially developed specifically for Linux users. While Path of Exiles performance on Linux has drastically increased in the past few months, there are barely any trading companions available for Linux. And thus, this app was created. Currently, it is used as an overlay for checking prices and soon it'll receive a trade whisper helper as well!
+**XenonTrade is a Path of Exile trading overlay**, initially developed specifically for Linux users. While Path of Exiles performance on Linux has drastically increased in the past few months, there are barely any trading companions available for Linux. And thus, this app was created.
 
 Works on **Windows** and **Linux**. Check out the [Installation](https://github.com/klayveR/xenontrade/wiki/Installation) page on the Wiki to get started! See the [Help](https://github.com/klayveR/xenontrade/wiki/Help) wiki if you're having problems.
 
-Items | Currency
+Price Check | Trade Helper
 :---:|:---:
-![](https://i.imgur.com/r8EYb6S.png) | ![](https://i.imgur.com/RHTxgRS.png)
+![](https://i.imgur.com/R4MO5Ju.png) | ![](https://i.imgur.com/bewwuVQ.png)
 
 ## Wiki
 
@@ -39,7 +37,13 @@ Check out the wiki to learn more about this app!
 	- Auto-close can be cancelled by clicking on the countdown timer
 
 ### Whisper helper
-- *Coming soon...*
+- Manage incoming and outgoing trades in the overlay
+- Convenient buttons for party management, starting the trade and visiting the trade partners hideout
+- Customization options
+	- Custom response buttons
+		- Placeholders (e.g. `%league%` or `%trade%`) in your response messages will be replaced with the correct data
+		- [Font Awesome](https://fontawesome.com/icons?d=gallery) icons as button labels
+
 
 ## Acknowledgments
 - [poeprices.info](https://poeprices.info/) for providing their great machine learning price prediction service

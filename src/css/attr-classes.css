@@ -29,6 +29,14 @@
   margin-right: 5px;
 }
 
+.top-padding-10 {
+  padding-top: 10px !important;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
 .center {
   text-align: center;
 }

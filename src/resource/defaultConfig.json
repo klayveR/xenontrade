@@ -1,23 +1,40 @@
 {
   "defaults": {
     "league": "Delve",
+    "characterName": "",
     "focusPathOfExile": false,
     "autoMinimize": false,
     "hideMenu": false,
     "pricecheck": true,
     "maxHeight": 500,
-    "whisperhelper": {
+    "tradehelper": {
       "logfile": "",
       "enabled": true,
       "buttons": {
-        "in": {
-          "Thanks": "Thank you!",
-          "Sold": "Sorry, %trade% is no longer available.",
-          "Wait": "Give me a second",
-          "Interested": "Are you still interested in %trade%?"
+        "1": {
+          "direction": "From",
+          "label": "Thanks",
+          "message": "Thank you!"
         },
-        "out": {
-          "Thanks": "Thank you!"
+        "2": {
+          "direction": "From",
+          "label": "Sold",
+          "message": "Sorry, %trade% is no longer available."
+        },
+        "3": {
+          "direction": "From",
+          "label": "Wait",
+          "message": "Give me a second"
+        },
+        "4": {
+          "direction": "From",
+          "label": "Interested",
+          "message": "Are you still interested in %trade%?"
+        },
+        "5": {
+          "direction": "To",
+          "label": "Thanks",
+          "message": "Thank you!"
         }
       }
     },
@@ -71,9 +88,10 @@
         "hideMenu"
       ]
     },
-    "0.4.1": {
+    "0.5.0": {
       "add": [
-        "whisperhelper"
+        "characterName",
+        "tradehelper"
       ]
     }
   }

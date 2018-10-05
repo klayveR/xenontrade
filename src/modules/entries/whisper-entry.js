@@ -50,7 +50,8 @@ class WhisperEntry extends Entry {
       { find: "ratio", replace: tradeInfo.pay.amount / tradeInfo.receive.amount },
       { find: "stash", replace: tradeInfo.stash.tab },
       { find: "stash-left", replace: tradeInfo.stash.left },
-      { find: "stash-top", replace: tradeInfo.stash.top }
+      { find: "stash-top", replace: tradeInfo.stash.top },
+      { find: "user-name", replace: config.get("characterName") }
     ];
 
     return replacements;
@@ -80,7 +81,11 @@ class WhisperEntry extends Entry {
 
     if(direction === "To") {
       this._enableTradeButton("hideout");
-      this._enableTradeButton("leave");
+
+      // Only enable leave when a character name is specified, otherwise the button can't work
+      if(config.get("characterName") !== "") {
+        this._enableTradeButton("leave");
+      }
     } else {
       this._enableTradeButton("kick");
       this._enableTradeButton("invite");
@@ -103,43 +108,43 @@ class WhisperEntry extends Entry {
 
   _addChatButtons() {
     var container = this.getJQueryObject().find(".chat-buttons");
-    var buttonCount = 0;
-    var buttons = null;
-
-    if(this.whisper.getMessage().direction === "To") {
-      buttons = config.get("whisperhelper.buttons.out");
-    } else {
-      buttons = config.get("whisperhelper.buttons.in");
-    }
+    var firstButton = true;
+    var buttons = config.get("tradehelper.buttons");
+    var direction = this.whisper.getMessage().direction;
 
     // For each button in config
-    for(var button in buttons) {
-      var buttonLabel = button;
+    for(var index in buttons) {
+      var button = buttons[index];
 
-      // Font awesome icon support for button labels
-      if(buttonLabel.substring(0, 3) === "fa-") {
-        buttonLabel = "<i class='fas " + button + "'></i>"
+      // Add only buttons that match the direction of the whisper and are not empty
+      if(button.direction === direction && button.label !== "" && button.message !== "") {
+        var buttonLabel = button.label;
+
+        // Font awesome icon support for button labels
+        if(buttonLabel.substring(0, 3) === "fa-") {
+          buttonLabel = "<i class='fas " + buttonLabel + "'></i>"
+        }
+
+        // Replace placeholders in message
+        let text = "@%player-name% " + button.message;
+        text = Entry.getReplacedString(text, this.replacements);
+
+        // Add button
+        var html = "<div class='cell option' style='border-top: 0px' data-button='" + index + "'>" + buttonLabel + "</div>";
+        if(firstButton) {
+          firstButton = false;
+          container.html(html);
+          container.find("[data-button='" + index + "']").addClass("no-border-left");
+          container.css("height", "20px");
+        } else {
+          container.find(".cell:last").after(html);
+        }
+
+        container.find("[data-button='" + index + "']").css("width", (100 / Object.keys(buttons).length) + "%")
+        container.find("[data-button='" + index + "']").click(function() {
+          PathOfExile.chat(text);
+        });
       }
-
-      // Replace placeholders in message
-      let text = "@%player-name% " + buttons[button];
-      text = Entry.getReplacedString(text, this.replacements);
-
-      // Add button
-      var html = "<div class='cell option' style='border-bottom: 1px solid #202630;border-top:0px' data-button='" + button + "'>" + buttonLabel + "</div>";
-      if(buttonCount === 0) {
-        container.html(html);
-        container.find("[data-button='" + button + "']").addClass("no-border-left");
-      } else {
-        container.find(".cell:last").after(html);
-      }
-
-      container.find("[data-button='" + button + "']").css("width", (100 / Object.keys(buttons).length) + "%")
-      container.find("[data-button='" + button + "']").click(function() {
-        PathOfExile.chat(text);
-      });
-
-      buttonCount++;
     }
   }
 
@@ -159,8 +164,8 @@ class WhisperEntry extends Entry {
         showData = true;
       }
 
-      // League
-      if(this.whisper.hasLeague()) {
+      // Show league if whisper message has it and it's different from the currently selected league
+      if(this.whisper.hasLeague() && this.whisper.getTradeInfo().league != config.get("league")) {
         this.getJQueryObject().find(".explanation-table").find("[table-league]").show();
         showData = true;
       }
@@ -169,6 +174,7 @@ class WhisperEntry extends Entry {
     // Bulk ratio
     if(this.whisper.getTradeType() === "bulk") {
       this.getJQueryObject().find(".explanation-table").find("[table-ratio]").show();
+      showData = true;
     }
 
     if(showData) {
