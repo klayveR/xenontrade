@@ -104,7 +104,11 @@ class XenonTrade {
   * Initializes listeners for Path of Exile log file
   */
   initializePoeLogMonitor(logfile = config.get("tradehelper.logfile")) {
-    if (config.get("tradehelper.enabled") && fs.existsSync(logfile) && logfile.includes("Client.txt")) {
+    if (!config.get("tradehelper.enabled")) {
+      return;
+    }
+
+    if (fs.existsSync(logfile) && logfile.includes("Client.txt")) {
       // Remove old listeners
       if(poeLog != null) {
         poeLog.pause();
