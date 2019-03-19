@@ -129,6 +129,8 @@ class XenonTrade {
         GUI.setPlayerJoinedStatus(player.name, false);
       });
     } else {
+      if (!config.get("tradehelper.enabled)"))
+        { return}
       var message = "The path to your <strong>Client.txt</strong> log file is invalid. The trade helper needs the correct path to properly receive whisper messages.";
       new TextEntry("Invalid log file path", message, {icon: "fa-exclamation-triangle yellow"}).add();
     }
