@@ -28,6 +28,7 @@ class Whisper {
 
     tradeInfo.stash = stashInfo;
 
+
     // Trade
     var pattern = /(?:Hi, I would like to buy your|wtb) (.+) listed for ([0-9.]+) (.+) in (.+)/;
     var match = message.match(pattern);
@@ -52,14 +53,16 @@ class Whisper {
 
     tradeInfo.type = "bulk";
 
+
+
     // Trade
-    var pattern = /I'd like to buy your ([0-9.]+) (.+) for my ([0-9.]+) (.+) in (.+)\./;
+    var pattern = /I'd like to buy your ([0-9.,]+) (.+) for my ([0-9.,]+) (.+) in (.+)\./;
     var match = message.match(pattern);
 
     if(match) {
-      tradeInfo.receive.amount = parseFloat(match[1]);
+      tradeInfo.receive.amount = parseFloat(match[1].replace(",", ""));
       tradeInfo.receive.name = this.formatCurrencyName(match[2]);
-      tradeInfo.pay.amount = parseFloat(match[3]);
+      tradeInfo.pay.amount = parseFloat(match[3].replace(",", ""));
       tradeInfo.pay.name = this.formatCurrencyName(match[4]);
       tradeInfo.league = match[5];
       tradeInfo.trade = match[1] + " " + match[2] + " for " + match[3] + " " + match[4];
@@ -119,7 +122,7 @@ class Whisper {
       league: null,
       trade: null
     }
-  }
+  } 
 
   isTradeMessage() {
     if(this.tradeInfo != null) {
