@@ -46,6 +46,7 @@ class SettingsGUI {
     settingsWindow.object.on("show", function() {
       windowManager.bridge.emit('show', {'window': SettingsGUI.NAME});
     });
+
   }
 
   /**
@@ -58,6 +59,9 @@ class SettingsGUI {
     SettingsGUI._initializeSliders();
     SettingsGUI._initializeVersionNumber();
     SettingsGUI._initializeNavigation();
+    SettingsGUI._initializeLinks();
+    SettingsGUI._initializeProviders();
+    SettingsGUI._initializePoeDataSettings();
   }
 
   /**
@@ -97,6 +101,13 @@ class SettingsGUI {
 
     $(".settings").find("[data-slider]").each(function (index, element) {
       SettingsGUI._initializeSlider($(this));
+    });
+  }
+  static _initializeLinks() {
+    // Open external links in the browser by default
+    $(document).on('click', 'a[href^="http"]', function(event) {
+        event.preventDefault();
+        electron.shell.openExternal(this.href);
     });
   }
 
@@ -252,6 +263,46 @@ class SettingsGUI {
   }
 
   /**
+  * Initializes price provider settings
+  */
+  static _initializeProviders() {
+    // Select option change listener
+    $("#providerRareSelect").val(config.get("provider_rare")).change(function() {
+      var provider = $("#providerRareSelect").val();
+      SettingsGUI.changePriceProvider("rare", provider);
+    });
+    // Select option change listener
+    $("#providerCurrencySelect").val(config.get("provider_currency")).change(function() {
+      var provider = $("#providerCurrencySelect").val();
+      SettingsGUI.changePriceProvider("currency", provider);
+    });
+    // Select option change listener
+    $("#providerOthersSelect").val(config.get("provider_others")).change(function() {
+      var provider = $("#providerOthersSelect").val();
+      SettingsGUI.changePriceProvider("others", provider);
+    });
+  }
+
+  /**
+  * Initializes league settings
+  *
+  * @param {Array} leagues Array of leagues
+  */
+  static _initializePoeDataSettings() {
+    // Poe-Data config
+    $("#poeDataLoginOption input").val(config.get("poeDataLogin")).keyup(function() {
+      SettingsGUI.changePoeDataLogin( $(this).val() );
+    }).change(function() {
+      SettingsGUI.changePoeDataLogin( $(this).val() );
+    });
+    $("#poeDataPasswordOption input").val(config.get("poeDataPassword")).keyup(function() {
+      SettingsGUI.changePoeDataPass( $(this).val() );
+    }).change(function() {
+      SettingsGUI.changePoeDataPass( $(this).val() );
+    });
+  }
+
+  /**
   * Switches to another settings page
   *
   * @param {jQuery} linkSelector jQuery selector of the link that has been clicked
@@ -318,6 +369,38 @@ class SettingsGUI {
   static changeLeagueSetting(league) {
     config.set("league", league);
     windowManager.bridge.emit('league-change', {'league': league});
+  }
+
+  /**
+  * Changes the provider used for querying item prices
+  *
+  * @param {string} type Item type (rare / others)
+  * @param {string} provider Price provider
+  */
+  static changePriceProvider(type, provider) {
+    config.set("provider_"+type, provider);
+    windowManager.bridge.emit("provider-change", {'provider': provider});
+    windowManager.bridge.emit("provider-"+type+"-change", {'provider': provider});
+  }
+
+  /**
+  * Changes the poe data login username in config and update poe-data
+  *
+  * @param {string} username Username that is used for logging in
+  */
+  static changePoeDataLogin(username) {
+    config.set("poeDataLogin", username);
+    windowManager.bridge.emit('poe-data-login-change', {'username': username});
+  }
+
+  /**
+  * Changes the poe data login password in config and update poe-data
+  *
+  * @param {string} password Password that is used for logging in
+  */
+  static changePoeDataPass(password) {
+    config.set("poeDataPassword", password);
+    windowManager.bridge.emit('poe-data-pass-change', {'password': password});
   }
 }
 

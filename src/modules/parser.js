@@ -2,6 +2,7 @@ const itemVariants = require("../resource/itemVariants");
 const gemVariants = require("../resource/gemVariants");
 const parserTypes = require("../resource/parserTypes");
 const mapAffixes = require("../resource/mapAffixes");
+const Item = require("./item.js");
 
 class Parser {
   /**
@@ -12,8 +13,17 @@ class Parser {
   */
   constructor(clipboard) {
     this.clipboard = clipboard;
-
     this.fixCannotUseText();
+    // Try to parse the detailed item data
+    this.item = null;
+    if (this.isPathOfExileData() && !poeData.isUpdating()) {
+      try {
+        this.item = new Item(this);
+      } catch(error) {
+        console.error(error.message);
+        console.log(error.stack);
+      }
+    }
   }
 
   /**

@@ -22,6 +22,9 @@
         <div class="link" data-settings="price-check">
           <span class="label"><i class="fas fa-money-bill"></i> Price check</span>
         </div>
+        <div class="link" data-settings="poe-data">
+          <span class="label"><i class="fas fa-sync"></i> POE-Data API</span>
+        </div>
         <div class="link" data-settings="auto-close">
           <span class="label"><i class="fas fa-clock"></i> Auto-close</span>
         </div>
@@ -29,6 +32,7 @@
       </div>
       <div class="settings">
         <div class="content">
+
           <div data-settings="general">
             <div class="option">
               <div class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></div>
@@ -88,6 +92,7 @@
               </div>
             </div>
           </div>
+
           <div data-settings="price-check" style="display: none">
             <div class="option">
               <div class="toggle" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></div>
@@ -109,7 +114,102 @@
                 <select class="select" id="leagueSelect"></select>
               </label>
             </div>
+            <div class="title">
+              Pricecheck Provider
+            </div>
+            <div id="providerRare" class="option last-option">
+              <div class="label">
+                Rare items
+              </div>
+              <div class="description">
+                Please select the provider that should be used to fetch the price of rares.
+              </div>
+              <label class="wrap">
+                <select class="select" id="providerRareSelect">
+                  <option value="poeprices">poeprices.info</option>
+                  <option value="poetrade">pathofexile.com</option>
+                </select>
+              </label>
+            </div>
+            <div id="providerCurrency" class="option last-option">
+              <div class="label">
+                Currency items
+              </div>
+              <div class="description">
+                Please select the provider that should be used to fetch the ratios of curency.
+              </div>
+              <label class="wrap">
+                <select class="select" id="providerCurrencySelect">
+                  <option value="poeninja">poe.ninja</option>
+                </select>
+              </label>
+            </div>
+            <div id="providerOthers" class="option last-option">
+              <div class="label">
+                Other items
+              </div>
+              <div class="description">
+                Please select the provider that should be used to fetch the price of other items.
+              </div>
+              <label class="wrap">
+                <select class="select" id="providerOthersSelect">
+                  <option value="poeninja">poe.ninja</option>
+                  <option value="poetrade">pathofexile.com</option>
+                </select>
+              </label>
+            </div>
           </div>
+
+          <div data-settings="poe-data" style="display: none">
+            <div class="option">
+              <div class="label">
+                Update interval
+                <span class="slider-value"><span class="value"></span><span class="unit">day(s)</span></span>
+              </div>
+              <div class="description">
+                Defines the interval in which the item, mod and league data from the official APIs is updated.<br />
+                <div class="banner">
+                  <i class="fas fa-info-circle"></i> Setting this to 0 days will disable automatic updates.
+                </div>
+              </div>
+              <div class="slider" data-slider="poeDataInterval">
+                <div slider-min="0" slider-max="31" slider-step="1"></div>
+              </div>
+            </div>
+            <div id="poeDataLoginOption" class="option">
+              <div class="label">
+                Username
+                <span class="banner note">
+                  Optional
+                </span>
+              </div>
+              <div class="description">
+                Username for accessing the data of the path of exile wiki.<br />
+                You can create an login at
+                <a class="green" target="_blank" href="https://pathofexile.gamepedia.com/Special:BotPasswords">
+                  https://pathofexile.gamepedia.com/Special:BotPasswords
+                </a>
+              </div>
+              <label class="input">
+                <input type="text" class="text" id="poeDataLogin" />
+              </label>
+            </div>
+            <div id="poeDataPasswordOption" class="option">
+              <div class="label">
+                Password
+                <span class="banner note">
+                  Optional
+                </span>
+              </div>
+              <div class="description">
+                Password for accessing the data of the path of exile wiki.<br />
+              </div>
+              <label class="input">
+                <input type="password" class="text" id="poeDataPassword" />
+              </label>
+            </div>
+          </div>
+
           <div data-settings="auto-close" style="display: none">
             <div class="option">
               <div class="toggle" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></div>
@@ -165,6 +265,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
   </body>

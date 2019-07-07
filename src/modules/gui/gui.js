@@ -50,6 +50,13 @@ class GUI {
       Pricecheck.updateNinja();
     });
 
+    // Update PoeData when the the according provider is selected in the settings
+    windowManager.bridge.on('provider-change', function(event) {
+      if (event.provider == "poetrade") {
+        poeData.update();
+      }
+    });
+
     // Adjust window size based on scale factor when it's changed
     windowManager.bridge.on('zoomfactor-change', function(event) {
       GUI.setZoomFactor(event.value);
@@ -190,7 +197,7 @@ class GUI {
   * Toggles a menu buttons icon color
   */
   static toggleMenuButtonColor(button, state) {
-    var button = $("[data-button='" + button + "']").find("i");
+    button = $("[data-button='" + button + "']").find("i");
 
     if(typeof state === "undefined") {
       button.toggleClass("grey");

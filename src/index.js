@@ -13,6 +13,7 @@ const log = require('electron-log');
 const Config = require("electron-store");
 const Helpers = require("./modules/helpers.js");
 const NinjaAPI = require("poe-ninja-api-manager");
+const PoeData = require("./modules/poedata.js");
 const Templates = require("./modules/templates.js");
 const Pricecheck = require("./modules/pricecheck.js");
 const AutoMinimize = require("./modules/auto-minimize.js");
@@ -23,6 +24,7 @@ const GUI = require("./modules/gui/gui.js");
 global.config = Helpers.createConfig();
 global.templates = new Templates();
 global.ninjaAPI = new NinjaAPI();
+global.poeData = new PoeData();
 global.entries = {};
 
 class XenonTrade {
@@ -54,6 +56,9 @@ class XenonTrade {
       // Check dependencies and update poe.ninja
       this.checkDependencies();
       Pricecheck.updateNinja();
+      if (config.get("poeDataInterval") > 0) {
+        poeData.update();
+      }
       return;
     })
     .catch((error) => {

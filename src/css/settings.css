@@ -171,6 +171,11 @@ i {
   font-size: 13px;
 }
 
+.content .note {
+  color: #748199;
+  font-size: 13px;
+}
+
 .content .option label.wrap {
   margin: 5px 0px;
   width: 100%;
@@ -205,4 +210,24 @@ i {
   z-index: 1;
   width: 20px;
   pointer-events: none;
+}
+
+.content .option  a {
+  color: #748199;
+}
+
+.content .option  input {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #303a4c;
+  color: #FFFFFF;
+  padding: 7px;
+  font-size: 11px;
+  border: 0;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
 }

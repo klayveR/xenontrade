@@ -160,6 +160,7 @@ class Entry {
   add() {
     if(!this.added) {
       this.added = true;
+      
       var template = this._getReplacedTemplate(this.template, this.replacements, "%");
 
       // If no entries available, set whole content of div, otherwise append

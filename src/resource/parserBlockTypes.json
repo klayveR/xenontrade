@@ -1,0 +1,66 @@
+{
+  "name-rarity": {
+    "regex": "^Rarity: (.+)$",
+    "type": "name"
+  },
+  "requirements": {
+    "regex": "^Requirements:$",
+    "type": "requirements"
+  },
+  "properties-quality": {
+    "regex": "^Quality: (.+)$",
+    "type": "properties"
+  },
+  "properties-evasion": {
+    "regex": "^Evasion Rating: (.+)$",
+    "type": "properties"
+  },
+  "properties-energyShield": {
+    "regex": "^Energy Shield: (.+)$",
+    "type": "properties"
+  },
+  "properties-armour": {
+    "regex": "^Armour: (.+)$",
+    "type": "properties"
+  },
+  "properties-physicalDamage": {
+    "regex": "^Physical Damage: (.+)$",
+    "type": "properties"
+  },
+  "properties-criticalStrikeChance": {
+    "regex": "^Critical Strike Chance: (.+)$",
+    "type": "properties"
+  },
+  "properties-attacksPerSecond": {
+    "regex": "^Attacks per Second: (.+)$",
+    "type": "properties"
+  },
+  "properties-weaponRange": {
+    "regex": "^Weapon Range: (.+)$",
+    "type": "properties"
+  },
+  "properties-experience": {
+    "regex": "^Experience: (.+)$",
+    "type": "properties"
+  },
+  "properties-soulsPerUse": {
+    "regex": "^Souls Per Use: (.+)$",
+    "type": "properties"
+  },
+  "sockets": {
+    "regex": "^Sockets: (.+)$",
+    "type": "sockets"
+  },
+  "itemLevel": {
+    "regex": "^Item Level: ([0-9]+)$",
+    "type": "itemLevel"
+  },
+  "corrupted": {
+    "regex": "^Corrupted$",
+    "type": "corrupted"
+  },
+  "note": {
+    "regex": "^Note: (.+)$",
+    "type": "note"
+  }
+}
