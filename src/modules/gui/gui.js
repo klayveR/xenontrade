@@ -50,6 +50,13 @@ class GUI {
       Pricecheck.updateNinja();
     });
 
+    // Update PoeData when the the according provider is selected in the settings
+    windowManager.bridge.on('provider-change', function(event) {
+      if (event.provider == "poetrade") {
+        Pricecheck.updatePoeData();
+      }
+    });
+
     // Adjust window size based on scale factor when it's changed
     windowManager.bridge.on('zoomfactor-change', function(event) {
       GUI.setZoomFactor(event.value);

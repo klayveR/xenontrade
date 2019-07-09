@@ -29,6 +29,7 @@
       </div>
       <div class="settings">
         <div class="content">
+
           <div data-settings="general">
             <div class="option">
               <div class="toggle" data-toggle="autoMinimize"><i class="fas fa-toggle-off grey"></i></div>
@@ -88,6 +89,7 @@
               </div>
             </div>
           </div>
+
           <div data-settings="price-check" style="display: none">
             <div class="option">
               <div class="toggle" data-toggle="pricecheck"><i class="fas fa-toggle-off grey"></i></div>
@@ -108,8 +110,51 @@
               <label class="wrap">
                 <select class="select" id="leagueSelect"></select>
               </label>
+            </div>            
+            <div class="title">
+              Pricecheck Provider
             </div>
+            <div class="description">
+              Please select the provider that should be used to estimate the price by item type.
+            </div>
+            <div id="providerUnique" class="option row">
+              <div class="label">
+                Unique items
+              </div>
+              <label class="wrap">
+                <select class="select" id="providerUniqueSelect">
+                </select>
+              </label>
+            </div>
+            <div id="providerRare" class="option row">
+              <div class="label">
+                Rare items
+              </div>
+              <label class="wrap">
+                <select class="select" id="providerRareSelect">
+                </select>
+              </label>
+            </div>
+            <div id="providerCurrency" class="option row">
+              <div class="label">
+                Currency items
+              </div>
+              <label class="wrap">
+                <select class="select" id="providerCurrencySelect">
+                </select>
+              </label>
+            </div>
+            <div id="providerOthers" class="option row">
+              <div class="label">
+                Other items
+              </div>
+              <label class="wrap">
+                <select class="select" id="providerOthersSelect">
+                </select>
+              </label>
+            </div>            
           </div>
+          
           <div data-settings="auto-close" style="display: none">
             <div class="option">
               <div class="toggle" data-toggle="autoclose.enabled"><i class="fas fa-toggle-off grey"></i></div>
@@ -165,6 +210,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
   </body>

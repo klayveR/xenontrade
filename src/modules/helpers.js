@@ -275,7 +275,14 @@ class Helpers {
           locked: false,
           poll: 1000,
           zoomFactor: 1
-        }
+        },
+        provider_unique: "poeprices",
+        provider_rare: "poeprices",
+        provider_currency: "poeninja",
+        provider_others: "poeninja",
+        poeDataInterval: 0,
+        poeDataLogin: "",
+        poeDataPassword: ""
       }
     });
 
@@ -297,6 +304,20 @@ class Helpers {
     // 0.4.0
     if(!config.has("hideMenu")) {
       config.set("hideMenu", false);
+    }
+
+    // 0.4.1
+    if(!config.has("provider_unique")) {
+      config.set("provider_unique", "poeninja");
+    }
+    if(!config.has("provider_rare")) {
+      config.set("provider_rare", "poeprices");
+    }
+    if(!config.has("provider_currency")) {
+      config.set("provider_currency", "poeninja");
+    }
+    if(!config.has("provider_others")) {
+      config.set("provider_others", "poeninja");
     }
 
     return config;

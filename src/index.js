@@ -54,6 +54,7 @@ class XenonTrade {
       // Check dependencies and update poe.ninja
       this.checkDependencies();
       Pricecheck.updateNinja();
+      Pricecheck.updatePoeData();
       return;
     })
     .catch((error) => {

@@ -175,6 +175,17 @@ i {
   padding: 5px 3px;
 }
 
+.entry .content .note-max-rolls {
+  padding: 5px 8px;
+  font-size: 11px;
+  text-align: left;
+}
+
+.entry .content .note-max-rolls ul {
+  padding: 0 0 0 16px;
+  margin: 0;
+}
+
 .entry .content .confidence {
   position: absolute;
   width: 3px !important;

@@ -9,6 +9,8 @@ const Config = require("electron-store");
 const Helpers = require("../helpers.js");
 const GUI = require("./gui.js");
 
+const priceProviders = require("../../resource/priceProviders");
+
 var config = Helpers.createConfig();
 
 class SettingsGUI {
@@ -58,6 +60,8 @@ class SettingsGUI {
     SettingsGUI._initializeSliders();
     SettingsGUI._initializeVersionNumber();
     SettingsGUI._initializeNavigation();
+    SettingsGUI._initializeLinks();
+    SettingsGUI._initializeProviders();
   }
 
   /**
@@ -97,6 +101,13 @@ class SettingsGUI {
 
     $(".settings").find("[data-slider]").each(function (index, element) {
       SettingsGUI._initializeSlider($(this));
+    });
+  }
+  static _initializeLinks() {
+    // Open external links in the browser by default
+    $(document).on('click', 'a[href^="http"]', function(event) {
+        event.preventDefault();
+        electron.shell.openExternal(this.href);
     });
   }
 
@@ -252,6 +263,30 @@ class SettingsGUI {
   }
 
   /**
+  * Initializes price provider settings
+  */
+  static _initializeProviders() {
+    let initProvider = (select, type) => {
+      // Set options
+      select.html("");
+      for (let providerIdent in priceProviders[type]) {
+        let providerLabel = priceProviders[type][providerIdent];
+        select.append( $("<option></option>").text(providerLabel).val(providerIdent) )
+      }
+      // Select option change listeners
+      select.val(config.get("provider_"+type)).change(function() {
+        var provider = select.val();
+        SettingsGUI.changePriceProvider(type, provider);
+      });
+    };
+    
+    initProvider( $("#providerUniqueSelect"), "unique" );
+    initProvider( $("#providerRareSelect"), "rare" );
+    initProvider( $("#providerCurrencySelect"), "currency" );
+    initProvider( $("#providerOthersSelect"), "others" );
+  }
+
+  /**
   * Switches to another settings page
   *
   * @param {jQuery} linkSelector jQuery selector of the link that has been clicked
@@ -318,6 +353,18 @@ class SettingsGUI {
   static changeLeagueSetting(league) {
     config.set("league", league);
     windowManager.bridge.emit('league-change', {'league': league});
+  }
+
+  /**
+  * Changes the provider used for querying item prices
+  *
+  * @param {string} type Item type (rare / others)
+  * @param {string} provider Price provider
+  */
+  static changePriceProvider(type, provider) {
+    config.set("provider_"+type, provider);
+    windowManager.bridge.emit("provider-change", {'provider': provider});
+    windowManager.bridge.emit("provider-"+type+"-change", {'provider': provider});
   }
 }
 
