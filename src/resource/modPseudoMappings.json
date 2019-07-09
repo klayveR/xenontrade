@@ -1,0 +1,111 @@
+{
+  "item tag": {
+    "default": {
+      "Strength": null,
+      "Dexterity": null,
+      "Intelligence": null,
+      "StrengthDexterity": null,
+      "StrengthIntelligence": null,
+      "DexterityIntelligence": null,
+      "AllAttributes": null,
+      "LocalAttributeRequirements": null,
+      "LifeRegeneration": null,
+      "ManaRegeneration": null,
+      "AttackerTakesDamageNoRange": null,
+      "ItemFoundRarityIncrease": null,
+      "ItemFoundRarityIncreasePrefix": null,
+      "ChanceToDodge": null
+    },
+    "armour": {
+      "DefencesPercent": null, 
+      "BaseLocalDefences": null, 
+      "DefencesPercentAndStunRecovery": null, 
+      "IncreasedEvasionRating": null, 
+      "IncreasedEnergyShield": null
+    },
+    "wand": {
+      "IncreasedMana": null,
+      "CriticalStrikeMultiplier": null
+    },
+    "weapon": {
+      "FireResistance": null,
+      "ColdResistance": null,
+      "LightningResistance": null,
+      "ChaosResistance": null,
+      "AllResistances": null,
+      "AddedFireDamageSpellsAndAttacks": null,
+      "AddedColdDamageToSpellsAndAttacks": null,
+      "AddedLightningDamageSpellsAndAttacks": null,
+      "PhysicalDamage": null,
+      "FireDamage": null,
+      "ColdDamage": null,
+      "LightningDamage": null,
+      "ChaosDamage": null,
+      "AddedPhysicalSuffix": null,
+      "AddedFireSuffix": null,
+      "AddedColdSuffix": null,
+      "AddedLightningSuffix": null,
+      "AddedChaosSuffix": null,
+      "IncreasedAccuracy": null,
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating": null,
+      "IncreasedMana": null,
+      "IncreasedLife": null,
+      "IncreasedEnergyShield": null,
+      "SpellDamageAndMana": [
+        "pseudo.pseudo_increased_spell_damage",
+        null
+      ]
+    }
+  },
+  "mod group": {
+    "FireResistance": "pseudo.pseudo_total_elemental_resistance",
+    "ColdResistance": "pseudo.pseudo_total_elemental_resistance",
+    "LightningResistance": "pseudo.pseudo_total_elemental_resistance",
+    "ChaosResistance": "pseudo.pseudo_total_elemental_resistance",
+    "AllResistances": "pseudo.pseudo_total_all_elemental_resistances",
+
+    "IncreasedLife": "pseudo.pseudo_total_life",
+    "IncreasedMana": "pseudo.pseudo_total_mana",
+    "IncreasedEnergyShield": "pseudo.pseudo_total_energy_shield",
+
+    "IncreasedAttackSpeed": "pseudo.pseudo_total_attack_speed",
+    "IncreasedCastSpeed": "pseudo.pseudo_total_cast_speed",
+    "MovementVelocity": "pseudo.pseudo_increased_movement_speed",
+
+    "LocalPhysicalDamagePercent": "pseudo.pseudo_increased_physical_damage",
+    
+    "SpellDamage": "pseudo.pseudo_increased_spell_damage",
+    "SpellDamageAndMana": [
+      "pseudo.pseudo_increased_spell_damage",
+      "pseudo.pseudo_total_mana"
+    ],
+    "WeaponCasterDamagePrefix": "pseudo.pseudo_increased_spell_damage",
+
+    "AddedFireDamageSpellsAndAttacks": "pseudo.pseudo_adds_damage",
+    "AddedColdDamageToSpellsAndAttacks": "pseudo.pseudo_adds_damage",
+    "AddedLightningDamageSpellsAndAttacks": "pseudo.pseudo_adds_damage",
+
+    "PhysicalDamage": null,
+    "FireDamage": null,
+    "ColdDamage": null,
+    "LightningDamage": null,
+    "ChaosDamage": "pseudo.pseudo_adds_chaos_damage_to_attacks",
+    "AddedPhysicalSuffix": null,
+    "AddedFireSuffix": null,
+    "AddedColdSuffix": null,
+    "AddedLightningSuffix": null,
+    "AddedChaosSuffix": "pseudo.pseudo_adds_chaos_damage_to_attacks",
+    
+    "SpellAddedPhysicalDamage": "pseudo.pseudo_adds_damage_to_spells",
+    "SpellAddedElementalDamage": "pseudo.pseudo_adds_damage_to_spells",
+    "SpellAddedChaosDamage": "pseudo.pseudo_adds_damage_to_spells",
+
+    "ElementalDamagePercent": "pseudo.pseudo_increased_elemental_damage",
+
+    "ItemFoundRarityIncrease": "pseudo.pseudo_increased_rarity",
+    "ItemFoundRarityIncreasePrefix": "pseudo.pseudo_increased_rarity",
+    "IncreaseSocketedGemLevel": "pseudo.pseudo_total_additional_gem_levels",
+    
+    "BaseLocalDefencesAndLife": [ null, "pseudo.pseudo_total_life" ]
+  }
+}

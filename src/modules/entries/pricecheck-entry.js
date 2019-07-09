@@ -61,6 +61,26 @@ class PriceCheckEntry extends Entry {
   }
 
   /**
+   * Add notice about max rolls on item mods
+   * @param mods
+   */
+  addMaxRolls(item) {
+    if (item === null) {
+      return;
+    }
+    let mods = item.getMaxRolledMods();
+    if (mods.length > 0) {
+      let modsText = [];
+      for (let i = 0; i < mods.length; i++) {
+        modsText.push( mods[i].modBase["trade text"] );
+      }
+      $(".entry[data-id='" + this.id + "']").find(".note-max-rolls .count").text(mods.length);
+      $(".entry[data-id='" + this.id + "']").find(".note-max-rolls .mod-list").html("<li>"+modsText.join("</li><li>")+"</li>");
+      $(".entry[data-id='" + this.id + "']").find(".note-max-rolls").show();
+    }    
+  }
+
+  /**
   * Removes null from sparkline data and returns the trend as an array
   *
   * @param {Object} sparkline Sparkline object that contains a sparkline data array

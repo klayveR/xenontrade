@@ -2,6 +2,8 @@ const itemVariants = require("../resource/itemVariants");
 const gemVariants = require("../resource/gemVariants");
 const parserTypes = require("../resource/parserTypes");
 const mapAffixes = require("../resource/mapAffixes");
+const PoeData = require("poedata").PoeData;
+const Item = require("poedata").Item;
 
 class Parser {
   /**
@@ -12,8 +14,17 @@ class Parser {
   */
   constructor(clipboard) {
     this.clipboard = clipboard;
-
     this.fixCannotUseText();
+    
+    this.item = null;
+    if (this.isPathOfExileData() && !PoeData.isUpdating()) {
+      try {
+        this.item = new Item(this.getClipboardLines());
+      } catch (error) {
+        console.error(error.message);
+        console.log(error.stack);
+      }
+    }
   }
 
   /**
@@ -304,6 +315,13 @@ class Parser {
           type = parserTypes[rarity][i].type;
           break;
         }
+      }
+    }
+    if (this.item !== null) {
+      if (this.item.hasTag("rusted_scarab")) {
+        // Will be parsed by "other" provider instead of currency provider
+        // TODO: Find a better solution?
+        type = "Scarab";
       }
     }
 

@@ -11,7 +11,6 @@ class ItemEntry extends PriceCheckEntry {
     super();
     this.item = item;
     this.parser = parser;
-
     this.switchable = false;
   }
 
@@ -26,6 +25,7 @@ class ItemEntry extends PriceCheckEntry {
 
     // Set buttons and trends
     this.visualizeTrend();
+    super.addMaxRolls(this.parser.item);
     super.setCloseable(true);
     if(this.switchable) {
       super.enableToggle("switch");
