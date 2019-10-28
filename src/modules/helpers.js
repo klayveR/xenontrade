@@ -242,7 +242,7 @@ class Helpers {
   static createConfig() {
     var config = new Config({
       defaults: {
-        league: "Delve",
+        league: "Blight",
         focusPathOfExile: false,
         autoMinimize: false,
         hideMenu: false,
